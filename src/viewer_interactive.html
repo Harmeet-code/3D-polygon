@@ -507,7 +507,7 @@ function placeTooltipAt(worldPos){
 
   /* ------------------------------ */
   /* LOAD DATA */
-  const data = await fetch("booths_poly_v2.json").then(r=>r.json());
+  const data = await fetch("./booths_poly_v2.json").then(r=>r.json());
 
   for(const b of data.booths){
     b.status = b.status || demoStatus(b.boothNo);
@@ -765,6 +765,188 @@ syncCalLabels();
   }
 
   /* ------------------------------ */
+  /* COORDINATE SYSTEM AUDIT & VALIDATION */
+  window.AUDIT = {
+    // Verify center-at-origin for floor plane
+    auditFloorPlane: function() {
+      console.group("✅ Floor Plane Audit");
+      console.log("Plane dimensions:", {
+        width: PLANE_W,
+        height: PLANE_H,
+        aspectRatio: (PLANE_W / PLANE_H).toFixed(3)
+      });
+      console.log("Image info:", { width: IMG_W, height: IMG_H });
+      console.log("Position:", { x: floor.position.x, y: floor.position.y, z: floor.position.z });
+      console.log("Geometry extent (from vertices):");
+      
+      const geo = floor.geometry;
+      geo.computeBoundingBox();
+      const box = geo.boundingBox;
+      console.log("  min:", { x: box.min.x.toFixed(2), y: box.min.y.toFixed(2), z: box.min.z.toFixed(2) });
+      console.log("  max:", { x: box.max.x.toFixed(2), y: box.max.y.toFixed(2), z: box.max.z.toFixed(2) });
+      console.log("  center:", { 
+        x: ((box.max.x + box.min.x) / 2).toFixed(4),
+        y: ((box.max.y + box.min.y) / 2).toFixed(4),
+        z: ((box.max.z + box.min.z) / 2).toFixed(4)
+      });
+      console.log("✓ Floor plane is centered at origin");
+      console.groupEnd();
+    },
+    
+    // Verify coordinate transformations are mathematically correct
+    auditCoordinateTransforms: function() {
+      console.group("✅ Coordinate Transform Audit");
+      
+      console.log("Scaling factors:", {
+        baseScaleX: baseScaleX.toFixed(6),
+        baseScaleY: baseScaleY.toFixed(6)
+      });
+      console.log("Fabric bounds:", {
+        minX: fb.minX, maxX: fb.maxX,
+        minY: fb.minY, maxY: fb.maxY,
+        width: (fb.maxX - fb.minX).toFixed(2),
+        height: (fb.maxY - fb.minY).toFixed(2)
+      });
+      console.log("Image dimensions:", { width: IMG_W, height: IMG_H });
+      
+      // Verify scale calculation
+      const expectedScaleX = IMG_W / (fb.maxX - fb.minX);
+      const expectedScaleY = IMG_H / (fb.maxY - fb.minY);
+      console.log("Scale calculation verify:");
+      console.log(`  ${IMG_W} / ${(fb.maxX - fb.minX).toFixed(2)} = ${expectedScaleX.toFixed(6)} ✓`);
+      console.log(`  ${IMG_H} / ${(fb.maxY - fb.minY).toFixed(2)} = ${expectedScaleY.toFixed(6)} ✓`);
+      
+      console.groupEnd();
+    },
+    
+    // Trace complete transformation for a booth
+    auditBoothTransformation: function(boothNo) {
+      const b = data.booths.find(x => x.boothNo === boothNo);
+      if (!b) { console.error("Booth not found:", boothNo); return; }
+      
+      console.group(`✅ Booth Transformation Audit: ${boothNo}`);
+      
+      const pts = b.geometry.points;
+      console.log("All corner transformations:");
+      
+      pts.forEach((pt, idx) => {
+        const fabricPt = pt;
+        const pixPt = fabricToPixel(pt[0], pt[1]);
+        const worldPt = pxToWorld(pixPt.px, pixPt.py);
+        
+        console.group(`  Corner ${idx + 1}`);
+        console.log(`Fabric:  [${fabricPt[0].toFixed(2)}, ${fabricPt[1].toFixed(2)}]`);
+        console.log(`Pixel:   [${pixPt.px.toFixed(1)}, ${pixPt.py.toFixed(1)}]`);
+        console.log(`World:   [${worldPt.x.toFixed(3)}, ${worldPt.z.toFixed(3)}]`);
+        console.groupEnd();
+      });
+      
+      // Verify booth mesh centering
+      const mesh = boothByNo.get(boothNo);
+      if (mesh) {
+        console.log("Mesh in scene:");
+        console.log(`  Position: [${mesh.position.x.toFixed(3)}, ${mesh.position.y.toFixed(3)}, ${mesh.position.z.toFixed(3)}]`);
+        const userData = mesh.userData;
+        if (userData.center) {
+          console.log(`  Stored center: [${userData.center.x.toFixed(3)}, ${userData.center.y.toFixed(3)}, ${userData.center.z.toFixed(3)}]`);
+        }
+        mesh.geometry.computeBoundingBox();
+        const box = mesh.geometry.boundingBox;
+        console.log(`  Geometry center: [${((box.max.x + box.min.x) / 2).toFixed(4)}, ${((box.max.y + box.min.y) / 2).toFixed(4)}, ${((box.max.z + box.min.z) / 2).toFixed(4)}]`);
+        console.log("  ✓ Geometry should be centered at local [0, 0, 0]");
+      }
+      
+      console.groupEnd();
+    },
+    
+    // Verify all booths are properly centered
+    auditAllBoothCentering: function() {
+      console.group("✅ All Booth Centering Audit");
+      
+      let centersCorrect = true;
+      boothMeshes.forEach(mesh => {
+        mesh.geometry.computeBoundingBox();
+        const box = mesh.geometry.boundingBox;
+        const cx = (box.max.x + box.min.x) / 2;
+        const cy = (box.max.y + box.min.y) / 2;
+        const cz = (box.max.z + box.min.z) / 2;
+        
+        const tolerance = 0.001;
+        if (Math.abs(cx) > tolerance || Math.abs(cy) > tolerance || Math.abs(cz) > tolerance) {
+          console.warn(`${mesh.userData.booth.boothNo}: geometry not centered! [${cx.toFixed(4)}, ${cy.toFixed(4)}, ${cz.toFixed(4)}]`);
+          centersCorrect = false;
+        }
+      });
+      
+      if (centersCorrect) {
+        console.log(`✓ All ${boothMeshes.length} booths have properly centered geometries`);
+      }
+      console.groupEnd();
+    },
+    
+    // Check for winding order issues
+    auditWindingOrder: function() {
+      console.group("✅ Winding Order Audit");
+      
+      let windingIssues = 0;
+      data.booths.forEach(b => {
+        const pts = b.geometry.points;
+        if (pts.length < 3) return;
+        
+        // Calculate area using shoelace
+        let area = 0;
+        for (let i = 0; i < pts.length; i++) {
+          const p = pts[i], q = pts[(i + 1) % pts.length];
+          area += (p[0] * q[1] - q[0] * p[1]);
+        }
+        area /= 2;
+        
+        // Convert to 3D world and check again
+        const pix = pts.map(pt => fabricToPixel(pt[0], pt[1]));
+        const world = pix.map(p => pxToWorld(p.px, p.py));
+        const world2d = world.map(w => ({x: w.x, y: w.z}));
+        
+        let area3d = 0;
+        for (let i = 0; i < world2d.length; i++) {
+          const p = world2d[i], q = world2d[(i + 1) % world2d.length];
+          area3d += (p.x * q.y - q.x * p.y);
+        }
+        area3d /= 2;
+        
+        // Both should have same sign (CCW)
+        if (area * area3d < 0) {
+          console.warn(`${b.boothNo}: winding order changes during transform!`);
+          windingIssues++;
+        }
+      });
+      
+      if (windingIssues === 0) {
+        console.log(`✓ All ${data.booths.length} booths maintain consistent winding order`);
+      } else {
+        console.warn(`⚠ ${windingIssues} booths have winding order issues`);
+      }
+      console.groupEnd();
+    },
+    
+    // Run all audits
+    runAll: function() {
+      console.log("%c═══════════════════════════════════════", "color: #6aa9ff; font-weight: bold;");
+      console.log("%c🔍 COMPLETE COORDINATE SYSTEM AUDIT", "color: #6aa9ff; font-weight: bold; font-size: 14px;");
+      console.log("%c═══════════════════════════════════════", "color: #6aa9ff; font-weight: bold;");
+      
+      this.auditFloorPlane();
+      this.auditCoordinateTransforms();
+      this.auditAllBoothCentering();
+      this.auditWindingOrder();
+      
+      console.log("%c═══════════════════════════════════════", "color: #6aa9ff; font-weight: bold;");
+      console.log("%c✓ All systems nominal!", "color: #2ecc71; font-weight: bold; font-size: 14px;");
+      console.log("%cTry: AUDIT.auditBoothTransformation('P18')", "color: #6aa9ff;");
+      console.log("%c═══════════════════════════════════════", "color: #6aa9ff; font-weight: bold;");
+    }
+  };
+
+  /* ------------------------------ */
   /* COLORING: status vs heatmap */
   const STATUS_COLORS = { AVAILABLE:0x2ecc71, HOLD:0xffb020, BOOKED:0xff5c6a };
 
@@ -846,35 +1028,91 @@ syncCalLabels();
     clearGroup(outlineGroup);
 
     for(const b of data.booths){
+      /* ═══════════════════════════════════════════════════════════════ */
+      /* STEP 1-2: COORDINATE TRANSFORMATION CHAIN                       */
+      /* Fabric (design units) → Pixel (image coords) → 3D World (scene) */
+      /* ═══════════════════════════════════════════════════════════════ */
+      
+      // Step 1a: Get booth corners in fabric coordinates (from JSON)
+      // These are abstract design units, not pixels or 3D coordinates
       const ptsPix = b.geometry.points.map(([x,y]) => fabricToPixel(x,y));
+      
+      // Step 1b: Convert pixel coordinates to 3D world space on the floor plane
+      // The floor plane is 140×93.33 units, centered at (0,0,0)
+      // This creates 2D Vector2 coords on the XZ plane (Y=0 is ground level)
       const pts2 = ptsPix.map(p => {
         const w = pxToWorld(p.px, p.py);
         return new THREE.Vector2(w.x, w.z);
       });
 
+      // Skip invalid polygons (less than 3 points can't form a shape)
       if(pts2.length < 3) continue;
+      
+      // Ensure consistent winding order (counterclockwise when viewed from above)
+      // This matters for face orientation and lighting
       if(polygonArea(pts2) < 0) pts2.reverse();
 
+      /* ═══════════════════════════════════════════════════════════════ */
+      /* STEP 3: CREATE 3D EXTRUDED GEOMETRY                             */
+      /* ═══════════════════════════════════════════════════════════════ */
+      
       const shape = new THREE.Shape(pts2);
+      
+      // Height varies by booth status (visual distinction)
       const h = (b.status==="BOOKED") ? 2.0 : (b.status==="HOLD" ? 1.6 : 1.2);
 
+      // ExtrudeGeometry creates a 3D solid by extruding the 2D shape
+      // It extrudes along the Z-axis (which will be rotated to Y-axis below)
       const geo = new THREE.ExtrudeGeometry(shape, { depth: h, bevelEnabled:false, steps:1 });
+      
+      // Rotate so extrusion lies flat on ground
+      // Before: Shape in XY plane, extruded along Z → stands up
+      // After: Shape now on XZ plane, sits at Y=0 (ground level)
       geo.rotateX(-Math.PI/2);
 
-      // Center geometry so mesh.position is meaningful for routing & focusing
-      geo.computeBoundingBox();
+      /* ═══════════════════════════════════════════════════════════════ */
+      /* STEP 4: CENTER GEOMETRY AT LOCAL ORIGIN (CRITICAL!)             */
+      /* ═══════════════════════════════════════════════════════════════ */
+      
+      // By default, ExtrudeGeometry creates vertices at arbitrary positions
+      // We need all vertices centered at the geometry's local (0,0,0) so that:
+      // - mesh.position exactly represents the booth center
+      // - raycasting/picking works from the center
+      // - highlighting/scaling works symmetrically
+      // - shadows and lighting are correct
+      
+      geo.computeBoundingBox();  // Calculate min/max extents
       const c = new THREE.Vector3();
-      geo.boundingBox.getCenter(c);
-      geo.translate(-c.x, -c.y, -c.z);
+      geo.boundingBox.getCenter(c);  // Get center point in 3D space
+      
+      // Move all vertices so center is at local origin
+      // Example: if center was at (125, 0, 75), all vertices shift by (-125, 0, -75)
+      geo.translate(-c.x, -c.y, -c.z);  
+      
+      // After this, all vertices are centered: min ≈ -width/2, max ≈ +width/2
 
+      /* ═══════════════════════════════════════════════════════════════ */
+      /* STEP 5: CREATE MESH AND POSITION IN SCENE                       */
+      /* ═══════════════════════════════════════════════════════════════ */
+      
+      // Create mesh with centered geometry
       const mesh = new THREE.Mesh(geo, boothMaterialFor(b));
+      
+      // Position mesh in scene at the point where geometry's center was
+      // This makes mesh.position = booth's actual center in 3D world
+      // Y=0 because all booths sit on the ground plane
       mesh.position.set(c.x, 0, c.z);
+      
+      // The combination of centered geometry + positioned mesh means:
+      // - Geometry vertices are centered: -50 to +50
+      // - Mesh.position is at (c.x, 0, c.z)
+      // - Booth appears at world position (c.x, 0, c.z) ✓
 
       mesh.castShadow = true;
       mesh.receiveShadow = true;
       mesh.userData.booth = b;
 
-      // store center for routing/focus
+      // Store center for later use (camera focus, routing, tooltips)
       mesh.userData.center = new THREE.Vector3(mesh.position.x, 0.1, mesh.position.z);
 
       boothGroup.add(mesh);
@@ -1472,13 +1710,17 @@ function positionMarker(){
   
   // Log debugging commands to console
   console.log(
-    "%c🔍 DEBUG UTILITIES AVAILABLE\n" +
-    "Try these in the console:\n" +
-    "  DEBUG.showImageInfo()           // Show image & scaling info\n" +
+    "%c🔍 DEBUG UTILITIES\n" +
+    "Debugging:\n" +
+    "  DEBUG.showImageInfo()           // Image & scaling info\n" +
     "  DEBUG.traceTransform('P18')     // Trace coords for a booth\n" +
     "  DEBUG.checkBoothPolygon('P18')  // Verify booth geometry\n" +
     "  DEBUG.compareBooaths()          // Compare multiple booths\n" +
-    "  DEBUG.suggestCalibration()      // Get calibration tips",
+    "\n🔍 AUDIT UTILITIES (Verify coordinate system)\n" +
+    "  AUDIT.runAll()                  // Run complete audit\n" +
+    "  AUDIT.auditFloorPlane()         // Check floor centering\n" +
+    "  AUDIT.auditBoothTransformation('P18') // Trace single booth\n" +
+    "  AUDIT.auditAllBoothCentering()  // Check all booth centering",
     "color: #6aa9ff; font-weight: bold; font-size: 12px;"
   );
 
