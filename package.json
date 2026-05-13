@@ -1,0 +1,56 @@
+{
+  "name": "3d-polygon-booking-app",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "homepage": "https://github.com/Harmeet-code/3D-polygon#readme",
+  "bugs": {
+    "url": "https://github.com/Harmeet-code/3D-polygon/issues"
+  },
+  "license": "ISC",
+  "author": "Harmeet Singh",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Harmeet-code/3D-polygon.git"
+  },
+  "type": "module",
+  "main": "index.js",
+  "packageManager": "bun@1.3.13",
+  "scripts": {
+    "dev": "bun --hot src/app/index.js",
+    "build": "bun run build:clean && bun run build:bundle",
+    "build:clean": "rm -rf dist",
+    "build:bundle": "bun run scripts/bun-build.js",
+    "start": "bun run dist/index.js",
+    "prepare": "husky",
+    "lint": "bunx oxlint",
+    "lint:fix": "bunx oxlint --fix",
+    "format": "bunx oxfmt --write",
+    "format:check": "bunx oxfmt --check",
+    "check": "bun lint && bun format:check",
+
+  },
+  "dependencies": {
+
+  },
+  "devDependencies": {
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "bunx oxfmt --write",
+      "bunx oxlint --fix"
+    ]
+  },
+  "config": {
+    "unsafe-perm": true
+  },
+  "engines": {
+    "node": ">=24.11.0",
+    "bun": ">=1.3.13"
+  },
+  "private": true,
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+
+}

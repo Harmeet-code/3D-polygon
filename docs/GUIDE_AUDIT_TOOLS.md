@@ -14,7 +14,7 @@
 DEBUG.showImageInfo()              // Show image dimensions and scaling
 DEBUG.traceTransform('P18')        // Trace full transform chain for 1 booth
 DEBUG.checkBoothPolygon('P18')     // Verify polygon geometry is valid
-DEBUG.compareBooaths()             // Compare multiple booths side-by-side
+DEBUG.compareBooths()              // Compare multiple booths side-by-side
 DEBUG.suggestCalibration()         // Get calibration adjustment tips
 ```
 
@@ -38,6 +38,22 @@ The buildBooths() function now has detailed step-by-step comments explaining:
 ---
 
 ## Quick Start: Finding Alignment Issues
+
+### How to run DEBUG / AUDIT
+1. Open `src/viewer_interactive.html` through a local server.
+2. Open browser DevTools, then the **Console** tab.
+3. Run commands with or without `window.`:
+
+```javascript
+window.DEBUG.showImageInfo()
+window.DEBUG.checkImageBounds(["T1", "T2", "P18"])
+window.DEBUG.getBoothBox("T2")
+window.DEBUG.traceTransform("T2")
+window.AUDIT.runAll()
+window.AUDIT.auditBoothTransformation("T2")
+```
+
+`DEBUG.showImageInfo()` now returns the same object it prints, including `IMG_W` and `IMG_H` from `floorTex.image.width/height`. For the current image, the actual file dimensions are `12000 x 8772`.
 
 ### Step 1: Run a Complete Audit
 ```javascript
@@ -66,7 +82,7 @@ Compare with visual position in 3D viewer to find misalignment.
 
 ### Step 3: Use the Comparison Tool
 ```javascript
-DEBUG.compareBooaths(['P18', 'P19', 'P66', 'NE4'])
+DEBUG.compareBooths(['P18', 'P19', 'P66', 'NE4'])
 ```
 
 Shows side-by-side transformation for multiple booths.
@@ -167,8 +183,8 @@ mesh.position = (125, 0, 75)   ← Store where center was
 
 ### Fabric → Pixel
 ```
-px = (fabric_x - minX) × baseScaleX × (uiScaleX/1000) + uiOffsetX
-py = (fabric_y - minY) × baseScaleY × (uiScaleY/1000) + uiOffsetY
+px = (fabric_x - minX) × baseScaleX × uiScaleX + uiOffsetX
+py = (fabric_y - minY) × baseScaleY × uiScaleY + uiOffsetY
 
 Where:
   baseScaleX = image_width / (maxX - minX)
