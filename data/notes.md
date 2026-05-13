@@ -110,4 +110,4 @@ A101-105,201-205,301-309,401-409,501-509,601-609,701-709,801-809,901-906,1001,10
 26. scaleX/Y should adjust size and not change position
 27. how would this be used for a multi story floor plan
 28. make sure that for diff JSON files(dynamically changing files) can be done without breaking
-29. 
+29. is DUBUG not getting printed because of '
