@@ -27,13 +27,14 @@
     "lint:fix": "bunx oxlint --fix",
     "format": "bunx oxfmt --write",
     "format:check": "bunx oxfmt --check",
-    "check": "bun lint && bun format:check",
-
+    "check": "bun lint && bun format:check"
   },
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
+    "@commitlint/cli": "^20.5.3",
+    "@commitlint/config-conventional": "^20.5.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -50,7 +51,6 @@
   },
   "private": true,
   "peerDependencies": {
-    "typescript": "^5"
-  },
-
+    "typescript": "^5.9.3"
+  }
 }
