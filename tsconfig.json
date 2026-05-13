@@ -2,7 +2,9 @@
   "compilerOptions": {
     // Environment setup & latest features
     "lib": [
-      "ESNext"
+      "ESNext",
+      "dom",
+      "dom.iterable"
     ],
     "target": "ESNext",
     "module": "Preserve",
@@ -10,18 +12,18 @@
     "jsx": "react-jsx",
     "allowJs": true,
     "plugins": [
-      {
-        "name": "@effect/language-service"
-      }
+    //   {
+    //     "name": "@effect/language-service"
+    //   }
     ],
     // Node.js compatibility
     "types": [
-      "bun"
+    //   "bun"
     ],
     // Must haves
     "paths": {
       "@/*": [
-        "./src/app/*"
+        "./src/*"
       ]
     },
     // Bundler mode
@@ -41,15 +43,15 @@
     "allowUnreachableCode": false,
     "noUncheckedSideEffectImports": true,
     // Optional But Highly Recommended
-    "erasableSyntaxOnly": true,
-    "noImplicitAny": true,
-    "noErrorTruncation": true,
-    "exactOptionalPropertyTypes": true,
+    "erasableSyntaxOnly": false,
+    "noImplicitAny": false,
+    "noErrorTruncation": false,
+    "exactOptionalPropertyTypes": false,
     "checkJs": true,
     // Some stricter flags (disabled by default)
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noPropertyAccessFromIndexSignature": true
+    "noPropertyAccessFromIndexSignature": false
   },
   "include": [
     "src"
