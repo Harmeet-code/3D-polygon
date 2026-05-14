@@ -21,18 +21,6 @@ demo/
 └── commitlint.config.ts           # Conventional commit rules
 ```
 
-# Quality Gates
-
-| Gate | Tool | Enforced by | What it checks |
-|------|------|-------------|---------------|
-| **Type checking** | `tsc --noEmit` | Manual / CI | All JS files type-checked under `strict: true` via `checkJs`. Must pass with zero errors. |
-| **Linting** | `oxlint` (Rust) | `pre-commit` hook via `lint-staged` | Correctness rules, no-unused-vars, no-undef, eqeqeq, no-var, prefer-const, etc. |
-| **Formatting** | `oxfmt` (Rust) | `pre-commit` hook via `lint-staged` | 100-char width, 2-space indent, single quotes, semicolons, LF line endings |
-| **Commit messages** | `commitlint` | `commit-msg` hook | Conventional commits: `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, etc. Max 72 chars. |
-| **Script** | `bun check` | Manual | Runs `bun lint && bun format:check` together |
-
-All gates must pass before pushing. The `pre-commit` hook auto-fixes formatting and lint issues on staged files. TypeScript checking (`tsc --noEmit`) is manual — run it before pushing.
-
 # Architecture Rules
 
 ## Data Flow: Fabric → Pixel → World
@@ -235,14 +223,7 @@ import data from "./data.json" with { type: "json" };
 
 > **For this project (JS + checkJs):** Prefer the JSDoc casting patterns below over TS-only syntax. When migrating to `.ts` files, convert JSDoc casts to `!` assertions or proper type annotations, and enable `erasableSyntaxOnly` for forward compatibility.
 
-# Tooling and External References
 
-- **Oxlint / Oxfmt** (Oxc.rs) — Rust-based linting & formatting. Replaces ESLint + Prettier. Run via `bun lint` / `bun format`.
-- **TypeScript (tsc)** — Type checking only (`noEmit: true`). JS files checked via `checkJs`.
-- **tsgo** — Upcoming Go-based TS compiler from the Oxc project. Track its progress; it will replace `tsc` for faster checking.
-- **Bun** — Runtime & package manager. Commands: `bun dev`, `bun run`, `bun add`, `bunx` (for oxlint/oxfmt).
-- **Commitlint** — Conventional commit enforcement. Types: `feat`, `fix`, `docs`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`.
-- **Husky + lint-staged** — Git hooks: auto-format + lint on `pre-commit`, validate message on `commit-msg`.
 
 ### Debugging
 

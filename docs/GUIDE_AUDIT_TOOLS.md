@@ -40,7 +40,7 @@ The buildBooths() function now has detailed step-by-step comments explaining:
 ## Quick Start: Finding Alignment Issues
 
 ### How to run DEBUG / AUDIT
-1. Open `src/viewer_interactive.html` through a local server.
+1. Open `src/index.html` through a local server.
 2. Open browser DevTools, then the **Console** tab.
 3. Run commands with or without `window.`:
 
@@ -108,12 +108,12 @@ Once aligned, grab the values:
 {
   offsetX: document.getElementById("offX").value,
   offsetY: document.getElementById("offY").value,
-  scaleX: document.getElementById("scX").value / 1000,
-  scaleY: document.getElementById("scY").value / 1000
+  scaleX: document.getElementById("scX").value,
+  scaleY: document.getElementById("scY").value
 }
 ```
 
-Update DEFAULT_CALIBRATION in the code with these values.
+Update `DEFAULT_CALIBRATION` in `src/scene/CoordTransform.js` with these values.
 
 ---
 
@@ -284,10 +284,17 @@ Check the buildBooths() function for:
 
 | File | Purpose |
 |------|---------|
-| `viewer_interactive.html` | Main viewer with updated buildBooths() and audit tools |
-| `COORDINATE_SYSTEM_EXPLAINED.md` | This detailed guide with visual diagrams |
-| `booths_poly_v2.json` | Booth data in fabric coordinates |
-| `DenverFloorPlan1.jpg` | Floor plan image (source of pixel coordinates) |
+| File | Purpose |
+|------|---------|
+| `src/index.html` | Main viewer entry point |
+| `src/main.js` | Entry orchestrator — imports all modules |
+| `src/scene/SceneSetup.js` | Scene, camera, renderer, lights, floor, grid |
+| `src/scene/CoordTransform.js` | `fabricToPixel()`, `pxToWorld()`, calibration, `DEFAULT_CALIBRATION` |
+| `src/scene/BoothBuilder.js` | `buildBooths()`, geometry centering, coloring |
+| `src/debug/ConsoleTools.js` | `window.DEBUG` and `window.AUDIT` console tools |
+| `docs/COORDINATE_SYSTEM_EXPLAINED.md` | Complete deep-dive guide with math and validation |
+| `src/data/booths_poly_v2.json` | Booth polygon data in fabric coordinates |
+| `src/data/DenverFloorPlan1.jpg` | Floor plan texture image |
 
 ---
 

@@ -138,7 +138,7 @@ mesh.position.set(c.x, 0, c.z);
 // Result: Booth at (c.x, 0, c.z) globally, centered locally ✓
 ```
 
-**File:** `viewer_interactive.html` → buildBooths() function (now with detailed comments)
+**File:** `src/scene/BoothBuilder.js` → `buildBooths()` function (with step-by-step comments)
 
 ---
 
@@ -149,7 +149,9 @@ mesh.position.set(c.x, 0, c.z);
 | `COORDINATE_SYSTEM_EXPLAINED.md` | **MAIN REFERENCE** — Complete deep dive with math, diagrams, validation | 20 min |
 | `GUIDE_AUDIT_TOOLS.md` | How to use debug/audit tools, troubleshooting guide | 10 min |
 | `REFERENCE_CARD.md` | Quick reference with formulas, constants, visual diagrams | 5 min |
-| `viewer_interactive.html` | Code with detailed inline comments in buildBooths() | As needed |
+| `src/scene/BoothBuilder.js` | `buildBooths()` with detailed inline comments | As needed |
+| `src/scene/CoordTransform.js` | `fabricToPixel()`, `pxToWorld()`, calibration logic | As needed |
+| `src/debug/ConsoleTools.js` | `window.DEBUG` and `window.AUDIT` implementation | As needed |
 
 ---
 
@@ -261,7 +263,7 @@ AUDIT.auditBoothTransformation('P18')
 ### If You Want to Understand Deeply
 1. Read `COORDINATE_SYSTEM_EXPLAINED.md` → Complete walkthrough
 2. Read `REFERENCE_CARD.md` → Math formulas
-3. Read `buildBooths()` comments in HTML → Implementation details
+3. Read `buildBooths()` in `src/scene/BoothBuilder.js` → Implementation details
 4. Experiment with debug tools → See transformations in real-time
 
 ---

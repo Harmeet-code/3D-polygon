@@ -73,9 +73,10 @@ STEP 1: Normalize to 0
   x_norm = x - minX
   y_norm = y - minY
 
-STEP 2: Apply base scaling (design units → pixels)
-  sx = baseScaleX × (scaleX_ui / 1000)
-  sy = baseScaleY × (scaleY_ui / 1000)
+STEP 2: Apply calibration scale (from `readCal()`)
+  sx = baseScaleX × scaleX_cal
+  sy = baseScaleY × scaleY_cal
+  *Note: `scaleX_cal` normalizes UI slider (divides by 1000 when value > 10)*
   
   px_scaled = x_norm × sx
   py_scaled = y_norm × sy
@@ -297,31 +298,20 @@ scaleY:   500 to 2000 (/1000) ← Multiply scale by 0.5-2.0
 
 ## Constants Reference
 
-```javascript
-// Floor plane
-const PLANE_W = 140;
-const PLANE_H = PLANE_W * (IMG_H / IMG_W);  // = 93.33
-
-// Image
-const IMG_W = floorTex.image.width;    // 2400
-const IMG_H = floorTex.image.height;   // 1600
-
-// Fabric bounds
-const fb = data.meta.fabricBounds;
-const minX = fb.minX;   // 416.33
-const maxX = fb.maxX;   // 11390.02
-const minY = fb.minY;   // 368.95
-const maxY = fb.maxY;   // 8318.84
-
-// Base scaling
-const baseScaleX = IMG_W / (maxX - minX);  // 0.2188
-const baseScaleY = IMG_H / (maxY - minY);  // 0.2013
-
-// Grid system (for pathfinding)
-const CELL = 1.2;
-const cols = Math.ceil(PLANE_W / CELL);   // ~117
-const rows = Math.ceil(PLANE_H / CELL);   // ~78
-```
+| Constant | Value | Defined In |
+|----------|-------|-----------|
+| `PLANE_W` | 140 | `src/scene/SceneSetup.js` |
+| `PLANE_H` | `PLANE_W * (IMG_H / IMG_W)` ≈ 93.33 | `src/scene/SceneSetup.js` |
+| `IMG_W` | `floorTex.image.width` (2400) | `src/scene/SceneSetup.js` |
+| `IMG_H` | `floorTex.image.height` (1600) | `src/scene/SceneSetup.js` |
+| `fb.minX` | 416.33 | `src/scene/CoordTransform.js` (from JSON) |
+| `fb.maxX` | 11390.02 | `src/scene/CoordTransform.js` (from JSON) |
+| `fb.minY` | 368.95 | `src/scene/CoordTransform.js` (from JSON) |
+| `fb.maxY` | 8318.84 | `src/scene/CoordTransform.js` (from JSON) |
+| `baseScaleX` | `IMG_W / (maxX - minX)` = 0.2188 | `src/scene/CoordTransform.js` |
+| `baseScaleY` | `IMG_H / (maxY - minY)` = 0.2013 | `src/scene/CoordTransform.js` |
+| `CELL` | 1.2 | `src/scene/AStarRoute.js` |
+| `DEFAULT_CALIBRATION` | `{ offsetX: 300, offsetY: 300, scaleX: 0.938, scaleY: 0.912 }` | `src/scene/CoordTransform.js` |
 
 ---
 

@@ -113,16 +113,16 @@ const baseScaleY = IMG_H / (fb.maxY - fb.minY);  // 1600 / 7949.89 = 0.2013
 
 ### The fabricToPixel() Function Explained
 
+Source: `src/scene/CoordTransform.js`
+
 ```javascript
-function fabricToPixel(x, y) {
-  // 1. Apply base scaling (stretch to image size)
-  const sx = baseScaleX * (scXEl.value / 1000);
-  const sy = baseScaleY * (scYEl.value / 1000);
-  
-  // 2. Translate to 0,0 origin, scale, then apply offset
+export function fabricToPixel(x, y) {
+  const cal = readCal();
+  const sx = baseScaleX * cal.scaleX;
+  const sy = baseScaleY * cal.scaleY;
   return {
-    px: (x - fb.minX) * sx + (+offXEl.value),
-    py: (y - fb.minY) * sy + (+offYEl.value)
+    px: (x - fb.minX) * sx + cal.offsetX,
+    py: (y - fb.minY) * sy + cal.offsetY
   };
 }
 ```
@@ -315,15 +315,16 @@ The fabric coordinates might not perfectly map to the image for these reasons:
 
 ### The Solution: Two-Layer Scaling
 
+Source: `src/scene/CoordTransform.js`
+
 ```javascript
-function fabricToPixel(x, y) {
-  // Layer 1: BASE SCALE (mathematical mapping from design to image)
-  const sx = baseScaleX * (scXEl.value / 1000);
-  
-  // Layer 2: OFFSET (manual calibration fine-tuning)
+export function fabricToPixel(x, y) {
+  const cal = readCal();
+  const sx = baseScaleX * cal.scaleX;  // Layer 1: BASE SCALE
+  const sy = baseScaleY * cal.scaleY;
   return {
-    px: (x - fb.minX) * sx + (+offXEl.value),
-    //                      ↑ This offset lets you shift everything by N pixels
+    px: (x - fb.minX) * sx + cal.offsetX,  // Layer 2: OFFSET
+    py: (y - fb.minY) * sy + cal.offsetY
   };
 }
 ```
@@ -348,17 +349,19 @@ Because the issue might be **uniform** (everything is shifted by 50 pixels) vs. 
 
 ### Current buildBooths() Code
 
+Source: `src/scene/BoothBuilder.js`
+
 ```javascript
-function buildBooths(){
+export function buildBooths(data, heatEnabled) {
   boothMeshes.length = 0;
   boothByNo.clear();
   clearGroup(boothGroup);
   clearGroup(outlineGroup);
 
-  for(const b of data.booths){
+  for (const b of data.booths) {
     // STEP 1: Convert fabric points to pixel coordinates
-    const ptsPix = b.geometry.points.map(([x,y]) => fabricToPixel(x,y));
-    
+    const ptsPix = b.geometry.points.map(([x, y]) => fabricToPixel(x, y));
+
     // STEP 2: Convert pixel coordinates to 3D world coordinates
     const pts2 = ptsPix.map(p => {
       const w = pxToWorld(p.px, p.py);
@@ -366,29 +369,31 @@ function buildBooths(){
     });
 
     // STEP 3: Validate polygon has at least 3 points
-    if(pts2.length < 3) continue;
-    
+    if (pts2.length < 3) continue;
+
     // STEP 4: Ensure correct winding order (counterclockwise)
-    if(polygonArea(pts2) < 0) pts2.reverse();
+    if (polygonArea(pts2) < 0) pts2.reverse();
 
     // STEP 5: Create 2D shape and extrude to 3D
     const shape = new THREE.Shape(pts2);
-    const h = (b.status==="BOOKED") ? 2.0 : (b.status==="HOLD" ? 1.6 : 1.2);
-    const geo = new THREE.ExtrudeGeometry(shape, { depth: h, bevelEnabled:false, steps:1 });
-    
+    const h = (b.status === 'BOOKED') ? 2.0 : (b.status === 'HOLD' ? 1.6 : 1.2);
+    const geo = new THREE.ExtrudeGeometry(shape, { depth: h, bevelEnabled: false, steps: 1 });
+
     // STEP 6: Rotate extrusion so it lies flat
-    geo.rotateX(-Math.PI/2);
+    geo.rotateX(-Math.PI / 2);
 
     // STEP 7: CENTER THE GEOMETRY
     geo.computeBoundingBox();
+    const bb = /** @type {THREE.Box3} */ (geo.boundingBox);
     const c = new THREE.Vector3();
-    geo.boundingBox.getCenter(c);
-    geo.translate(-c.x, -c.y, -c.z);  // ← Move geometry so center is at local origin
-    
+    bb.getCenter(c);
+    const minY = bb.min.y;
+    geo.translate(-c.x, -minY, -c.z);  // ← Center X/Z, bottom face at Y=0
+
     // STEP 8: Create mesh and position it in scene
-    const mesh = new THREE.Mesh(geo, boothMaterialFor(b));
+    const mesh = new THREE.Mesh(geo, boothMaterialFor(b, heatEnabled));
     mesh.position.set(c.x, 0, c.z);   // Position mesh at where geometry's center was
-    
+
     mesh.castShadow = true;
     mesh.receiveShadow = true;
     mesh.userData.booth = b;
@@ -598,9 +603,10 @@ Result: The booth appears at (125, 0, 75) in world space ✅
 
 **Fabric → Pixel:**
 ```
-px = (x_fabric - minX) × baseScaleX × (scaleX_ui / 1000) + offsetX_ui
-py = (y_fabric - minY) × baseScaleY × (scaleY_ui / 1000) + offsetY_ui
+px = (x_fabric - minX) × baseScaleX × scaleX_cal + offsetX_ui
+py = (y_fabric - minY) × baseScaleY × scaleY_cal + offsetY_ui
 ```
+*Note: `scaleX_cal` and `scaleY_cal` come from `readCal()` which normalizes UI slider values (divides by 1000 when value > 10).*
 
 **Pixel → World:**
 ```

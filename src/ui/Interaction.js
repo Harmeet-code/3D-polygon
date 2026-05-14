@@ -33,7 +33,9 @@ renderer.domElement.addEventListener('mousemove', (ev) => {
     const center = sel.hovered.userData.center || sel.hovered.getWorldPosition(new THREE.Vector3());
     placeTooltipAt(center, tooltip);
 
-    tooltip.innerHTML = `<b>${b.boothNo}</b> \u2022 ${b.status} \u2022 $${b.price}`;
+    tooltip.innerHTML = `<b>${b.boothNo}</b> \
+    
+    ${b.status} \u2022 $${b.price}`;
     renderer.domElement.style.cursor = 'pointer';
   } else {
     if (sel.hovered && sel.hovered !== sel.selected) highlight(sel.hovered, false);
