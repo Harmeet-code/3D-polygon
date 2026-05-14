@@ -211,13 +211,12 @@ export function initConsoleTools(data) {
 
     logConsoleHelp() {
       console.log(
-        'Use these in DevTools Console:\n' +
-          '  DEBUG.showImageInfo()\n' +
-          "  DEBUG.getBoothBox('T2')\n" +
-          "  DEBUG.checkImageBounds(['T1','T2','P18'])\n" +
-          "  DEBUG.traceTransform('T2')\n" +
-          '  window.AUDIT.runAll()\n' +
-          "  window.AUDIT.auditBoothTransformation('T2')"
+        'Use these in DevTools Console:\n' + window.DEBUG.showImageInfo(),
+        '\n' + window.DEBUG.getBoothBox('T2'),
+        '\n' + window.DEBUG.checkImageBounds(['T1', 'T2', 'P18']),
+        '\n' + window.DEBUG.traceTransform('T2'),
+        '\n' + window.AUDIT.runAll(),
+        '\n' + window.AUDIT.auditBoothTransformation('T2')
       );
     },
 
@@ -413,12 +412,17 @@ export function initConsoleTools(data) {
 
   console.log(
     'DEBUG UTILITIES\n' +
-      '  DEBUG.showImageInfo()\n' +
-      "  DEBUG.traceTransform('P18')\n" +
-      "  DEBUG.checkBoothPolygon('P18')\n" +
-      '  DEBUG.compareBooths()\n' +
-      '\nAUDIT UTILITIES\n' +
-      '  AUDIT.runAll()\n' +
-      "  AUDIT.auditBoothTransformation('P18')"
+      window.DEBUG.showImageInfo() +
+      '\n' +
+      window.DEBUG.traceTransform('P18') +
+      '\n' +
+      window.DEBUG.checkBoothPolygon('P18') +
+      '\n' +
+      window.DEBUG.compareBooths() +
+      '\n' +
+      'AUDIT UTILITIES\n' +
+      window.AUDIT.runAll() +
+      '\n' +
+      window.AUDIT.auditBoothTransformation('P18')
   );
 }

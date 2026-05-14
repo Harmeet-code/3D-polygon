@@ -15,44 +15,45 @@ function setMouse(ev) {
   mouse.y = -((ev.clientY - rect.top) / rect.height) * 2 + 1;
 }
 
-renderer.domElement.addEventListener('mousemove', (ev) => {
-  setMouse(ev);
-  raycaster.setFromCamera(mouse, camera);
+export function initInteraction() {
+  renderer.domElement.addEventListener('mousemove', (ev) => {
+    setMouse(ev);
+    raycaster.setFromCamera(mouse, camera);
 
-  const hits = raycaster.intersectObjects(boothMeshes, false);
-  if (hits.length) {
-    const m = /** @type {THREE.Intersection} */ (hits[0]).object;
-    if (sel.hovered !== m) {
+    const hits = raycaster.intersectObjects(boothMeshes, false);
+    if (hits.length) {
+      const m = /** @type {THREE.Intersection} */ (hits[0]).object;
+      if (sel.hovered !== m) {
+        if (sel.hovered && sel.hovered !== sel.selected) highlight(sel.hovered, false);
+        sel.hovered = m;
+        if (sel.hovered !== sel.selected) highlight(sel.hovered, true);
+      }
+      const b = m.userData.booth;
+      tooltip.style.display = 'block';
+
+      const center =
+        sel.hovered.userData.center || sel.hovered.getWorldPosition(new THREE.Vector3());
+      placeTooltipAt(center, tooltip);
+
+      tooltip.innerHTML = `<b>${b.boothNo}</b> \u2022 ${b.status} \u2022 $${b.price}`;
+      renderer.domElement.style.cursor = 'pointer';
+    } else {
       if (sel.hovered && sel.hovered !== sel.selected) highlight(sel.hovered, false);
-      sel.hovered = m;
-      if (sel.hovered !== sel.selected) highlight(sel.hovered, true);
+      sel.hovered = null;
+      tooltip.style.display = 'none';
+      renderer.domElement.style.cursor = '';
     }
-    const b = m.userData.booth;
-    tooltip.style.display = 'block';
+  });
 
-    const center = sel.hovered.userData.center || sel.hovered.getWorldPosition(new THREE.Vector3());
-    placeTooltipAt(center, tooltip);
+  renderer.domElement.addEventListener('click', () => {
+    if (!sel.hovered) return;
 
-    tooltip.innerHTML = `<b>${b.boothNo}</b> \
-    
-    ${b.status} \u2022 $${b.price}`;
-    renderer.domElement.style.cursor = 'pointer';
-  } else {
-    if (sel.hovered && sel.hovered !== sel.selected) highlight(sel.hovered, false);
-    sel.hovered = null;
-    tooltip.style.display = 'none';
-    renderer.domElement.style.cursor = '';
-  }
-});
+    if (sel.selected && sel.selected !== sel.hovered) highlight(sel.selected, false);
+    sel.selected = sel.hovered;
+    highlight(sel.selected, true);
 
-renderer.domElement.addEventListener('click', () => {
-  if (!sel.hovered) return;
-
-  if (sel.selected && sel.selected !== sel.hovered) highlight(sel.selected, false);
-  sel.selected = sel.hovered;
-  highlight(sel.selected, true);
-
-  updateSidebar(sel.selected.userData.booth);
-  focusMesh(sel.selected);
-  openMarkerFor(sel.selected);
-});
+    updateSidebar(sel.selected.userData.booth);
+    focusMesh(sel.selected);
+    openMarkerFor(sel.selected);
+  });
+}

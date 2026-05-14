@@ -19,11 +19,19 @@ import {
   storeKey
 } from './scene/CoordTransform.js';
 import { buildBooths, boothByNo } from './scene/BoothBuilder.js';
-import { fillDropdowns, boothCenterWorld, fromSelect, toSelect } from './ui/Filters.js';
+import {
+  fillDropdowns,
+  boothCenterWorld,
+  fromSelect,
+  toSelect,
+  applyFilters
+} from './ui/Filters.js';
 import { flyTo, focusMesh, highlight, updateSidebar } from './ui/Sidebar.js';
 import { sel } from './state.js';
 import { enrichData } from './data/enrichment.js';
 import { initConsoleTools } from './debug/ConsoleTools.js';
+import { positionMarker } from './ui/BoothMarker.js';
+import { initInteraction } from './ui/Interaction.js';
 import {
   aStar,
   findNearestFree,
@@ -47,6 +55,7 @@ const stage = /** @type {HTMLElement} */ (document.getElementById('stage'));
 await initScene(stage);
 initGrid(PLANE_W, PLANE_H);
 initCalibration(data);
+initInteraction();
 
 buildBooths(data, false);
 fillDropdowns(data);
@@ -59,6 +68,7 @@ function onCalChange() {
   persistCal();
   buildBooths(data, /** @type {HTMLInputElement} */ (document.getElementById('heatmap')).checked);
   rebuildBlockedGrid();
+  applyFilters();
 }
 [offXEl, offYEl, scXEl, scYEl].forEach((el) => el.addEventListener('input', onCalChange));
 
@@ -163,6 +173,7 @@ let touring = false,
 // Render loop
 function tick() {
   controls.update();
+  positionMarker();
   updateRouteAnimation();
   renderer.render(scene, camera);
   requestAnimationFrame(tick);
