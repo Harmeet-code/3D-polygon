@@ -48,11 +48,59 @@ export function polygonArea(pts) {
   return a / 2;
 }
 
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function createLabelSprite(boothNo, size) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 96;
+  const ctx = /** @type {CanvasRenderingContext2D} */ (canvas.getContext('2d'));
+
+  const pad = 12;
+  const rh = 24;
+  roundRect(ctx, pad, pad, canvas.width - pad * 2, canvas.height - pad * 2, rh);
+  ctx.fillStyle = 'rgba(0,0,0,0.65)';
+  ctx.fill();
+
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 34px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(boothNo, canvas.width / 2, 36);
+
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.font = '20px sans-serif';
+  ctx.fillText(size || '', canvas.width / 2, 68);
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.needsUpdate = true;
+  const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false });
+  const sprite = new THREE.Sprite(mat);
+  sprite.scale.set(3.5, 1.4, 1);
+  return sprite;
+}
+
 export function clearGroup(g) {
   while (g.children.length) {
     const o = g.children.pop();
+    if (o.children && o.children.length) clearGroup(o);
     o.geometry?.dispose?.();
-    o.material?.dispose?.();
+    if (o.material) {
+      if (o.material.map) o.material.map.dispose();
+      o.material.dispose();
+    }
   }
 }
 
@@ -115,6 +163,10 @@ export function buildBooths(data, heatEnabled) {
     mesh.receiveShadow = true;
     mesh.userData.booth = b;
     mesh.userData.center = new THREE.Vector3(mesh.position.x, 0.1, mesh.position.z);
+
+    const label = createLabelSprite(b.boothNo, b.size);
+    label.position.set(0, h + 0.9, 0);
+    mesh.add(label);
 
     boothGroup.add(mesh);
     boothMeshes.push(mesh);

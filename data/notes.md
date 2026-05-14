@@ -56,7 +56,12 @@ standard structure of JSON
     }
   ]
 }
+```
 
+But world Z from pxToWorld was positive (24.03). The mesh is placed at -24.03. That's the bug! The Z is negated.
+Wait, but earlier in the original monolithic code, the same rotation and centering was used and presumably things worked. Let me check the old code:
+mesh.position.set(c.x, 0, c.z);
+mesh.position.set(c.x, 0, -c.z);
 
 The floor plan texture (2400×1600px) gets stretched onto a 140×93.33 unit 3D plane in Three.js. That ratio — 2400/1600 = 1.5 vs 140/93.33 = 1.5 — means your fabric→pixel→3D pipeline is mathematically isomorphic: a triangle in fabric space is exactly the same triangle in 3D space, just scaled and shifted. You're not really "converting" coordinates — you're teaching three different rulers to agree on where the corners are.
 
