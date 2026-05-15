@@ -111,7 +111,26 @@
       <div style="height:10px"></div>
       <button id="resetCal" class="secondary">Reset calibration</button>
     </div>
+
+    <div class="section">
+      <h3>Coordinate Debug</h3>
+      <div class="row2">
+        <input id="debugSelect" list="debugBoothList" placeholder="Search booth no…" style="min-width:0;border:1px solid var(--border);border-radius:12px;padding:10px 12px;background:rgba(0,0,0,.18);color:var(--text);font-size:13px;outline:none" />
+        <datalist id="debugBoothList"></datalist>
+        <label class="pill" style="margin-top:0;justify-content:center">
+          <input type="checkbox" id="debugOverlayToggle" checked /> Show Overlay
+        </label>
+      </div>
+      <div id="debugStatus" class="debugStatus" style="margin-top:8px">Select a booth</div>
+      <div id="debugTable" style="margin-top:6px"></div>
+      <div class="btnRow" style="margin-top:8px">
+        <button id="debugApply">Apply</button>
+        <button class="secondary" id="debugCopyJson">Copy JSON</button>
+      </div>
+    </div>
   </aside>
+
+  <div id="resizeHandle"></div>
 
   <main id="stage">
     <div id="hud">

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { camera, controls } from '../scene/SceneSetup.js';
-import { STATUS_COLORS, heatColor, minPrice, maxPrice } from '../scene/BoothBuilder.js';
+import { heatColor, minPrice, maxPrice } from '../scene/BoothBuilder.js';
 import { sel } from '../state.js';
 
 const statusPill = /** @type {HTMLElement} */ (document.getElementById('statusPill'));
@@ -41,7 +41,7 @@ export function highlight(mesh, on) {
   } else {
     const b = mesh.userData.booth;
     const heat = /** @type {HTMLInputElement} */ (document.getElementById('heatmap')).checked;
-    let color = STATUS_COLORS[b.status] ?? STATUS_COLORS.AVAILABLE;
+    let color = b.boothColor ? parseInt(b.boothColor.slice(1), 16) : 0x2ecc71;
     if (heat) {
       const t = ((+b.price || minPrice) - minPrice) / Math.max(1e-6, maxPrice - minPrice);
       color = heatColor(t);

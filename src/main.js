@@ -30,6 +30,7 @@ import { flyTo, focusMesh, highlight, updateSidebar } from './ui/Sidebar.js';
 import { sel } from './state.js';
 import { enrichData } from './data/enrichment.js';
 import { initConsoleTools } from './debug/ConsoleTools.js';
+import { initCoordDebug } from './ui/CoordDebug.js';
 import { positionMarker } from './ui/BoothMarker.js';
 import { initInteraction } from './ui/Interaction.js';
 import {
@@ -62,6 +63,7 @@ fillDropdowns(data);
 rebuildBlockedGrid();
 
 initConsoleTools(data);
+initCoordDebug(data);
 
 // Calibration hooks
 function onCalChange() {
@@ -185,4 +187,31 @@ window.addEventListener('resize', () => {
   camera.aspect = stage.clientWidth / stage.clientHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(stage.clientWidth, stage.clientHeight);
+});
+
+// Sidebar resize
+const sidebar = /** @type {HTMLElement} */ (document.getElementById('sidebar'));
+const handle = /** @type {HTMLElement} */ (document.getElementById('resizeHandle'));
+let dragging = false;
+
+handle.addEventListener('mousedown', (e) => {
+  dragging = true;
+  handle.classList.add('active');
+  document.body.style.cursor = 'col-resize';
+  document.body.style.userSelect = 'none';
+  e.preventDefault();
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (!dragging) return;
+  const w = Math.max(240, Math.min(800, e.clientX));
+  sidebar.style.width = `${w}px`;
+});
+
+document.addEventListener('mouseup', () => {
+  if (!dragging) return;
+  dragging = false;
+  handle.classList.remove('active');
+  document.body.style.cursor = '';
+  document.body.style.userSelect = '';
 });

@@ -164,6 +164,16 @@ input[type=number] {
 }
 
 #stage { position: relative; flex: 1; min-width: 0; }
+
+#resizeHandle {
+  width: 4px;
+  cursor: col-resize;
+  background: var(--border);
+  flex-shrink: 0;
+  transition: background .15s;
+}
+#resizeHandle:hover,
+#resizeHandle.active { background: var(--accent); }
 #tooltip{
   position:absolute;
   pointer-events:none;
@@ -215,6 +225,16 @@ input[type=number] {
   backdrop-filter: blur(8px);
 }
 .tiny { font-size: 11px; color: var(--muted); line-height: 1.35; }
+
+.debugGrid { display: grid; grid-template-columns: auto 1fr 1fr 1fr auto; gap: 2px 6px; font-size: 11px; align-items: center; }
+.debugGrid span { padding: 2px 0; }
+.debugHead { color: var(--muted); border-bottom: 1px solid var(--border); padding-bottom: 4px; margin-bottom: 2px; }
+.debugRow:nth-child(even) { background: rgba(255,255,255,.03); }
+.debugStatus { font-size: 12px; padding: 4px 8px; border-radius: 6px; }
+.debugStatus.ok { color: #2ecc71; }
+.debugStatus.err { color: #ff5c6a; }
+.debugInput { width:85px; background:rgba(0,0,0,.25); border:1px solid var(--border); border-radius:6px; color:var(--text); font-size:11px; padding:2px 4px; outline:none; }
+.debugInput:focus { border-color:var(--accent); }
 
 
 #boothMarker{

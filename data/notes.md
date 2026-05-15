@@ -57,11 +57,16 @@ standard structure of JSON
   ]
 }
 ```
-
-But world Z from pxToWorld was positive (24.03). The mesh is placed at -24.03. That's the bug! The Z is negated.
-Wait, but earlier in the original monolithic code, the same rotation and centering was used and presumably things worked. Let me check the old code:
-mesh.position.set(c.x, 0, c.z);
-mesh.position.set(c.x, 0, -c.z);
+Here's the recommended workflow:
+First — get calibration right globally. The 4 calibration values affect ALL booths. If those are wrong, the fabric coordinates you generate will be compensating for bad calibration, not reflecting real geometry. Use the debug tool to check a few reference booths that you know should be placed correctly.
+Then — tweak individual booths without touching calibration:
+1. Select a booth in the debug dropdown
+2. Check its World X,Z values — does it look right in the 3D scene?
+3. If not, edit the World X,Z fields — the cyan overlay shows the new position live
+4. Click Apply — this reverse-calculates the correct fabric coordinates and rebuilds the mesh
+5. Move to the next booth
+Don't reset calibration between booths — that would break every other booth you've already fixed. Calibration is a one-time setup. Only reset calibration if you're starting over or if you notice all booths are systematically shifted in the same direction.
+One gotcha: after clicking Apply, the fabric coordinates are updated in memory but NOT saved to the JSON file. You need to click Copy JSON and paste the output into booths_poly_v2.json to persist your changes.
 
 The floor plan texture (2400×1600px) gets stretched onto a 140×93.33 unit 3D plane in Three.js. That ratio — 2400/1600 = 1.5 vs 140/93.33 = 1.5 — means your fabric→pixel→3D pipeline is mathematically isomorphic: a triangle in fabric space is exactly the same triangle in 3D space, just scaled and shifted. You're not really "converting" coordinates — you're teaching three different rulers to agree on where the corners are.
 

@@ -21,14 +21,11 @@ function getYouTubeEmbedUrl(inputUrl) {
   return 'https://www.youtube.com/embed/TwzjLk0JIsk?autoplay=1&mute=1&playsinline=1&rel=0';
 }
 
-const YT_LINK = 'https://youtu.be/TwzjLk0JIsk?si=_UFzAz9h_wvfrQ9s';
-const YT_EMBED = getYouTubeEmbedUrl(YT_LINK);
-
 export function openMarkerFor(mesh) {
   markerMesh = mesh;
   const b = mesh.userData.booth;
   markerTitle.textContent = `Booth ${b.boothNo}`;
-  markerVideo.src = YT_EMBED;
+  markerVideo.src = getYouTubeEmbedUrl(b.youtubeLink || 'https://youtu.be/TwzjLk0JIsk');
   boothMarker.style.display = 'block';
   positionMarker();
 }

@@ -4,6 +4,11 @@ import { fabricToPixel, pxToWorld } from './CoordTransform.js';
 
 export const STATUS_COLORS = { AVAILABLE: 0x2ecc71, HOLD: 0xffb020, BOOKED: 0xff5c6a };
 
+function boothColorFromData(b) {
+  if (b.boothColor) return parseInt(b.boothColor.slice(1), 16);
+  return STATUS_COLORS[b.status] ?? STATUS_COLORS.AVAILABLE;
+}
+
 function lerp(a, b, t) {
   return a + (b - a) * t;
 }
@@ -89,7 +94,7 @@ export function clearGroup(g) {
 }
 
 export function boothMaterialFor(b, heatEnabled) {
-  let color = STATUS_COLORS[b.status] ?? STATUS_COLORS.AVAILABLE;
+  let color = boothColorFromData(b);
   if (heatEnabled) {
     const t = ((+b.price || minPrice) - minPrice) / Math.max(1e-6, maxPrice - minPrice);
     color = heatColor(t);
@@ -148,7 +153,7 @@ export function buildBooths(data, heatEnabled) {
     mesh.userData.booth = b;
     mesh.userData.center = new THREE.Vector3(mesh.position.x, 0.1, mesh.position.z);
 
-    let labelColor = STATUS_COLORS[b.status] ?? STATUS_COLORS.AVAILABLE;
+    let labelColor = boothColorFromData(b);
     if (heatEnabled) {
       const t = ((+b.price || minPrice) - minPrice) / Math.max(1e-6, maxPrice - minPrice);
       labelColor = heatColor(t);

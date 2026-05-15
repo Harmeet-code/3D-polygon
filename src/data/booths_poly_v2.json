@@ -50,7 +50,8 @@
         "y": 852.55,
         "w": 384.25,
         "h": 341.1
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "P18",
@@ -87,7 +88,8 @@
         "y": 2365.12,
         "w": 208.57,
         "h": 173.86
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "P19",
@@ -124,7 +126,8 @@
         "y": 2546.76,
         "w": 181.24,
         "h": 133.08
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "P66",
@@ -161,7 +164,8 @@
         "y": 2589.82,
         "w": 85.81,
         "h": 106.52
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "P67",
@@ -198,7 +202,8 @@
         "y": 2590.155,
         "w": 86.51,
         "h": 105.51
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "P68",
@@ -235,7 +240,8 @@
         "y": 2590.61,
         "w": 85.82,
         "h": 104.12
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "P69",
@@ -272,7 +278,8 @@
         "y": 2588.455,
         "w": 86.68,
         "h": 105.65
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "P70",
@@ -309,7 +316,8 @@
         "y": 2589.99,
         "w": 84.56,
         "h": 104.96
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "P71",
@@ -346,7 +354,8 @@
         "y": 2589.285,
         "w": 85.44,
         "h": 106.05
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "P76",
@@ -383,7 +392,8 @@
         "y": 2787.96,
         "w": 86.18,
         "h": 51.56
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "P75",
@@ -407,11 +417,11 @@
           ],
           [
             8908.91,
-            2840.0
+            2840
           ],
           [
             8821.59,
-            2840.0
+            2840
           ]
         ]
       },
@@ -420,7 +430,8 @@
         "y": 2787.76,
         "w": 87.32,
         "h": 52.24
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "P74",
@@ -457,7 +468,8 @@
         "y": 2787.675,
         "w": 86.01,
         "h": 51.45
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "P73",
@@ -494,7 +506,8 @@
         "y": 2788.12,
         "w": 85.12,
         "h": 50.92
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "P72",
@@ -531,7 +544,8 @@
         "y": 2788.16,
         "w": 86.42,
         "h": 51.7
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "P01",
@@ -568,7 +582,8 @@
         "y": 2335.17,
         "w": 85.34,
         "h": 52.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "P03",
@@ -605,7 +620,8 @@
         "y": 2335.87,
         "w": 84.55,
         "h": 49.24
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "P02",
@@ -642,7 +658,8 @@
         "y": 2336.005,
         "w": 84.76,
         "h": 50.77
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "P04",
@@ -679,7 +696,8 @@
         "y": 2336.135,
         "w": 82.79,
         "h": 51.49
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "P05",
@@ -716,7 +734,8 @@
         "y": 2336.025,
         "w": 82.97,
         "h": 51.61
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "P06",
@@ -753,7 +772,8 @@
         "y": 2335.85,
         "w": 87.42,
         "h": 50.08
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "P07",
@@ -790,7 +810,8 @@
         "y": 2335.745,
         "w": 88.09,
         "h": 50.37
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "P08",
@@ -827,7 +848,8 @@
         "y": 2453.22,
         "w": 177.78,
         "h": 50.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "P09",
@@ -864,7 +886,8 @@
         "y": 2505.795,
         "w": 177.9,
         "h": 51.71
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "P10",
@@ -901,7 +924,8 @@
         "y": 2452.57,
         "w": 123.35,
         "h": 50.22
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "P11",
@@ -938,7 +962,8 @@
         "y": 2507.085,
         "w": 122.8,
         "h": 50.99
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "P12",
@@ -975,7 +1000,8 @@
         "y": 2451.935,
         "w": 153.8,
         "h": 51.41
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "P13",
@@ -1012,7 +1038,8 @@
         "y": 2506.28,
         "w": 156.29,
         "h": 51.98
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "P15",
@@ -1049,7 +1076,8 @@
         "y": 2505.515,
         "w": 124.92,
         "h": 53.43
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "P14",
@@ -1086,7 +1114,8 @@
         "y": 2451.99,
         "w": 123.8,
         "h": 51.7
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "P16",
@@ -1123,7 +1152,8 @@
         "y": 2450.43,
         "w": 124.16,
         "h": 53.1
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "P17",
@@ -1160,7 +1190,8 @@
         "y": 2506.165,
         "w": 122.73,
         "h": 51.81
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "P28/P29/P30/P31",
@@ -1197,7 +1228,8 @@
         "y": 2624.32,
         "w": 254.13,
         "h": 104.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "P20",
@@ -1234,7 +1266,8 @@
         "y": 2624.005,
         "w": 178.56,
         "h": 53.13
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "P21",
@@ -1271,7 +1304,8 @@
         "y": 2678.625,
         "w": 179.64,
         "h": 53.71
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "P23",
@@ -1308,7 +1342,8 @@
         "y": 2678.86,
         "w": 122.64,
         "h": 50.92
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "P22",
@@ -1345,7 +1380,8 @@
         "y": 2624.275,
         "w": 123.56,
         "h": 50.67
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "P24",
@@ -1382,7 +1418,8 @@
         "y": 2622.65,
         "w": 154.21,
         "h": 52.94
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "P25",
@@ -1419,7 +1456,8 @@
         "y": 2677.55,
         "w": 154.72,
         "h": 52.22
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "P26",
@@ -1456,7 +1494,8 @@
         "y": 2623.02,
         "w": 156.38,
         "h": 53.68
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "P27",
@@ -1493,7 +1532,8 @@
         "y": 2678.97,
         "w": 156.52,
         "h": 51.9
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "P32",
@@ -1530,7 +1570,8 @@
         "y": 2795.465,
         "w": 177.51,
         "h": 51.73
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "P33",
@@ -1567,7 +1608,8 @@
         "y": 2850.79,
         "w": 178.07,
         "h": 51.72
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "P34",
@@ -1604,7 +1646,8 @@
         "y": 2795.06,
         "w": 121.82,
         "h": 50.58
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "P35",
@@ -1641,7 +1684,8 @@
         "y": 2849.81,
         "w": 123.05,
         "h": 52.08
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "P36",
@@ -1678,7 +1722,8 @@
         "y": 2795.49,
         "w": 155.07,
         "h": 52.58
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "P37",
@@ -1715,7 +1760,8 @@
         "y": 2850.615,
         "w": 153.53,
         "h": 51.81
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "P39",
@@ -1752,7 +1798,8 @@
         "y": 2850.05,
         "w": 156.55,
         "h": 51.64
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "P38",
@@ -1771,11 +1818,11 @@
             2795.605
           ],
           [
-            7831.0,
+            7831,
             2795.605
           ],
           [
-            7831.0,
+            7831,
             2847.835
           ],
           [
@@ -1789,7 +1836,8 @@
         "y": 2795.605,
         "w": 155.68,
         "h": 52.23
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "P40",
@@ -1826,7 +1874,8 @@
         "y": 2794.505,
         "w": 124.5,
         "h": 51.69
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "P41",
@@ -1863,7 +1912,8 @@
         "y": 2850.005,
         "w": 124.82,
         "h": 53.47
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "P43",
@@ -1900,7 +1950,8 @@
         "y": 2849.865,
         "w": 122.54,
         "h": 53.45
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "P42",
@@ -1937,7 +1988,8 @@
         "y": 2795.375,
         "w": 123.92,
         "h": 52.29
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "P48",
@@ -1974,7 +2026,8 @@
         "y": 2965.6,
         "w": 154.3,
         "h": 51.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "P49",
@@ -1990,11 +2043,11 @@
         "points": [
           [
             7484.175,
-            3022.0
+            3022
           ],
           [
             7636.125,
-            3022.0
+            3022
           ],
           [
             7636.125,
@@ -2008,10 +2061,11 @@
       },
       "fabricBBox": {
         "x": 7484.175,
-        "y": 3022.0,
+        "y": 3022,
         "w": 151.95,
         "h": 50.92
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "P60",
@@ -2048,7 +2102,8 @@
         "y": 3146.585,
         "w": 153.15,
         "h": 105.31
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "P64",
@@ -2085,7 +2140,8 @@
         "y": 2926.35,
         "w": 162.75,
         "h": 65.42
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "P63",
@@ -2122,7 +2178,8 @@
         "y": 2995.235,
         "w": 159.71,
         "h": 68.61
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "A1",
@@ -2159,7 +2216,8 @@
         "y": 2502.878,
         "w": 114.27,
         "h": 143.083
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "A2",
@@ -2196,7 +2254,8 @@
         "y": 2361.712,
         "w": 100.105,
         "h": 101.151
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "A4",
@@ -2233,7 +2292,8 @@
         "y": 2244.585,
         "w": 199.325,
         "h": 152.261
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "A102",
@@ -2270,7 +2330,8 @@
         "y": 2176.69,
         "w": 52.45,
         "h": 31.68
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "A6",
@@ -2307,7 +2368,8 @@
         "y": 2174.305,
         "w": 163.23,
         "h": 33.71
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "A7",
@@ -2344,7 +2406,8 @@
         "y": 2175.265,
         "w": 163.75,
         "h": 31.79
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "A8",
@@ -2381,7 +2444,8 @@
         "y": 2175.685,
         "w": 161.86,
         "h": 30.95
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "A9",
@@ -2418,7 +2482,8 @@
         "y": 2175.455,
         "w": 272.96,
         "h": 32.15
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "A10",
@@ -2455,7 +2520,8 @@
         "y": 2175.81,
         "w": 163.59,
         "h": 32.9
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "A20",
@@ -2492,7 +2558,8 @@
         "y": 3159.435,
         "w": 161.06,
         "h": 33.67
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "A19a",
@@ -2529,7 +2596,8 @@
         "y": 3157.995,
         "w": 106.84,
         "h": 31.05
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "A19b",
@@ -2566,7 +2634,8 @@
         "y": 3159.435,
         "w": 52.35,
         "h": 32.01
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "A18",
@@ -2603,7 +2672,8 @@
         "y": 3156.075,
         "w": 107.34,
         "h": 31.59
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "A17",
@@ -2640,7 +2710,8 @@
         "y": 3157.165,
         "w": 214.88,
         "h": 29.43
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "A16",
@@ -2677,7 +2748,8 @@
         "y": 3145.327,
         "w": 219.763,
         "h": 62.638
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "A15",
@@ -2714,7 +2786,8 @@
         "y": 3060.513,
         "w": 192.806,
         "h": 155.938
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "A14",
@@ -2751,7 +2824,8 @@
         "y": 2888.797,
         "w": 116.368,
         "h": 210.14
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "A25",
@@ -2788,7 +2862,8 @@
         "y": 2686.624,
         "w": 35.08,
         "h": 136.998
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "A13",
@@ -2825,7 +2900,8 @@
         "y": 2472.408,
         "w": 81.234,
         "h": 96.164
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "A12",
@@ -2862,7 +2938,8 @@
         "y": 2272.659,
         "w": 99.529,
         "h": 101.555
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "A11",
@@ -2899,7 +2976,8 @@
         "y": 2207.562,
         "w": 99.271,
         "h": 86.265
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "A11-1",
@@ -2936,7 +3014,8 @@
         "y": 2168.195,
         "w": 104.863,
         "h": 60.137
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "A101",
@@ -2973,7 +3052,8 @@
         "y": 2272.665,
         "w": 262.44,
         "h": 49.55
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "A201",
@@ -3010,7 +3090,8 @@
         "y": 2327.96,
         "w": 328.78,
         "h": 49.06
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "A102",
@@ -3047,7 +3128,8 @@
         "y": 2271.085,
         "w": 136.47,
         "h": 50.83
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "A202",
@@ -3084,7 +3166,8 @@
         "y": 2326.25,
         "w": 136.68,
         "h": 52.9
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "A103",
@@ -3121,7 +3204,8 @@
         "y": 2272.685,
         "w": 175.88,
         "h": 50.55
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "A203",
@@ -3158,7 +3242,8 @@
         "y": 2325.68,
         "w": 180.18,
         "h": 53.64
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "A104",
@@ -3195,7 +3280,8 @@
         "y": 2271.845,
         "w": 154.91,
         "h": 50.39
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "A204",
@@ -3232,7 +3318,8 @@
         "y": 2326.455,
         "w": 153.77,
         "h": 52.87
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "A105",
@@ -3269,7 +3356,8 @@
         "y": 2271.06,
         "w": 262.61,
         "h": 50.58
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "A205",
@@ -3306,7 +3394,8 @@
         "y": 2326.055,
         "w": 263.76,
         "h": 51.69
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "NE8",
@@ -3343,7 +3432,8 @@
         "y": 483.155,
         "w": 301.16,
         "h": 266.99
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "NE5",
@@ -3380,7 +3470,8 @@
         "y": 479.685,
         "w": 303.26,
         "h": 267.83
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "NE2",
@@ -3417,7 +3508,8 @@
         "y": 477.465,
         "w": 272.49,
         "h": 1024.63
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "NE1",
@@ -3454,7 +3546,8 @@
         "y": 479.485,
         "w": 271.21,
         "h": 1021.01
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "NE3",
@@ -3491,7 +3584,8 @@
         "y": 1254.51,
         "w": 304.61,
         "h": 269.2
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "NE6",
@@ -3528,7 +3622,8 @@
         "y": 1257.505,
         "w": 306.57,
         "h": 271.99
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "NE7",
@@ -3565,7 +3660,8 @@
         "y": 872.93,
         "w": 305.52,
         "h": 271.66
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "A301",
@@ -3581,11 +3677,11 @@
         "points": [
           [
             9187.47,
-            2450.0
+            2450
           ],
           [
             9391.73,
-            2450.0
+            2450
           ],
           [
             9391.73,
@@ -3599,10 +3695,11 @@
       },
       "fabricBBox": {
         "x": 9187.47,
-        "y": 2450.0,
+        "y": 2450,
         "w": 204.26,
         "h": 51.12
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "A401",
@@ -3639,7 +3736,8 @@
         "y": 2504.82,
         "w": 204.38,
         "h": 52.38
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "A302",
@@ -3676,7 +3774,8 @@
         "y": 2450.045,
         "w": 139.61,
         "h": 52.97
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "A402",
@@ -3713,7 +3812,8 @@
         "y": 2505.505,
         "w": 136.09,
         "h": 51.63
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "A303",
@@ -3750,7 +3850,8 @@
         "y": 2449.685,
         "w": 180.72,
         "h": 53.15
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "A403",
@@ -3787,7 +3888,8 @@
         "y": 2504.66,
         "w": 179.05,
         "h": 52.66
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "A304",
@@ -3824,7 +3926,8 @@
         "y": 2449.38,
         "w": 139.99,
         "h": 52.14
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "A404",
@@ -3861,7 +3964,8 @@
         "y": 2503.79,
         "w": 137.98,
         "h": 53.4
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "A305",
@@ -3898,7 +4002,8 @@
         "y": 2450.035,
         "w": 122.91,
         "h": 51.73
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "A405",
@@ -3935,7 +4040,8 @@
         "y": 2504.665,
         "w": 122.58,
         "h": 51.59
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "A306",
@@ -3972,7 +4078,8 @@
         "y": 2450.21,
         "w": 154.07,
         "h": 52.6
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "A406",
@@ -4009,7 +4116,8 @@
         "y": 2504.105,
         "w": 153.28,
         "h": 52.33
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "A307",
@@ -4046,7 +4154,8 @@
         "y": 2449.765,
         "w": 136.23,
         "h": 51.67
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "A407",
@@ -4083,7 +4192,8 @@
         "y": 2504.13,
         "w": 137.38,
         "h": 52.1
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "A308",
@@ -4120,7 +4230,8 @@
         "y": 2449.54,
         "w": 180.48,
         "h": 52.92
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "A408",
@@ -4157,7 +4268,8 @@
         "y": 2505.195,
         "w": 180.13,
         "h": 51.75
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "A309",
@@ -4194,7 +4306,8 @@
         "y": 2449.765,
         "w": 155.88,
         "h": 52.19
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "A409",
@@ -4229,9 +4342,10 @@
       "fabricBBox": {
         "x": 10656.66,
         "y": 2505.26,
-        "w": 155.0,
+        "w": 155,
         "h": 51.6
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "A501",
@@ -4268,7 +4382,8 @@
         "y": 2623.53,
         "w": 206.65,
         "h": 51.88
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "A601",
@@ -4305,7 +4420,8 @@
         "y": 2677.795,
         "w": 205.63,
         "h": 52.83
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "A502",
@@ -4342,7 +4458,8 @@
         "y": 2631.135,
         "w": 263.88,
         "h": 52.45
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "A602",
@@ -4379,7 +4496,8 @@
         "y": 2686.35,
         "w": 263.54,
         "h": 50.34
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "A503",
@@ -4416,7 +4534,8 @@
         "y": 2628.125,
         "w": 195.31,
         "h": 52.37
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "A603",
@@ -4453,7 +4572,8 @@
         "y": 2683.26,
         "w": 195.05,
         "h": 51.28
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "A504",
@@ -4490,7 +4610,8 @@
         "y": 2628.6,
         "w": 153.99,
         "h": 52.34
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "A604",
@@ -4527,7 +4648,8 @@
         "y": 2682.43,
         "w": 154.42,
         "h": 52.48
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "A505",
@@ -4564,7 +4686,8 @@
         "y": 2628.87,
         "w": 265.57,
         "h": 52.72
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "A605",
@@ -4601,7 +4724,8 @@
         "y": 2683.83,
         "w": 261.57,
         "h": 52.3
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "A506",
@@ -4638,7 +4762,8 @@
         "y": 2629.075,
         "w": 135.34,
         "h": 51.45
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "A606",
@@ -4675,7 +4800,8 @@
         "y": 2683.04,
         "w": 137.62,
         "h": 52.32
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "A507",
@@ -4712,7 +4838,8 @@
         "y": 2629.31,
         "w": 160.39,
         "h": 51.38
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "A607",
@@ -4749,7 +4876,8 @@
         "y": 2683.22,
         "w": 161.13,
         "h": 52.84
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "A508",
@@ -4786,7 +4914,8 @@
         "y": 2628.055,
         "w": 108.85,
         "h": 51.81
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "A608",
@@ -4823,7 +4952,8 @@
         "y": 2683.785,
         "w": 105.07,
         "h": 52.17
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "A509",
@@ -4860,7 +4990,8 @@
         "y": 2628.18,
         "w": 139.08,
         "h": 51.8
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "A609",
@@ -4897,7 +5028,8 @@
         "y": 2682.84,
         "w": 136.15,
         "h": 50.8
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "A23",
@@ -4934,7 +5066,8 @@
         "y": 2948.87,
         "w": 198.347,
         "h": 141.058
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "A24",
@@ -4971,7 +5104,8 @@
         "y": 2918.28,
         "w": 86.648,
         "h": 98.249
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "A22",
@@ -5008,7 +5142,8 @@
         "y": 3110.105,
         "w": 325.109,
         "h": 65.139
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "A701",
@@ -5043,9 +5178,10 @@
       "fabricBBox": {
         "x": 9240.15,
         "y": 2809.14,
-        "w": 136.0,
+        "w": 136,
         "h": 50.4
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "A801",
@@ -5082,7 +5218,8 @@
         "y": 2863.965,
         "w": 136.7,
         "h": 52.01
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "A702",
@@ -5119,7 +5256,8 @@
         "y": 2809.435,
         "w": 122.61,
         "h": 52.09
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "A802",
@@ -5143,11 +5281,11 @@
           ],
           [
             9503.505,
-            2915.0
+            2915
           ],
           [
             9381.735,
-            2915.0
+            2915
           ]
         ]
       },
@@ -5156,7 +5294,8 @@
         "y": 2864.42,
         "w": 121.77,
         "h": 50.58
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "A703",
@@ -5193,7 +5332,8 @@
         "y": 2807.26,
         "w": 262.17,
         "h": 51.28
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "A803",
@@ -5230,7 +5370,8 @@
         "y": 2861.57,
         "w": 263.92,
         "h": 53.2
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "A704",
@@ -5267,7 +5408,8 @@
         "y": 2807.39,
         "w": 154.35,
         "h": 52.2
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "A804",
@@ -5304,7 +5446,8 @@
         "y": 2861.84,
         "w": 155.18,
         "h": 52.48
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "A705",
@@ -5341,7 +5484,8 @@
         "y": 2806.52,
         "w": 119.1,
         "h": 52.16
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "A805",
@@ -5378,7 +5522,8 @@
         "y": 2861.8,
         "w": 144.94,
         "h": 53.56
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "A706",
@@ -5415,7 +5560,8 @@
         "y": 2806.045,
         "w": 143.61,
         "h": 52.27
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "A806",
@@ -5452,7 +5598,8 @@
         "y": 2861.17,
         "w": 121.95,
         "h": 51.68
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "A707",
@@ -5489,7 +5636,8 @@
         "y": 2806.35,
         "w": 155.06,
         "h": 52.32
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "A807",
@@ -5526,7 +5674,8 @@
         "y": 2862.02,
         "w": 156.03,
         "h": 52.04
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "A708",
@@ -5563,7 +5712,8 @@
         "y": 2806.655,
         "w": 155.01,
         "h": 52.71
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "A808",
@@ -5600,7 +5750,8 @@
         "y": 2861.475,
         "w": 156.36,
         "h": 53.17
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "A709",
@@ -5636,8 +5787,9 @@
         "x": 10747.435,
         "y": 2806.3,
         "w": 155.87,
-        "h": 53.0
-      }
+        "h": 53
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "A809",
@@ -5674,7 +5826,8 @@
         "y": 2861.26,
         "w": 155.16,
         "h": 52.76
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "A906",
@@ -5711,7 +5864,8 @@
         "y": 2984.005,
         "w": 163.71,
         "h": 69.87
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "A1005",
@@ -5748,7 +5902,8 @@
         "y": 3040.05,
         "w": 137.86,
         "h": 52.18
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "A905",
@@ -5785,7 +5940,8 @@
         "y": 2984.805,
         "w": 139.09,
         "h": 53.19
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "A904",
@@ -5822,7 +5978,8 @@
         "y": 2985.45,
         "w": 137.04,
         "h": 51.04
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "A1004",
@@ -5859,7 +6016,8 @@
         "y": 3040.145,
         "w": 136.86,
         "h": 52.97
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "A1003",
@@ -5896,7 +6054,8 @@
         "y": 3039.095,
         "w": 155.98,
         "h": 52.75
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "A903",
@@ -5933,7 +6092,8 @@
         "y": 2984.745,
         "w": 155.24,
         "h": 52.41
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "A902",
@@ -5970,7 +6130,8 @@
         "y": 2983.82,
         "w": 208.48,
         "h": 52.64
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "A1001",
@@ -5989,11 +6150,11 @@
             3038.795
           ],
           [
-            9790.0,
+            9790,
             3038.795
           ],
           [
-            9790.0,
+            9790,
             3091.465
           ],
           [
@@ -6007,7 +6168,8 @@
         "y": 3038.795,
         "w": 374.98,
         "h": 52.67
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "A901",
@@ -6044,7 +6206,8 @@
         "y": 2985.02,
         "w": 373.22,
         "h": 52.76
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "A1002",
@@ -6081,7 +6244,8 @@
         "y": 3039.435,
         "w": 207.59,
         "h": 52.19
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "P65",
@@ -6118,7 +6282,8 @@
         "y": 2789.155,
         "w": 161.45,
         "h": 132.15
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "P52",
@@ -6155,7 +6320,8 @@
         "y": 2966.425,
         "w": 123.92,
         "h": 52.29
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "P54",
@@ -6192,7 +6358,8 @@
         "y": 2966.905,
         "w": 123.92,
         "h": 52.29
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "P53",
@@ -6229,7 +6396,8 @@
         "y": 3021.435,
         "w": 122.54,
         "h": 53.45
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "P55",
@@ -6266,7 +6434,8 @@
         "y": 3021.145,
         "w": 122.54,
         "h": 53.45
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "P50",
@@ -6303,7 +6472,8 @@
         "y": 2966.045,
         "w": 155.11,
         "h": 52.29
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "P51",
@@ -6340,7 +6510,8 @@
         "y": 3021.375,
         "w": 155.92,
         "h": 53.45
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "P45",
@@ -6377,7 +6548,8 @@
         "y": 3021.85,
         "w": 178.07,
         "h": 51.72
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "P44",
@@ -6414,7 +6586,8 @@
         "y": 2967.19,
         "w": 178.07,
         "h": 51.72
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "P47",
@@ -6451,7 +6624,8 @@
         "y": 3021.61,
         "w": 123.05,
         "h": 52.08
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "P46",
@@ -6488,7 +6662,8 @@
         "y": 2966.77,
         "w": 123.05,
         "h": 52.08
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "P58",
@@ -6525,7 +6700,8 @@
         "y": 3146.09,
         "w": 612.24,
         "h": 145.28
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "P59",
@@ -6562,7 +6738,8 @@
         "y": 3146.085,
         "w": 154.96,
         "h": 105.83
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "P61",
@@ -6599,7 +6776,8 @@
         "y": 3232.01,
         "w": 98.368,
         "h": 97.719
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "P62",
@@ -6636,7 +6814,8 @@
         "y": 3165.62,
         "w": 98.368,
         "h": 97.719
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "SD8",
@@ -6673,7 +6852,8 @@
         "y": 7584.09,
         "w": 158.71,
         "h": 339.8
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "SD9",
@@ -6710,7 +6890,8 @@
         "y": 7583.45,
         "w": 161.46,
         "h": 340.42
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "SD10",
@@ -6747,7 +6928,8 @@
         "y": 7584.155,
         "w": 159.8,
         "h": 340.97
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "SD11",
@@ -6784,7 +6966,8 @@
         "y": 7584.265,
         "w": 161.57,
         "h": 339.03
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "SD2",
@@ -6821,7 +7004,8 @@
         "y": 7127.59,
         "w": 182.34,
         "h": 340.48
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "SD3",
@@ -6858,7 +7042,8 @@
         "y": 7127.61,
         "w": 177.8,
         "h": 338.56
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "SD4",
@@ -6895,7 +7080,8 @@
         "y": 7126.99,
         "w": 183.76,
         "h": 339.52
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "SD5",
@@ -6932,7 +7118,8 @@
         "y": 7127.635,
         "w": 182.06,
         "h": 339.53
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "SD1",
@@ -6947,20 +7134,20 @@
         "type": "polygon",
         "points": [
           [
-            3285.83,
-            7310.93
+            3319.94564445629,
+            7339.726887820611
           ],
           [
-            3490.15,
-            7310.93
+            3524.26084434968,
+            7339.726887820611
           ],
           [
-            3490.15,
-            7476.85
+            3524.26084434968,
+            7505.651121712455
           ],
           [
-            3285.83,
-            7476.85
+            3319.94564445629,
+            7505.651121712455
           ]
         ]
       },
@@ -6969,7 +7156,8 @@
         "y": 7310.93,
         "w": 204.32,
         "h": 165.92
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "SD13",
@@ -7006,7 +7194,8 @@
         "y": 7535.748,
         "w": 118.238,
         "h": 163.04
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "SD12",
@@ -7043,7 +7232,8 @@
         "y": 7544.296,
         "w": 201.564,
         "h": 270.348
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "SD7",
@@ -7058,20 +7248,20 @@
         "type": "polygon",
         "points": [
           [
-            4320.375,
-            7575.45
+            4336.925596481878,
+            7605.2226973898505
           ],
           [
-            4571.285,
-            7575.45
+            4587.869786780384,
+            7605.2226973898505
           ],
           [
-            4571.285,
-            7813.01
+            4587.869786780384,
+            7842.780545605635
           ],
           [
-            4320.375,
-            7813.01
+            4336.925596481878,
+            7842.780545605635
           ]
         ]
       },
@@ -7080,7 +7270,8 @@
         "y": 7575.45,
         "w": 250.91,
         "h": 237.56
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "SD6",
@@ -7095,20 +7286,20 @@
         "type": "polygon",
         "points": [
           [
-            4414.36,
-            7290.69
+            4424.083368869936,
+            7317.49576613387
           ],
           [
-            4595.96,
-            7290.69
+            4605.669025053305,
+            7317.49576613387
           ],
           [
-            4595.96,
-            7472.29
+            4605.669025053305,
+            7499.092514931309
           ],
           [
-            4414.36,
-            7472.29
+            4424.083368869936,
+            7499.092514931309
           ]
         ]
       },
@@ -7117,7 +7308,8 @@
         "y": 7290.69,
         "w": 181.6,
         "h": 181.6
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "SW1",
@@ -7132,20 +7324,20 @@
         "type": "polygon",
         "points": [
           [
-            2782.75,
-            8049.625
+            2833.433131663113,
+            8073.4390801945
           ],
           [
-            2915.55,
-            8049.625
+            2966.2171204690835,
+            8073.4390801945
           ],
           [
-            2915.55,
-            8318.335
+            2966.2171204690835,
+            8342.17160479859
           ],
           [
-            2782.75,
-            8318.335
+            2833.433131663113,
+            8342.17160479859
           ]
         ]
       },
@@ -7154,7 +7346,8 @@
         "y": 8049.625,
         "w": 132.8,
         "h": 268.71
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "SW2",
@@ -7169,20 +7362,20 @@
         "type": "polygon",
         "points": [
           [
-            2224.765,
-            8140.765
+            2292.0187430703622,
+            8158.6157916379525
           ],
           [
-            2357.635,
-            8140.765
+            2424.8862963752667,
+            8158.6157916379525
           ],
           [
-            2357.635,
-            8273.635
+            2424.8862963752667,
+            8291.491461489737
           ],
           [
-            2224.765,
-            8273.635
+            2292.0187430703622,
+            8291.491461489737
           ]
         ]
       },
@@ -7191,7 +7384,8 @@
         "y": 8140.765,
         "w": 132.87,
         "h": 132.87
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "SW4",
@@ -7206,20 +7400,20 @@
         "type": "polygon",
         "points": [
           [
-            1859.305,
-            8143.615
+            1941.2149765458419,
+            8165.515105264871
           ],
           [
-            1993.255,
-            8143.615
+            2075.168868336887,
+            8165.515105264871
           ],
           [
-            1993.255,
-            8277.565
+            2075.168868336887,
+            8299.412895653977
           ],
           [
-            1859.305,
-            8277.565
+            1941.2149765458419,
+            8299.412895653977
           ]
         ]
       },
@@ -7228,7 +7422,8 @@
         "y": 8143.615,
         "w": 133.95,
         "h": 133.95
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "SW8",
@@ -7243,20 +7438,20 @@
         "type": "polygon",
         "points": [
           [
-            929.435,
-            8143.785
+            1030.863325159915,
+            8163.641217613116
           ],
           [
-            1065.485,
-            8143.785
+            1166.9063294243074,
+            8163.641217613116
           ],
           [
-            1065.485,
-            8279.835
+            1166.9063294243074,
+            8299.668425788308
           ],
           [
-            929.435,
-            8279.835
+            1030.863325159915,
+            8299.668425788308
           ]
         ]
       },
@@ -7265,7 +7460,8 @@
         "y": 8143.785,
         "w": 136.05,
         "h": 136.05
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "SW9",
@@ -7280,20 +7476,20 @@
         "type": "polygon",
         "points": [
           [
-            771.205,
-            8143.525
+            879.4444530916846,
+            8169.348057279827
           ],
           [
-            905.015,
-            8143.525
+            1013.2312158848615,
+            8169.348057279827
           ],
           [
-            905.015,
-            8277.335
+            1013.2312158848615,
+            8303.16067095749
           ],
           [
-            771.205,
-            8277.335
+            879.4444530916846,
+            8303.16067095749
           ]
         ]
       },
@@ -7302,7 +7498,8 @@
         "y": 8143.525,
         "w": 133.81,
         "h": 133.81
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "SW10",
@@ -7339,7 +7536,8 @@
         "y": 8044.5,
         "w": 203.76,
         "h": 133.94
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "SW11",
@@ -7376,7 +7574,8 @@
         "y": 7907.99,
         "w": 271.29,
         "h": 132.7
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "SW13",
@@ -7413,7 +7612,8 @@
         "y": 7633.5,
         "w": 272.18,
         "h": 133.94
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "SW28",
@@ -7450,7 +7650,8 @@
         "y": 6609.665,
         "w": 133.49,
         "h": 133.49
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "SW18",
@@ -7487,7 +7688,8 @@
         "y": 7292.915,
         "w": 132.97,
         "h": 132.97
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "SW14",
@@ -7524,7 +7726,8 @@
         "y": 7427.57,
         "w": 133.21,
         "h": 202.3
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "SW12",
@@ -7561,7 +7764,8 @@
         "y": 7768.76,
         "w": 270.81,
         "h": 135.64
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "SW25",
@@ -7598,7 +7802,8 @@
         "y": 7573.61,
         "w": 202.4,
         "h": 202.4
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "SW24",
@@ -7635,7 +7840,8 @@
         "y": 7792.86,
         "w": 202.4,
         "h": 202.4
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "SW7",
@@ -7650,20 +7856,20 @@
         "type": "polygon",
         "points": [
           [
-            1088.475,
-            8145.725
+            1184.037051705757,
+            8168.581466876836
           ],
           [
-            1220.905,
-            8145.725
+            1316.4867825159913,
+            8168.581466876836
           ],
           [
-            1220.905,
-            8278.155
+            1316.4867825159913,
+            8301.031253171403
           ],
           [
-            1088.475,
-            8278.155
+            1184.037051705757,
+            8301.031253171403
           ]
         ]
       },
@@ -7672,7 +7878,8 @@
         "y": 8145.725,
         "w": 132.43,
         "h": 132.43
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "SW6C",
@@ -7687,20 +7894,20 @@
         "type": "polygon",
         "points": [
           [
-            1239.625,
-            8145.735
+            1331.277698827292,
+            8168.581466876836
           ],
           [
-            1372.075,
-            8145.735
+            1463.7274296375267,
+            8168.581466876836
           ],
           [
-            1372.075,
-            8278.185
+            1463.7274296375267,
+            8301.031253171403
           ],
           [
-            1239.625,
-            8278.185
+            1331.277698827292,
+            8301.031253171403
           ]
         ]
       },
@@ -7709,7 +7916,8 @@
         "y": 8145.735,
         "w": 132.45,
         "h": 132.45
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "SW6B",
@@ -7724,20 +7932,20 @@
         "type": "polygon",
         "points": [
           [
-            1387.655,
-            8145.995
+            1477.3484429637529,
+            8167.814876473846
           ],
           [
-            1520.025,
-            8145.995
+            1609.7146092750534,
+            8167.814876473846
           ],
           [
-            1520.025,
-            8278.365
+            1609.7146092750534,
+            8300.264662768413
           ],
           [
-            1387.655,
-            8278.365
+            1477.3484429637529,
+            8300.264662768413
           ]
         ]
       },
@@ -7746,7 +7954,8 @@
         "y": 8145.995,
         "w": 132.37,
         "h": 132.37
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "SW6",
@@ -7761,20 +7970,20 @@
         "type": "polygon",
         "points": [
           [
-            1539.645,
-            8145.645
+            1622.49997761194,
+            8161.51179982703
           ],
           [
-            1671.915,
-            8145.645
+            1754.7825794243076,
+            8161.51179982703
           ],
           [
-            1671.915,
-            8277.915
+            1754.7825794243076,
+            8293.79123269871
           ],
           [
-            1539.645,
-            8277.915
+            1622.49997761194,
+            8293.79123269871
           ]
         ]
       },
@@ -7783,7 +7992,8 @@
         "y": 8145.645,
         "w": 132.27,
         "h": 132.27
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "SW5",
@@ -7798,20 +8008,20 @@
         "type": "polygon",
         "points": [
           [
-            1697.875,
-            8143.575
+            1779.7683646055436,
+            8167.388992916628
           ],
           [
-            1831.485,
-            8143.575
+            1913.387998400853,
+            8167.388992916628
           ],
           [
-            1831.485,
-            8277.185
+            1913.387998400853,
+            8301.031253171403
           ],
           [
-            1697.875,
-            8277.185
+            1779.7683646055436,
+            8301.031253171403
           ]
         ]
       },
@@ -7820,7 +8030,8 @@
         "y": 8143.575,
         "w": 133.61,
         "h": 133.61
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "SW3",
@@ -7835,20 +8046,20 @@
         "type": "polygon",
         "points": [
           [
-            2018.22,
-            8144.4
+            2091.3803811300645,
+            8160.319325866822
           ],
           [
-            2151.12,
-            8144.4
+            2224.247934434968,
+            8160.319325866822
           ],
           [
-            2151.12,
-            8277.3
+            2224.247934434968,
+            8293.194995718606
           ],
           [
-            2018.22,
-            8277.3
+            2091.3803811300645,
+            8293.194995718606
           ]
         ]
       },
@@ -7857,7 +8068,8 @@
         "y": 8144.4,
         "w": 132.9,
         "h": 132.9
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "SW23",
@@ -7894,7 +8106,8 @@
         "y": 7704.36,
         "w": 133.81,
         "h": 271.04
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "SW22",
@@ -7918,11 +8131,11 @@
           ],
           [
             1123.675,
-            7977.0
+            7977
           ],
           [
             989.865,
-            7977.0
+            7977
           ]
         ]
       },
@@ -7931,7 +8144,8 @@
         "y": 7568.36,
         "w": 133.81,
         "h": 408.64
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "SW21",
@@ -7968,7 +8182,8 @@
         "y": 7566.885,
         "w": 133.81,
         "h": 133.81
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "SW19",
@@ -8005,7 +8220,8 @@
         "y": 7429.235,
         "w": 133.81,
         "h": 133.81
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "SW17",
@@ -8042,7 +8258,8 @@
         "y": 7290.985,
         "w": 133.81,
         "h": 133.81
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "SW20",
@@ -8079,7 +8296,8 @@
         "y": 7431.055,
         "w": 133.81,
         "h": 133.81
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "SW16",
@@ -8116,7 +8334,8 @@
         "y": 6831.695,
         "w": 133.81,
         "h": 133.81
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "SW15",
@@ -8153,7 +8372,8 @@
         "y": 6975.82,
         "w": 270.72,
         "h": 306.44
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "SW29",
@@ -8190,7 +8410,8 @@
         "y": 6450.975,
         "w": 133.81,
         "h": 133.81
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "SW27",
@@ -8227,7 +8448,8 @@
         "y": 6767.475,
         "w": 201.97,
         "h": 201.97
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "SW26",
@@ -8264,7 +8486,8 @@
         "y": 6994.34,
         "w": 201.97,
         "h": 305.56
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "L1-111",
@@ -8301,7 +8524,8 @@
         "y": 7548.4,
         "w": 95.81,
         "h": 88.86
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "L1-98",
@@ -8338,7 +8562,8 @@
         "y": 7505.595,
         "w": 134.18,
         "h": 92.01
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "L1-97",
@@ -8375,7 +8600,8 @@
         "y": 7304.715,
         "w": 135.09,
         "h": 136.45
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "L1-96",
@@ -8412,7 +8638,8 @@
         "y": 7224.055,
         "w": 135.09,
         "h": 76.85
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "L1-99b",
@@ -8449,7 +8676,8 @@
         "y": 7238.015,
         "w": 95.11,
         "h": 187.47
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "L1-92",
@@ -8486,7 +8714,8 @@
         "y": 6897.665,
         "w": 135.09,
         "h": 76.85
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "L1-91",
@@ -8523,7 +8752,8 @@
         "y": 6821.725,
         "w": 135.09,
         "h": 71.95
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "L1-95",
@@ -8560,7 +8790,8 @@
         "y": 7140.91,
         "w": 134.18,
         "h": 79.38
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "L1-94",
@@ -8597,7 +8828,8 @@
         "y": 7060.96,
         "w": 134.18,
         "h": 76.24
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "L1-93",
@@ -8634,7 +8866,8 @@
         "y": 6981.01,
         "w": 134.18,
         "h": 76.24
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "L1-90",
@@ -8671,7 +8904,8 @@
         "y": 6731.29,
         "w": 134.18,
         "h": 79.46
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "L1-89",
@@ -8686,7 +8920,7 @@
         "type": "polygon",
         "points": [
           [
-            1991.0,
+            1991,
             6591.49
           ],
           [
@@ -8698,17 +8932,18 @@
             6726.75
           ],
           [
-            1991.0,
+            1991,
             6726.75
           ]
         ]
       },
       "fabricBBox": {
-        "x": 1991.0,
+        "x": 1991,
         "y": 6591.49,
         "w": 134.18,
         "h": 135.26
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "L1-87",
@@ -8744,8 +8979,9 @@
         "x": 2155.125,
         "y": 6441.01,
         "w": 167.59,
-        "h": 115.0
-      }
+        "h": 115
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "L1-102",
@@ -8782,7 +9018,8 @@
         "y": 6638.01,
         "w": 185.9,
         "h": 252.92
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "L1-101",
@@ -8819,7 +9056,8 @@
         "y": 6897.65,
         "w": 187.19,
         "h": 127.44
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "L1-100",
@@ -8856,7 +9094,8 @@
         "y": 7027.125,
         "w": 187.19,
         "h": 127.43
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "L1-99a",
@@ -8893,7 +9132,8 @@
         "y": 7168.13,
         "w": 187.19,
         "h": 67.08
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "L1-99a",
@@ -8930,7 +9170,8 @@
         "y": 7238.91,
         "w": 93.78,
         "h": 187.24
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "L1-88",
@@ -8967,7 +9208,8 @@
         "y": 6469.31,
         "w": 546.98,
         "h": 162.74
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "L1-105",
@@ -9004,7 +9246,8 @@
         "y": 6801.22,
         "w": 131.97,
         "h": 80.08
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "L1-104",
@@ -9041,7 +9284,8 @@
         "y": 6717.09,
         "w": 131.56,
         "h": 79.46
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "L1-103",
@@ -9078,7 +9322,8 @@
         "y": 6636.42,
         "w": 130.57,
         "h": 79.46
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "L1-107",
@@ -9115,7 +9360,8 @@
         "y": 6966.57,
         "w": 131.67,
         "h": 79.46
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "L1-108",
@@ -9152,7 +9398,8 @@
         "y": 7049.545,
         "w": 132.88,
         "h": 132.77
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "L1-106",
@@ -9189,7 +9436,8 @@
         "y": 6883.69,
         "w": 131.97,
         "h": 80.08
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "L1-115A",
@@ -9226,7 +9474,8 @@
         "y": 7252.71,
         "w": 134.18,
         "h": 134.98
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "L1-110",
@@ -9263,7 +9512,8 @@
         "y": 7391.955,
         "w": 134.18,
         "h": 114.23
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "L1-114",
@@ -9300,7 +9550,8 @@
         "y": 7251.6,
         "w": 134.18,
         "h": 79.38
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "L1-113",
@@ -9337,7 +9588,8 @@
         "y": 7334.56,
         "w": 134.18,
         "h": 79.38
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "L1-112",
@@ -9374,7 +9626,8 @@
         "y": 7414.01,
         "w": 134.18,
         "h": 79.38
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "L1-115A",
@@ -9411,7 +9664,8 @@
         "y": 7379.455,
         "w": 82.01,
         "h": 101.13
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "L1-120",
@@ -9448,7 +9702,8 @@
         "y": 6832.085,
         "w": 132.88,
         "h": 132.77
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "L1-118",
@@ -9485,7 +9740,8 @@
         "y": 6969.84,
         "w": 63.18,
         "h": 64.34
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "L1-119",
@@ -9522,7 +9778,8 @@
         "y": 6969.84,
         "w": 65.04,
         "h": 65.46
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "L1-78",
@@ -9546,11 +9803,11 @@
           ],
           [
             2173.21,
-            6379.0
+            6379
           ],
           [
             2002.05,
-            6379.0
+            6379
           ]
         ]
       },
@@ -9559,7 +9816,8 @@
         "y": 6177.16,
         "w": 171.16,
         "h": 201.84
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "L1-80-1",
@@ -9596,7 +9854,8 @@
         "y": 6130.535,
         "w": 93.9,
         "h": 125.59
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "L1-86B",
@@ -9633,7 +9892,8 @@
         "y": 6259.535,
         "w": 93.9,
         "h": 125.59
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "L1-80B",
@@ -9670,7 +9930,8 @@
         "y": 6129.535,
         "w": 93.9,
         "h": 125.59
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "L1-81",
@@ -9707,7 +9968,8 @@
         "y": 6128.535,
         "w": 93.9,
         "h": 125.59
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "L1-85",
@@ -9744,7 +10006,8 @@
         "y": 6257.525,
         "w": 189.06,
         "h": 127.69
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "L1-86",
@@ -9781,7 +10044,8 @@
         "y": 6258.525,
         "w": 189.06,
         "h": 127.69
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "L1-83",
@@ -9818,7 +10082,8 @@
         "y": 6128.535,
         "w": 93.9,
         "h": 125.59
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "L1-84",
@@ -9855,7 +10120,8 @@
         "y": 6129.41,
         "w": 185.31,
         "h": 254.44
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "L1-79",
@@ -9891,8 +10157,9 @@
         "x": 2274.595,
         "y": 6129.62,
         "w": 190.53,
-        "h": 255.0
-      }
+        "h": 255
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "L1-82",
@@ -9929,7 +10196,8 @@
         "y": 6130.625,
         "w": 90.89,
         "h": 121.65
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "L1-71B",
@@ -9966,7 +10234,8 @@
         "y": 5947.02,
         "w": 90.89,
         "h": 104.3
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "L1-71",
@@ -10003,7 +10272,8 @@
         "y": 5944.575,
         "w": 93.9,
         "h": 108.17
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "L1-72",
@@ -10040,7 +10310,8 @@
         "y": 5946.555,
         "w": 187.98,
         "h": 108.17
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "L1-73",
@@ -10077,7 +10348,8 @@
         "y": 5943.585,
         "w": 125.85,
         "h": 108.17
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "L1-75a",
@@ -10114,7 +10386,8 @@
         "y": 5948.295,
         "w": 130.95,
         "h": 108.17
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "L1-75b",
@@ -10151,7 +10424,8 @@
         "y": 5948.85,
         "w": 189.93,
         "h": 105.62
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "L1-76",
@@ -10188,7 +10462,8 @@
         "y": 6060.47,
         "w": 113.79,
         "h": 145.9
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "L1-77",
@@ -10225,7 +10500,8 @@
         "y": 6295.8,
         "w": 110.64,
         "h": 334.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "L1-121",
@@ -10260,9 +10536,10 @@
       "fabricBBox": {
         "x": 3247.1,
         "y": 6646.045,
-        "w": 132.0,
+        "w": 132,
         "h": 100.61
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "L1-122",
@@ -10297,9 +10574,10 @@
       "fabricBBox": {
         "x": 3391.21,
         "y": 6646.365,
-        "w": 132.0,
+        "w": 132,
         "h": 100.61
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "L1-115",
@@ -10336,7 +10614,8 @@
         "y": 7290.504,
         "w": 122.261,
         "h": 153.733
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "L1-116",
@@ -10373,7 +10652,8 @@
         "y": 7127.272,
         "w": 139.966,
         "h": 155.735
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "L1-117",
@@ -10410,7 +10690,8 @@
         "y": 6993.897,
         "w": 152.075,
         "h": 149.816
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "L1-68",
@@ -10447,7 +10728,8 @@
         "y": 6429.59,
         "w": 368.3,
         "h": 190.88
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "L1-64",
@@ -10484,7 +10766,8 @@
         "y": 6306.31,
         "w": 59.58,
         "h": 121.58
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "L1-60",
@@ -10521,7 +10804,8 @@
         "y": 5959.2,
         "w": 59.58,
         "h": 244.56
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "L1-65",
@@ -10558,7 +10842,8 @@
         "y": 6245.485,
         "w": 189.38,
         "h": 119.55
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "L1-69",
@@ -10595,7 +10880,8 @@
         "y": 6342.755,
         "w": 189.38,
         "h": 119.55
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "L1-66",
@@ -10632,7 +10918,8 @@
         "y": 6221.955,
         "w": 189.38,
         "h": 118.05
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "L1-63",
@@ -10669,7 +10956,8 @@
         "y": 6102.46,
         "w": 189.93,
         "h": 115.7
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "L1-59",
@@ -10706,7 +10994,8 @@
         "y": 5854.78,
         "w": 189.93,
         "h": 115.7
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "L1-62",
@@ -10743,7 +11032,8 @@
         "y": 5977.1,
         "w": 189.93,
         "h": 119.52
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "L1-61",
@@ -10780,7 +11070,8 @@
         "y": 5909.74,
         "w": 189.93,
         "h": 242.9
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "L1-57",
@@ -10817,7 +11108,8 @@
         "y": 5729.69,
         "w": 189.38,
         "h": 174.86
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "L1-54",
@@ -10854,7 +11146,8 @@
         "y": 5607.01,
         "w": 186.99,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "L1-55",
@@ -10891,7 +11184,8 @@
         "y": 5607.56,
         "w": 186.99,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "L1-58",
@@ -10928,7 +11222,8 @@
         "y": 5731.44,
         "w": 186.99,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "L1-53",
@@ -10965,7 +11260,8 @@
         "y": 5521.725,
         "w": 56.4,
         "h": 185.99
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "L1-49b",
@@ -11002,7 +11298,8 @@
         "y": 5363.31,
         "w": 186.99,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "L1-46b",
@@ -11039,7 +11336,8 @@
         "y": 5239.99,
         "w": 186.99,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "L1-50",
@@ -11076,7 +11374,8 @@
         "y": 5363.08,
         "w": 186.99,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "L1-51",
@@ -11113,7 +11412,8 @@
         "y": 5363.69,
         "w": 186.99,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "L1-49a",
@@ -11150,7 +11450,8 @@
         "y": 5239.16,
         "w": 189.93,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "L1-37",
@@ -11187,7 +11488,8 @@
         "y": 4724.21,
         "w": 189.93,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "L1-45b",
@@ -11224,7 +11526,8 @@
         "y": 5105.435,
         "w": 93.23,
         "h": 119.67
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "L1-45a",
@@ -11261,7 +11564,8 @@
         "y": 5104.645,
         "w": 93.23,
         "h": 119.47
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "L1-41a",
@@ -11298,7 +11602,8 @@
         "y": 4848.91,
         "w": 93.23,
         "h": 78.58
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "L1-41b",
@@ -11335,7 +11640,8 @@
         "y": 4847.92,
         "w": 93.23,
         "h": 78.58
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "L1-41b",
@@ -11372,7 +11678,8 @@
         "y": 4930.82,
         "w": 189.1,
         "h": 78.58
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "L1-41d",
@@ -11409,7 +11716,8 @@
         "y": 5014.54,
         "w": 189.1,
         "h": 78.58
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "L1-42A",
@@ -11446,7 +11754,8 @@
         "y": 4847.93,
         "w": 186.99,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "L1-38",
@@ -11483,7 +11792,8 @@
         "y": 4724.84,
         "w": 186.99,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "L1-42B",
@@ -11520,7 +11830,8 @@
         "y": 4970.76,
         "w": 189.93,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "L1-46A",
@@ -11557,7 +11868,8 @@
         "y": 5105.47,
         "w": 194.68,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "L2-46A",
@@ -11594,7 +11906,8 @@
         "y": 5104.13,
         "w": 194.68,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "L1-47B",
@@ -11631,7 +11944,8 @@
         "y": 5239.6,
         "w": 189.93,
         "h": 119.66
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "L1-43B",
@@ -11668,7 +11982,8 @@
         "y": 4931.33,
         "w": 189.93,
         "h": 159.92
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "L1-43A",
@@ -11705,7 +12020,8 @@
         "y": 4846.715,
         "w": 189.93,
         "h": 79.89
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "L1-39B",
@@ -11742,7 +12058,8 @@
         "y": 4724.86,
         "w": 91.22,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "L1-39A",
@@ -11779,7 +12096,8 @@
         "y": 4725.31,
         "w": 91.22,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "L1-56",
@@ -11816,7 +12134,8 @@
         "y": 5683.48,
         "w": 186.99,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "L1-67",
@@ -11853,7 +12172,8 @@
         "y": 5811.685,
         "w": 189.93,
         "h": 366.95
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "L1-67A",
@@ -11890,7 +12210,8 @@
         "y": 6181.165,
         "w": 189.93,
         "h": 366.95
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "L1-40",
@@ -11927,7 +12248,8 @@
         "y": 4729.28,
         "w": 186.99,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "L1-44A",
@@ -11964,7 +12286,8 @@
         "y": 4852.64,
         "w": 189.93,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "L1-44B",
@@ -12001,7 +12324,8 @@
         "y": 4975.28,
         "w": 189.93,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "L1-48A",
@@ -12038,7 +12362,8 @@
         "y": 5109.99,
         "w": 189.93,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "L1-48B",
@@ -12075,7 +12400,8 @@
         "y": 5234.64,
         "w": 189.93,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "L1-52",
@@ -12112,7 +12438,8 @@
         "y": 5367.69,
         "w": 186.99,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "L1-11",
@@ -12149,7 +12476,8 @@
         "y": 5367.23,
         "w": 186.99,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "L1-06",
@@ -12186,7 +12514,8 @@
         "y": 5108.91,
         "w": 186.99,
         "h": 244.9
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "L1-01b",
@@ -12223,7 +12552,8 @@
         "y": 4923.69,
         "w": 189.93,
         "h": 175.96
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "L1-01a",
@@ -12260,7 +12590,8 @@
         "y": 4736.055,
         "w": 189.93,
         "h": 184.67
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "L1-02",
@@ -12297,7 +12628,8 @@
         "y": 4726.595,
         "w": 189.93,
         "h": 366.19
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "L1-17",
@@ -12334,7 +12666,8 @@
         "y": 5610.04,
         "w": 189.93,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "L1-19",
@@ -12371,7 +12704,8 @@
         "y": 5858.09,
         "w": 186.99,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "L1-18",
@@ -12408,7 +12742,8 @@
         "y": 5734.9,
         "w": 189.93,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "L1-20",
@@ -12445,7 +12780,8 @@
         "y": 5981.7,
         "w": 189.93,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "L1-21",
@@ -12482,7 +12818,8 @@
         "y": 6106.01,
         "w": 189.93,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "L1-22",
@@ -12519,7 +12856,8 @@
         "y": 6229.71,
         "w": 189.93,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "L1-03A",
@@ -12556,7 +12894,8 @@
         "y": 4725.42,
         "w": 189.93,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "L1-03B",
@@ -12593,7 +12932,8 @@
         "y": 4849.04,
         "w": 189.93,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "L1-03C",
@@ -12630,7 +12970,8 @@
         "y": 4973.41,
         "w": 186.99,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "L1-07",
@@ -12667,7 +13008,8 @@
         "y": 5105.99,
         "w": 186.99,
         "h": 244.9
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "L1-08",
@@ -12704,7 +13046,8 @@
         "y": 5103.53,
         "w": 186.99,
         "h": 244.9
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "L1-12",
@@ -12741,7 +13084,8 @@
         "y": 5362.51,
         "w": 189.93,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "L1-13",
@@ -12778,7 +13122,8 @@
         "y": 5363.49,
         "w": 186.99,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "L1-23",
@@ -12815,7 +13160,8 @@
         "y": 5580.245,
         "w": 53.55,
         "h": 291.93
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "L1-26",
@@ -12852,7 +13198,8 @@
         "y": 5987.81,
         "w": 189.93,
         "h": 244.62
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "L1-27",
@@ -12889,7 +13236,8 @@
         "y": 5986.91,
         "w": 189.93,
         "h": 244.62
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "L1-29",
@@ -12926,7 +13274,8 @@
         "y": 6245.68,
         "w": 189.93,
         "h": 244.62
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "L1-28",
@@ -12963,7 +13312,8 @@
         "y": 6243.87,
         "w": 189.93,
         "h": 244.62
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "L1-30",
@@ -13000,7 +13350,8 @@
         "y": 5990.95,
         "w": 189.93,
         "h": 244.62
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "L1-31",
@@ -13037,7 +13388,8 @@
         "y": 5992.13,
         "w": 189.93,
         "h": 244.62
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "L1-32",
@@ -13074,7 +13426,8 @@
         "y": 6251.68,
         "w": 189.93,
         "h": 244.62
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "L1-33",
@@ -13111,7 +13464,8 @@
         "y": 6249.9,
         "w": 189.93,
         "h": 244.62
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "L1-34B",
@@ -13148,7 +13502,8 @@
         "y": 6379.25,
         "w": 119.76,
         "h": 244.62
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "L1-34A",
@@ -13185,7 +13540,8 @@
         "y": 5955.95,
         "w": 119.76,
         "h": 244.62
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "L1-25",
@@ -13222,7 +13578,8 @@
         "y": 5752.195,
         "w": 190.09,
         "h": 119.35
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "L1-24",
@@ -13259,7 +13616,8 @@
         "y": 5618.65,
         "w": 186.99,
         "h": 118.82
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "L1-14",
@@ -13296,7 +13654,8 @@
         "y": 5363.375,
         "w": 190.09,
         "h": 119.35
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "L1-09",
@@ -13333,7 +13692,8 @@
         "y": 5105.99,
         "w": 186.99,
         "h": 244.9
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "L1-10",
@@ -13370,7 +13730,8 @@
         "y": 5113.645,
         "w": 189.93,
         "h": 240.35
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "L1-05A",
@@ -13407,7 +13768,8 @@
         "y": 4848.13,
         "w": 189.93,
         "h": 243.84
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "L1-04B",
@@ -13444,7 +13806,8 @@
         "y": 4909.285,
         "w": 189.93,
         "h": 182.11
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "L1-04",
@@ -13481,7 +13844,8 @@
         "y": 4725.185,
         "w": 186.99,
         "h": 180.73
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "L1-05",
@@ -13518,7 +13882,8 @@
         "y": 4724.61,
         "w": 189.93,
         "h": 119.54
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "L1-16a",
@@ -13555,7 +13920,8 @@
         "y": 5115.975,
         "w": 120.19,
         "h": 64.35
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "L1-16b",
@@ -13592,7 +13958,8 @@
         "y": 5191.925,
         "w": 120.19,
         "h": 64.35
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "L1-16b",
@@ -13629,7 +13996,8 @@
         "y": 5267.375,
         "w": 120.19,
         "h": 64.35
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "L1-16d",
@@ -13666,7 +14034,8 @@
         "y": 5342.825,
         "w": 120.19,
         "h": 64.35
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "T16",
@@ -13703,7 +14072,8 @@
         "y": 4481.45,
         "w": 273.21,
         "h": 135.28
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "T17",
@@ -13718,20 +14088,20 @@
         "type": "polygon",
         "points": [
           [
-            4559.205,
-            4481.445
+            4578.677691897655,
+            4525.147634883207
           ],
           [
-            4695.495,
-            4481.445
+            4714.971389658849,
+            4525.147634883207
           ],
           [
-            4695.495,
-            4614.495
+            4714.971389658849,
+            4658.1936581578775
           ],
           [
-            4559.205,
-            4614.495
+            4578.677691897655,
+            4658.1936581578775
           ]
         ]
       },
@@ -13740,7 +14110,8 @@
         "y": 4481.445,
         "w": 136.29,
         "h": 133.05
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "T15",
@@ -13755,20 +14126,20 @@
         "type": "polygon",
         "points": [
           [
-            4499.315,
-            4164.385
+            4511.993221748402,
+            4207.09779435336
           ],
           [
-            4635.605,
-            4164.385
+            4648.286919509595,
+            4207.09779435336
           ],
           [
-            4635.605,
-            4297.435
+            4648.286919509595,
+            4340.143817628031
           ],
           [
-            4499.315,
-            4297.435
+            4511.993221748402,
+            4340.143817628031
           ]
         ]
       },
@@ -13777,7 +14148,8 @@
         "y": 4164.385,
         "w": 136.29,
         "h": 133.05
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "T11",
@@ -13792,20 +14164,20 @@
         "type": "polygon",
         "points": [
           [
-            3934.735,
-            4164.975
+            3960.0497062899785,
+            4212.6342805971835
           ],
           [
-            4071.025,
-            4164.975
+            4096.343404051174,
+            4212.6342805971835
           ],
           [
-            4071.025,
-            4298.025
+            4096.343404051174,
+            4345.765480583299
           ],
           [
-            3934.735,
-            4298.025
+            3960.0497062899785,
+            4345.765480583299
           ]
         ]
       },
@@ -13814,7 +14186,8 @@
         "y": 4164.975,
         "w": 136.29,
         "h": 133.05
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "T12",
@@ -13829,20 +14202,20 @@
         "type": "polygon",
         "points": [
           [
-            4072.575,
-            4028.15
+            4095.00637206823,
+            4069.87811221796
           ],
           [
-            4207.405,
-            4028.15
+            4229.795908848614,
+            4069.87811221796
           ],
           [
-            4207.405,
-            4300.45
+            4229.795908848614,
+            4342.1880587026735
           ],
           [
-            4072.575,
-            4300.45
+            4095.00637206823,
+            4342.1880587026735
           ]
         ]
       },
@@ -13851,7 +14224,8 @@
         "y": 4028.15,
         "w": 134.83,
         "h": 272.3
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "T13",
@@ -13866,20 +14240,20 @@
         "type": "polygon",
         "points": [
           [
-            4208.685,
-            4027.74
+            4232.05215031983,
+            4075.414598461784
           ],
           [
-            4343.515,
-            4027.74
+            4366.9252515991475,
+            4075.414598461784
           ],
           [
-            4343.515,
-            4300.04
+            4366.9252515991475,
+            4347.724544946497
           ],
           [
-            4208.685,
-            4300.04
+            4232.05215031983,
+            4347.724544946497
           ]
         ]
       },
@@ -13888,7 +14262,8 @@
         "y": 4027.74,
         "w": 134.83,
         "h": 272.3
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "T14",
@@ -13903,20 +14278,20 @@
         "type": "polygon",
         "points": [
           [
-            4348.095,
-            4027.39
+            4357.900285714287,
+            4070.13364235229
           ],
           [
-            4482.925,
-            4027.39
+            4492.68982249467,
+            4070.13364235229
           ],
           [
-            4482.925,
-            4299.69
+            4492.68982249467,
+            4342.4435888370035
           ],
           [
-            4348.095,
-            4299.69
+            4357.900285714287,
+            4342.4435888370035
           ]
         ]
       },
@@ -13925,7 +14300,8 @@
         "y": 4027.39,
         "w": 134.83,
         "h": 272.3
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "T2",
@@ -13940,20 +14316,20 @@
         "type": "polygon",
         "points": [
           [
-            5022.974,
-            3961.062
+            4982.962737739872,
+            4059.4013767104143
           ],
           [
-            5261.373,
-            4080.443
+            5221.372253198295,
+            4178.819126154134
           ],
           [
-            5203.867,
-            4195.28
+            5163.879877931769,
+            4293.637333179906
           ],
           [
-            4965.468,
-            4075.898
+            4925.470362473347,
+            4174.3047604476305
           ]
         ]
       },
@@ -13962,7 +14338,8 @@
         "y": 3961.062,
         "w": 295.905,
         "h": 234.218
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "T10",
@@ -13977,20 +14354,20 @@
         "type": "polygon",
         "points": [
           [
-            3481.303,
-            4492.246
+            3494.929705223881,
+            4367.059658444162
           ],
           [
-            3770.034,
-            4201.492
+            3783.6450490405123,
+            4076.2663655762176
           ],
           [
-            3863.853,
-            4294.659
+            3877.4879813432835,
+            4169.449687895354
           ],
           [
-            3575.123,
-            4585.412
+            3588.772637526652,
+            4460.242980763297
           ]
         ]
       },
@@ -13999,7 +14376,8 @@
         "y": 4201.492,
         "w": 382.55,
         "h": 383.92
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "T9",
@@ -14014,20 +14392,20 @@
         "type": "polygon",
         "points": [
           [
-            3773.314,
-            4060.994
+            3828.853442963752,
+            4042.110504287394
           ],
           [
-            3864.495,
-            3966.573
+            3920.1058757995734,
+            3947.7347080080503
           ],
           [
-            3959.822,
-            4058.629
+            4015.3694045842212,
+            4039.7255563669773
           ],
           [
-            3868.641,
-            4153.05
+            3924.200536247335,
+            4134.186529357766
           ]
         ]
       },
@@ -14036,7 +14414,8 @@
         "y": 3966.573,
         "w": 186.508,
         "h": 186.477
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "T8",
@@ -14051,20 +14430,20 @@
         "type": "polygon",
         "points": [
           [
-            3885.034,
-            3946.394
+            3937.6544205756927,
+            3925.5035863213093
           ],
           [
-            3976.215,
-            3851.973
+            4028.82328891258,
+            3831.127790041965
           ],
           [
-            4071.542,
-            3944.029
+            4124.170382196163,
+            3923.1186384008925
           ],
           [
-            3980.361,
-            4038.45
+            4033.0015138592757,
+            4017.5796113916804
           ]
         ]
       },
@@ -14073,7 +14452,8 @@
         "y": 3851.973,
         "w": 186.508,
         "h": 186.477
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "T7",
@@ -14088,20 +14468,20 @@
         "type": "polygon",
         "points": [
           [
-            4000.774,
-            3833.134
+            4053.3912515991474,
+            3815.284921713483
           ],
           [
-            4091.955,
-            3738.713
+            4144.560119936034,
+            3720.8239487226956
           ],
           [
-            4187.282,
-            3830.769
+            4239.907213219616,
+            3812.8999737930667
           ],
           [
-            4096.101,
-            3925.19
+            4148.7383448827295,
+            3907.2757700724105
           ]
         ]
       },
@@ -14110,7 +14490,8 @@
         "y": 3738.713,
         "w": 186.508,
         "h": 186.477
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "T6",
@@ -14125,20 +14506,20 @@
         "type": "polygon",
         "points": [
           [
-            4268.537,
-            3521.391
+            4275.338560767591,
+            3585.9892145077124
           ],
           [
-            4402.66,
-            3545.596
+            4409.4595815565035,
+            3610.1794005576526
           ],
           [
-            4379.03,
-            3676.531
+            4385.894392857143,
+            3741.0960060462376
           ],
           [
-            4244.907,
-            3652.326
+            4251.689807569296,
+            3716.905819996297
           ]
         ]
       },
@@ -14147,7 +14528,8 @@
         "y": 3521.391,
         "w": 157.753,
         "h": 155.14
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "T5",
@@ -14162,20 +14544,20 @@
         "type": "polygon",
         "points": [
           [
-            4412.774,
-            3789.134
+            4444.974493603411,
+            3775.2518673350614
           ],
           [
-            4503.955,
-            3694.713
+            4536.143361940299,
+            3680.790894344274
           ],
           [
-            4599.282,
-            3786.769
+            4631.49045522388,
+            3772.8669194146446
           ],
           [
-            4508.101,
-            3881.19
+            4540.23802238806,
+            3867.242715693989
           ]
         ]
       },
@@ -14184,7 +14566,8 @@
         "y": 3694.713,
         "w": 186.508,
         "h": 186.477
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "T3",
@@ -14199,20 +14582,20 @@
         "type": "polygon",
         "points": [
           [
-            4737.296,
-            3670.384
+            4668.09170575693,
+            3802.508414996966
           ],
           [
-            4927.365,
-            3857.36
+            4858.117376332622,
+            3989.5564733267847
           ],
           [
-            4837.299,
-            3948.916
+            4768.11841098081,
+            4081.1214381284954
           ],
           [
-            4647.23,
-            3761.94
+            4578.009175906183,
+            3894.073379798676
           ]
         ]
       },
@@ -14221,7 +14604,8 @@
         "y": 3670.384,
         "w": 280.135,
         "h": 278.532
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "T1",
@@ -14236,20 +14620,20 @@
         "type": "polygon",
         "points": [
           [
-            5227.148,
-            4162.082
+            5220.2859147121535,
+            4190.914219179104
           ],
           [
-            5491.862,
-            4123.512
+            5485.018247334755,
+            4152.32916889522
           ],
           [
-            5510.799,
-            4253.479
+            5503.98738859275,
+            4282.308830557927
           ],
           [
-            5246.085,
-            4292.05
+            5239.255055970149,
+            4320.893880841811
           ]
         ]
       },
@@ -14258,7 +14642,8 @@
         "y": 4123.512,
         "w": 283.652,
         "h": 168.538
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "T25",
@@ -14295,7 +14680,8 @@
         "y": 3488.678,
         "w": 234.998,
         "h": 234.313
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "T22",
@@ -14332,7 +14718,8 @@
         "y": 3239.046,
         "w": 190.411,
         "h": 190.466
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "ST2",
@@ -14369,7 +14756,8 @@
         "y": 3136.716,
         "w": 190.411,
         "h": 190.466
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "T24",
@@ -14406,7 +14794,8 @@
         "y": 3496.889,
         "w": 233.62,
         "h": 232.959
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "T23",
@@ -14443,7 +14832,8 @@
         "y": 3600.859,
         "w": 233.62,
         "h": 232.959
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "T21",
@@ -14480,7 +14870,8 @@
         "y": 3707.051,
         "w": 379.638,
         "h": 383.282
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "T20",
@@ -14517,7 +14908,8 @@
         "y": 3823.471,
         "w": 379.638,
         "h": 383.282
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "ST1",
@@ -14554,7 +14946,8 @@
         "y": 3191.863,
         "w": 283.686,
         "h": 283.413
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "ST4",
@@ -14591,7 +14984,8 @@
         "y": 2945.888,
         "w": 286.917,
         "h": 286.332
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "T42",
@@ -14606,20 +15000,20 @@
         "type": "polygon",
         "points": [
           [
-            5665.982,
-            2781.422
+            5693.260978678039,
+            2746.6578999439434
           ],
           [
-            5806.105,
-            2640.711
+            5833.398643390192,
+            2605.945972639362
           ],
           [
-            5949.693,
-            2783.698
+            5976.962452558636,
+            2748.957671152916
           ],
           [
-            5809.57,
-            2924.409
+            5836.908352345416,
+            2889.669598457498
           ]
         ]
       },
@@ -14628,7 +15022,8 @@
         "y": 2640.711,
         "w": 283.711,
         "h": 283.699
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "T43",
@@ -14643,20 +15038,20 @@
         "type": "polygon",
         "points": [
           [
-            5831.222,
-            2947.002
+            5854.624026119403,
+            2909.260242089492
           ],
           [
-            5971.345,
-            2806.291
+            5994.761690831557,
+            2768.5483147849104
           ],
           [
-            6114.933,
-            2949.278
+            6138.3255,
+            2911.4748365870214
           ],
           [
-            5974.81,
-            3089.989
+            5998.1878352878475,
+            3052.1867638916033
           ]
         ]
       },
@@ -14665,7 +15060,8 @@
         "y": 2806.291,
         "w": 283.711,
         "h": 283.699
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "T48",
@@ -14680,20 +15076,20 @@
         "type": "polygon",
         "points": [
           [
-            6265.817,
-            3671.051
+            6265.844925373134,
+            3650.1272782246315
           ],
           [
-            6361.021,
-            3573.526
+            6361.024889658849,
+            3552.685120333323
           ],
           [
-            6456.228,
-            3666.467
+            6456.204853944564,
+            3645.6129125181283
           ],
           [
-            6361.024,
-            3763.992
+            6361.024889658849,
+            3743.1402471208803
           ]
         ]
       },
@@ -14702,7 +15098,8 @@
         "y": 3573.526,
         "w": 190.411,
         "h": 190.466
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "T47",
@@ -14717,20 +15114,20 @@
         "type": "polygon",
         "points": [
           [
-            6564.48,
-            3505.935
+            6530.326564498933,
+            3562.5656188607636
           ],
           [
-            6766.6,
-            3505.935
+            6732.469087420043,
+            3562.5656188607636
           ],
           [
-            6766.6,
-            3708.885
+            6732.469087420043,
+            3765.5417222305077
           ],
           [
-            6564.48,
-            3708.885
+            6530.326564498933,
+            3765.5417222305077
           ]
         ]
       },
@@ -14739,7 +15136,8 @@
         "y": 3505.935,
         "w": 202.12,
         "h": 202.95
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "T46",
@@ -14754,20 +15152,20 @@
         "type": "polygon",
         "points": [
           [
-            6564.765,
-            3299.235
+            6533.5855799573565,
+            3353.8826758243076
           ],
           [
-            6766.875,
-            3299.235
+            6735.728102878465,
+            3353.8826758243076
           ],
           [
-            6766.875,
-            3499.845
+            6735.728102878465,
+            3554.473831273636
           ],
           [
-            6564.765,
-            3499.845
+            6533.5855799573565,
+            3554.473831273636
           ]
         ]
       },
@@ -14776,7 +15174,8 @@
         "y": 3299.235,
         "w": 202.11,
         "h": 200.61
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     },
     {
       "boothNo": "T45",
@@ -14791,20 +15190,20 @@
         "type": "polygon",
         "points": [
           [
-            6171.967,
-            3334.392
+            6137.824113006397,
+            3211.211684156527
           ],
           [
-            6454.66,
-            3046.923
+            6420.522812899788,
+            2923.7402830348788
           ],
           [
-            6598.109,
-            3187.989
+            6564.003057569296,
+            3064.792917185234
           ],
           [
-            6315.417,
-            3475.458
+            6281.304357675906,
+            3352.2643183068817
           ]
         ]
       },
@@ -14813,7 +15212,8 @@
         "y": 3046.923,
         "w": 426.143,
         "h": 428.536
-      }
+      },
+      "youtubeLink": "https://youtu.be/NmOONnXq7aQ"
     },
     {
       "boothNo": "T44",
@@ -14828,20 +15228,20 @@
         "type": "polygon",
         "points": [
           [
-            6024.594,
-            3189.086
+            6015.903509061834,
+            3073.7364718867966
           ],
           [
-            6313.568,
-            2902.323
+            6304.785981876334,
+            2787.031661168139
           ],
           [
-            6457.009,
-            3046.87
+            6448.266226545842,
+            2931.576540487676
           ],
           [
-            6168.036,
-            3333.633
+            6159.30018923241,
+            3218.3665279177767
           ]
         ]
       },
@@ -14850,7 +15250,8 @@
         "y": 2902.323,
         "w": 432.415,
         "h": 431.31
-      }
+      },
+      "youtubeLink": "https://youtu.be/jfKfPfyJRdk"
     },
     {
       "boothNo": "T41",
@@ -14865,20 +15266,20 @@
         "type": "polygon",
         "points": [
           [
-            5969.993,
-            2882.176
+            5765.293576759062,
+            2663.5254295751347
           ],
           [
-            6642.144,
-            2199.622
+            6437.402841684435,
+            1981.0044407787595
           ],
           [
-            6735.512,
-            2291.567
+            6530.744386993603,
+            2072.910112426244
           ],
           [
-            6063.361,
-            2974.121
+            5858.63512206823,
+            2755.516277934062
           ]
         ]
       },
@@ -14887,7 +15288,8 @@
         "y": 2199.622,
         "w": 765.519,
         "h": 774.5
-      }
+      },
+      "youtubeLink": "https://youtu.be/5qap5aO4i9A"
     },
     {
       "boothNo": "T26",
@@ -14924,7 +15326,8 @@
         "y": 2662.434,
         "w": 408.208,
         "h": 407.952
-      }
+      },
+      "youtubeLink": "https://youtu.be/DWcJFNfaw9c"
     },
     {
       "boothNo": "T27",
@@ -14961,7 +15364,8 @@
         "y": 2444.702,
         "w": 407.161,
         "h": 407.1
-      }
+      },
+      "youtubeLink": "https://youtu.be/7NOJPP7qMhI"
     },
     {
       "boothNo": "T28",
@@ -14976,20 +15380,20 @@
         "type": "polygon",
         "points": [
           [
-            5890.587,
-            2675.925
+            5704.375057036247,
+            2521.8765584446755
           ],
           [
-            5701.296,
-            2482.425
+            5515.10146695096,
+            2328.355070045154
           ],
           [
-            5793.153,
-            2392.566
+            5606.9388512793175,
+            2238.5788161837563
           ],
           [
-            5982.444,
-            2586.066
+            5796.212441364606,
+            2432.015127871834
           ]
         ]
       },
@@ -14998,7 +15402,8 @@
         "y": 2392.566,
         "w": 281.147,
         "h": 283.358
-      }
+      },
+      "youtubeLink": "https://youtu.be/lTRiuFIWV54"
     },
     {
       "boothNo": "T29",
@@ -15013,20 +15418,20 @@
         "type": "polygon",
         "points": [
           [
-            5633.733,
-            2241.946
+            5663.344888059702,
+            2151.5282170885494
           ],
           [
-            5850.025,
-            2026.182
+            5877.3535698294245,
+            1935.6904302908433
           ],
           [
-            6040.894,
-            2217.518
+            6068.214885394457,
+            2127.0825009042787
           ],
           [
-            5824.602,
-            2433.282
+            5851.866397654584,
+            2342.8351109905407
           ]
         ]
       },
@@ -15035,7 +15440,8 @@
         "y": 2026.182,
         "w": 407.161,
         "h": 407.1
-      }
+      },
+      "youtubeLink": "https://youtu.be/0p3hN6fYhVg"
     },
     {
       "boothNo": "T31",
@@ -15072,7 +15478,8 @@
         "y": 1828.406,
         "w": 190.411,
         "h": 190.466
-      }
+      },
+      "youtubeLink": "https://youtu.be/5K7OFI7NkzM"
     },
     {
       "boothNo": "T30",
@@ -15109,7 +15516,8 @@
         "y": 1937.193,
         "w": 186.508,
         "h": 186.477
-      }
+      },
+      "youtubeLink": "https://youtu.be/1i3jP2iz_y0"
     },
     {
       "boothNo": "T37",
@@ -15146,7 +15554,8 @@
         "y": 1478.503,
         "w": 186.508,
         "h": 186.477
-      }
+      },
+      "youtubeLink": "https://youtu.be/WcICVq0vczM"
     },
     {
       "boothNo": "T38",
@@ -15183,7 +15592,8 @@
         "y": 1676.073,
         "w": 186.508,
         "h": 186.477
-      }
+      },
+      "youtubeLink": "https://youtu.be/6xM7R1tqk14"
     },
     {
       "boothNo": "T39",
@@ -15220,7 +15630,8 @@
         "y": 1784.993,
         "w": 186.508,
         "h": 186.477
-      }
+      },
+      "youtubeLink": "https://youtu.be/2H5R5Yt0aXc"
     },
     {
       "boothNo": "T32",
@@ -15235,20 +15646,20 @@
         "type": "polygon",
         "points": [
           [
-            6236.285,
-            1850.696
+            6218.714547974413,
+            1793.0194386230628
           ],
           [
-            6425.332,
-            1664.92
+            6407.737444562899,
+            1607.2490309648958
           ],
           [
-            6518.217,
-            1759.44
+            6500.661167377399,
+            1701.7951806671265
           ],
           [
-            6329.17,
-            1945.216
+            6311.554706289978,
+            1887.5655883252934
           ]
         ]
       },
@@ -15257,7 +15668,8 @@
         "y": 1664.92,
         "w": 281.932,
         "h": 280.296
-      }
+      },
+      "youtubeLink": "https://youtu.be/FjHGZj2I_5o"
     },
     {
       "boothNo": "T33",
@@ -15294,7 +15706,8 @@
         "y": 1097.91,
         "w": 281.932,
         "h": 280.296
-      }
+      },
+      "youtubeLink": "https://youtu.be/KO1rE7SOKns"
     },
     {
       "boothNo": "T36",
@@ -15331,7 +15744,8 @@
         "y": 1372.233,
         "w": 186.508,
         "h": 186.477
-      }
+      },
+      "youtubeLink": "https://youtu.be/RdAxyqG0pY4"
     },
     {
       "boothNo": "T35",
@@ -15368,7 +15782,8 @@
         "y": 1263.513,
         "w": 186.508,
         "h": 186.477
-      }
+      },
+      "youtubeLink": "https://youtu.be/hPZ0F6V3-bM"
     },
     {
       "boothNo": "T34",
@@ -15405,7 +15820,8 @@
         "y": 1101.358,
         "w": 286.917,
         "h": 286.332
-      }
+      },
+      "youtubeLink": "https://youtu.be/f02mOEt11OQ"
     },
     {
       "boothNo": "L1-35",
@@ -15442,7 +15858,8 @@
         "y": 4940.575,
         "w": 116.29,
         "h": 160.73
-      }
+      },
+      "youtubeLink": "https://youtu.be/_l09HGuRE-s"
     },
     {
       "boothNo": "L1-36",
@@ -15479,7 +15896,8 @@
         "y": 4761.135,
         "w": 107.23,
         "h": 158.85
-      }
+      },
+      "youtubeLink": "https://youtu.be/n2MTfYkPbdA"
     },
     {
       "boothNo": "L1-15",
@@ -15516,7 +15934,8 @@
         "y": 5366.78,
         "w": 185.7,
         "h": 111.42
-      }
+      },
+      "youtubeLink": "https://youtu.be/6oQ1fzB1c9E"
     }
   ]
 }
