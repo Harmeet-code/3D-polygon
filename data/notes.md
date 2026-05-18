@@ -57,6 +57,14 @@ standard structure of JSON
   ]
 }
 ```
+
+Three steps:
+1. JSON → src/data/json/YourFloorName.json — booth geometry, meta.image: "YourFloorName.jpg", meta.fabricBounds, etc.
+2. Image → src/data/floor plan/YourFloorName.jpg — the floor plan image
+3. Manifest → add "YourFloorName" to the array in src/data/floors.json
+That's it. The tab system reads floors.json, creates a button labeled Floor N, and on click fetches the JSON + image automatically.
+
+
 Here's the recommended workflow:
 First — get calibration right globally. The 4 calibration values affect ALL booths. If those are wrong, the fabric coordinates you generate will be compensating for bad calibration, not reflecting real geometry. Use the debug tool to check a few reference booths that you know should be placed correctly.
 Then — tweak individual booths without touching calibration:

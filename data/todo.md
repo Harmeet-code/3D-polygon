@@ -52,19 +52,19 @@ A101-105,201-205,301-309,401-409,501-509,601-609,701-709,801-809,901-906,1001,10
 31. scaling is shifting and not changing size  DONE 
 19. with the above also see if the polygonArea function is correctly finding the area and see why polygon on clockwise or anticlockwise matters and if it being Used to ensure consistent winding order is also correct or not.     DONE
 41. align all booths     DONE 
+27. how would this be used for a multi story floor plan    DONE
 
 
 
-27. how would this be used for a multi story floor plan
 28. make sure that for diff JSON files(dynamically changing files) can be done without breaking
 30. add hooks, prompts, instructions for copilot
 33. display info for normal and heatmap which color means what 
 34. figure out what the high price/high price and sold and other combinations will e shown
-35. 
-40. 
 39. add walkable area colored grey and use that for finding routes
 42. understand the pathFinding functions and also figure out how the obstruction(booths are) and how to place a wall.
 43. figure out from the 2D code how does it do multifloor and find path in multifloor. how is the JSON for multifloor.how to maintain state in multifloor. 
+35. 
+40. 
 44. 
 
 
