@@ -113,10 +113,8 @@ export function boothMaterialFor(b, heatEnabled) {
 export let minPrice, maxPrice;
 
 export function buildBooths(data, heatEnabled) {
-  if (minPrice === undefined) {
-    minPrice = Math.min(...data.booths.map((b) => +b.price || 0));
-    maxPrice = Math.max(...data.booths.map((b) => +b.price || 1));
-  }
+  minPrice = Math.min(...data.booths.map((b) => +b.price || 0));
+  maxPrice = Math.max(...data.booths.map((b) => +b.price || 1));
 
   boothMeshes.length = 0;
   boothByNo.clear();

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { renderer, floor, floorTex, IMG_W, IMG_H, PLANE_W, PLANE_H } from '../scene/SceneSetup.js';
+import { renderer, floor, IMG_W, IMG_H, PLANE_W, PLANE_H } from '../scene/SceneSetup.js';
 import {
   fabricToPixel,
   pxToWorld,
@@ -87,7 +87,8 @@ export function initConsoleTools(data) {
 
     showImageInfo() {
       console.group('Image Info');
-      const image = floorTex.image;
+      const floorTex = /** @type {import('three').MeshStandardMaterial} */ (floor.material).map;
+      const image = /** @type {HTMLImageElement|undefined} */ (floorTex?.image);
       const cal = readCal();
       const info = {
         imageFile: data.meta.image,

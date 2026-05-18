@@ -1,10 +1,11 @@
 import * as THREE from 'three';
 import {
   initScene,
-  renderer,
+  swapFloor,
   scene,
   camera,
   controls,
+  renderer,
   PLANE_W,
   PLANE_H
 } from './scene/SceneSetup.js';
@@ -30,7 +31,7 @@ import { flyTo, focusMesh, highlight, updateSidebar } from './ui/Sidebar.js';
 import { sel } from './state.js';
 import { enrichData } from './data/enrichment.js';
 import { initConsoleTools } from './debug/ConsoleTools.js';
-import { initCoordDebug } from './ui/CoordDebug.js';
+import { reloadCoordDebug, clearOverlay } from './ui/CoordDebug.js';
 import { positionMarker } from './ui/BoothMarker.js';
 import { initInteraction } from './ui/Interaction.js';
 import {
@@ -49,26 +50,108 @@ import {
 } from './scene/AStarRoute.js';
 
 // Boot
-const data = await fetch('./data/booths_poly_v2.json').then((r) => r.json());
-enrichData(data);
-
 const stage = /** @type {HTMLElement} */ (document.getElementById('stage'));
-await initScene(stage);
+const loader = /** @type {HTMLElement} */ (document.getElementById('loader'));
+const floors = await fetch('./data/floors.json').then((r) => r.json());
+
+let currentFloor = null;
+let currentData = null;
+
+// Init one-time scene + UI
+await initScene(stage, null);
 initGrid(PLANE_W, PLANE_H);
-initCalibration(data);
 initInteraction();
 
-buildBooths(data, false);
-fillDropdowns(data);
-rebuildBlockedGrid();
+// Create floor tabs
+const floorTabs = /** @type {HTMLElement} */ (document.getElementById('floorTabs'));
+floors.forEach((name) => {
+  const btn = document.createElement('div');
+  btn.className = 'hudBtn';
+  btn.textContent = name.replace('DenverFloorPlan', 'Floor ');
+  btn.dataset.floor = name;
+  btn.addEventListener('click', () => loadFloor(name));
+  floorTabs.appendChild(btn);
+});
 
-initConsoleTools(data);
-initCoordDebug(data);
+// Load first floor
+loadFloor(floors[0]);
 
-// Calibration hooks
+// ── Core floor loader ──────────────────────────────────────────
+
+async function loadFloor(name) {
+  if (name === currentFloor) return;
+  loader.classList.add('visible');
+
+  const tabs = floorTabs.querySelectorAll('.hudBtn');
+  tabs.forEach((t) => t.classList.remove('active'));
+  const activeTab = floorTabs.querySelector(`[data-floor="${name}"]`);
+  if (activeTab) activeTab.classList.add('active');
+
+  try {
+    // Fetch JSON
+    const res = await fetch(`./data/json/${name}.json`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    enrichData(data);
+    currentFloor = name;
+    currentData = data;
+
+    // Swap floor texture
+    const imgPath = data.meta?.image ? `./data/floor plan/${data.meta.image}` : null;
+    await swapFloor(imgPath);
+
+    // Re-init calibration with new fabric bounds
+    initCalibration(data);
+    initGrid(PLANE_W, PLANE_H);
+
+    // Clear debug overlay
+    clearOverlay();
+
+    // Rebuild booths
+    const heatEnabled = /** @type {HTMLInputElement} */ (
+      document.getElementById('heatmap')
+    ).checked;
+    buildBooths(data, heatEnabled);
+    rebuildBlockedGrid();
+    fillDropdowns(data);
+
+    // Reset selection
+    if (sel.selected) {
+      highlight(sel.selected, false);
+      sel.selected = null;
+    }
+    updateSidebar(null);
+
+    // Reset route
+    clearRoute();
+    clearFollow();
+
+    // Reset camera to default view with animation
+    flyTo(new THREE.Vector3(70, 70, 90), new THREE.Vector3(0, 0, 0), 600);
+
+    // Reload debug tools
+    reloadCoordDebug(data);
+    initConsoleTools(data);
+
+    console.log(`Switched to ${name} (${data.booths.length} booths)`);
+  } catch (err) {
+    console.error(`Failed to load floor "${name}":`, err);
+    if (activeTab) activeTab.classList.remove('active');
+  } finally {
+    loader.classList.remove('visible');
+  }
+}
+
+// ── Calibration hooks ──────────────────────────────────────────
+
 function onCalChange() {
   persistCal();
-  buildBooths(data, /** @type {HTMLInputElement} */ (document.getElementById('heatmap')).checked);
+  if (!currentData) return;
+  buildBooths(
+    currentData,
+    /** @type {HTMLInputElement} */ (document.getElementById('heatmap')).checked
+  );
   rebuildBlockedGrid();
   applyFilters();
 }
@@ -82,6 +165,21 @@ function onCalChange() {
   scYEl.value = DEFAULT_CALIBRATION.scaleY.toFixed(3);
   onCalChange();
 });
+
+// ── Heatmap toggle ─────────────────────────────────────────────
+
+/** @type {HTMLInputElement} */ (document.getElementById('heatmap')).addEventListener(
+  'change',
+  () => {
+    if (!currentData) return;
+    buildBooths(
+      currentData,
+      /** @type {HTMLInputElement} */ (document.getElementById('heatmap')).checked
+    );
+    rebuildBlockedGrid();
+    applyFilters();
+  }
+);
 
 // Reset button
 /** @type {HTMLElement} */ (document.getElementById('resetBtn')).addEventListener('click', () => {
@@ -156,10 +254,11 @@ let touring = false,
     tourTimer = null;
     return;
   }
+  if (!currentData) return;
   clearRoute();
   let i = 0;
   tourTimer = setInterval(() => {
-    const b = data.booths[i % data.booths.length];
+    const b = currentData.booths[i % currentData.booths.length];
     const m = boothByNo.get(b.boothNo);
     if (m && m.visible) {
       if (sel.selected && sel.selected !== m) highlight(sel.selected, false);

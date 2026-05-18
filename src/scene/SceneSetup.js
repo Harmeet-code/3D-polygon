@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-export let scene, camera, renderer, controls, hemi, dir, floor, floorTex, grid;
+export let scene, camera, renderer, controls, hemi, dir, floor, grid;
 export let IMG_W, IMG_H, PLANE_W, PLANE_H;
 export const boothGroup = new THREE.Group();
 export const outlineGroup = new THREE.Group();
@@ -42,7 +42,62 @@ export function placeTooltipAt(worldPos, tooltip) {
   tooltip.style.top = `${cy}px`;
 }
 
-export async function initScene(stage) {
+function loadTexture(url) {
+  return new Promise((res) => {
+    if (!url) {
+      res(null);
+      return;
+    }
+    new THREE.TextureLoader().load(
+      encodeURI(url),
+      (tex) => {
+        tex.colorSpace = THREE.SRGBColorSpace;
+        res(tex);
+      },
+      undefined,
+      () => {
+        console.warn('Floor texture failed to load, using fallback');
+        res(null);
+      }
+    );
+  });
+}
+
+function calcPlaneSize(tex) {
+  if (tex) {
+    IMG_W = tex.image.width;
+    IMG_H = tex.image.height;
+  } else {
+    IMG_W = 1400;
+    IMG_H = 900;
+  }
+  PLANE_W = 140;
+  PLANE_H = PLANE_W * (IMG_H / IMG_W);
+}
+
+function buildFloorMesh(tex) {
+  const mat = new THREE.MeshStandardMaterial({
+    map: tex,
+    color: tex ? 0xffffff : 0x1a1a2e,
+    roughness: 0.95,
+    metalness: 0
+  });
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(PLANE_W, PLANE_H), mat);
+  mesh.rotation.x = -Math.PI / 2;
+  mesh.receiveShadow = true;
+  mesh.renderOrder = -10;
+  return mesh;
+}
+
+function buildGrid() {
+  const g = new THREE.GridHelper(PLANE_W, 60, 0x20324a, 0x132033);
+  g.position.y = 0.02;
+  g.material.opacity = 0.18;
+  g.material.transparent = true;
+  return g;
+}
+
+export async function initScene(stage, imagePath) {
   scene = new THREE.Scene();
   scene.fog = new THREE.Fog(0x05070b, 80, 240);
 
@@ -72,31 +127,32 @@ export async function initScene(stage) {
   dir.shadow.mapSize.set(2048, 2048);
   scene.add(dir);
 
-  floorTex = await new Promise((res, rej) =>
-    new THREE.TextureLoader().load(encodeURI('./data/DenverFloorPlan1.jpg'), res, undefined, rej)
-  );
-  floorTex.colorSpace = THREE.SRGBColorSpace;
-
-  IMG_W = floorTex.image.width;
-  IMG_H = floorTex.image.height;
-  PLANE_W = 140;
-  PLANE_H = PLANE_W * (IMG_H / IMG_W);
-
-  floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(PLANE_W, PLANE_H),
-    new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.95, metalness: 0 })
-  );
-  floor.rotation.x = -Math.PI / 2;
-  floor.receiveShadow = true;
+  const floorTex = await loadTexture(imagePath);
+  calcPlaneSize(floorTex);
+  floor = buildFloorMesh(floorTex);
   scene.add(floor);
 
-  grid = new THREE.GridHelper(PLANE_W, 60, 0x20324a, 0x132033);
-  grid.position.y = 0.02;
-  grid.material.opacity = 0.18;
-  grid.material.transparent = true;
+  grid = buildGrid();
   scene.add(grid);
-  floor.renderOrder = -10;
 
   scene.add(boothGroup);
   scene.add(outlineGroup);
+}
+
+export async function swapFloor(imagePath) {
+  const floorTex = await loadTexture(imagePath);
+  calcPlaneSize(floorTex);
+
+  const newFloor = buildFloorMesh(floorTex);
+  scene.remove(floor);
+  floor.geometry?.dispose();
+  floor.material?.dispose();
+  floor = newFloor;
+  scene.add(floor);
+
+  scene.remove(grid);
+  grid.geometry?.dispose();
+  grid.material?.dispose();
+  grid = buildGrid();
+  scene.add(grid);
 }

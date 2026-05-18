@@ -122,7 +122,12 @@
         </label>
       </div>
       <div id="debugStatus" class="debugStatus" style="margin-top:8px">Select a booth</div>
+      <div id="debugAspect" class="tiny" style="margin-top:4px"></div>
+      <div id="debugRef" class="tiny" style="margin-top:4px;cursor:pointer" title="Click to set/clear reference booth"></div>
       <div id="debugTable" style="margin-top:6px"></div>
+      <div class="pill" style="margin-top:6px;justify-content:center">
+        <input type="checkbox" id="debugShowOrigin" checked /> Show Origin
+      </div>
       <div class="btnRow" style="margin-top:8px">
         <button id="debugApply">Apply</button>
         <button class="secondary" id="debugCopyJson">Copy JSON</button>
@@ -134,11 +139,15 @@
 
   <main id="stage">
     <div id="hud">
-      <div class="hudBtn" id="camIso">Isometric</div>
-      <div class="hudBtn" id="camTop">Top</div>
-      <div class="hudBtn" id="camReset">Reset</div>
-      <div class="hudBtn" id="tour">Auto Tour</div>
+      <div id="hudLeft">
+        <div class="hudBtn" id="camIso">Isometric</div>
+        <div class="hudBtn" id="camTop">Top</div>
+        <div class="hudBtn" id="camReset">Reset</div>
+        <div class="hudBtn" id="tour">Auto Tour</div>
+      </div>
+      <div id="floorTabs"></div>
     </div>
+    <div id="loader"><div class="spinner"></div><span>Loading floor…</span></div>
     <div id="tooltip"></div>
     <div id="boothMarker" style="display:none;">
   <div class="markerHeader">
