@@ -41,4 +41,19 @@ export function enrichData(data) {
     b.price = b.price ?? demoPrice(b.boothNo);
     b.size = b.size || '10x10';
   }
+  data.meta.roads = data.meta.roads || [];
+  for (const r of data.meta.roads) {
+    r.width = r.width ?? 200;
+  }
+  data.meta.stairs = data.meta.stairs || [];
+  for (const s of data.meta.stairs) {
+    s.label = s.label || s.id;
+    s.type = s.type || 'staircase';
+    s.connects = s.connects || [];
+  }
+  data.meta.entrances = data.meta.entrances || [];
+  for (const e of data.meta.entrances) {
+    e.label = e.label || e.id;
+    e.description = e.description || '';
+  }
 }

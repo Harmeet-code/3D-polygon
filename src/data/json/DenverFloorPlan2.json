@@ -12,7 +12,64 @@
       "offsetY": 0,
       "scaleX": 1,
       "scaleY": 1
-    }
+    },
+    "roads": [
+      {
+        "id": "main-horizontal",
+        "points": [[500, 4340], [5695, 4340], [11000, 4340]],
+        "width": 250
+      },
+      {
+        "id": "cross-aisle-west",
+        "points": [[3000, 500], [3000, 4340], [3000, 8000]],
+        "width": 200
+      },
+      {
+        "id": "cross-aisle-east",
+        "points": [[8000, 500], [8000, 4340], [8000, 8000]],
+        "width": 200
+      },
+      {
+        "id": "upper-perimeter",
+        "points": [[500, 500], [5695, 500], [11000, 500]],
+        "width": 180
+      },
+      {
+        "id": "lower-perimeter",
+        "points": [[500, 8000], [5695, 8000], [11000, 8000]],
+        "width": 180
+      }
+    ],
+    "stairs": [
+      {
+        "id": "stair-north",
+        "label": "North Staircase",
+        "connects": ["DenverFloorPlan1", "DenverFloorPlan2"],
+        "position": { "x": 5695, "y": 4340 },
+        "type": "staircase"
+      },
+      {
+        "id": "stair-south",
+        "label": "South Staircase",
+        "connects": ["DenverFloorPlan1", "DenverFloorPlan2"],
+        "position": { "x": 3000, "y": 7500 },
+        "type": "staircase"
+      }
+    ],
+    "entrances": [
+      {
+        "id": "main-entrance",
+        "label": "Main Entrance",
+        "position": { "x": 5695, "y": 300 },
+        "description": "Main hall entrance from the convention center lobby."
+      },
+      {
+        "id": "side-entrance",
+        "label": "Side Entrance",
+        "position": { "x": 11000, "y": 4340 },
+        "description": "Side entrance leading to the parking lot."
+      }
+    ]
   },
   "booths": [
     {

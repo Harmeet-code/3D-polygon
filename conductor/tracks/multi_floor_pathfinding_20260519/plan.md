@@ -2,10 +2,10 @@
 
 ## Phase 1: JSON Schema & Data Layer
 
-- [ ] Task: Define road, stair, and entrance JSON schemas
-    - [ ] Write tests for schema validation
-    - [ ] Add `meta.roads[]` (polylines + width), `meta.stairs[]`, `meta.entrances[]` to floor JSON format
-    - [ ] Update `enrichment.js` to handle new meta fields
+- [~] Task: Define road, stair, and entrance JSON schemas
+    - [~] Write tests for schema validation (skipped per user)
+    - [x] Add `meta.roads[]` (polylines + width), `meta.stairs[]`, `meta.entrances[]` to floor JSON format
+    - [x] Update `enrichment.js` to handle new meta fields
 - [ ] Task: Build road polygon generator from polylines
     - [ ] Write tests for polyline-to-polygon offset math (miter joints, corridor generation)
     - [ ] Implement `polylineToCorridor(points, width)` utility returning corner vertices
