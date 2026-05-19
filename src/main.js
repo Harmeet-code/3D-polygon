@@ -45,6 +45,21 @@ import {
 import { positionMarker } from './ui/BoothMarker.js';
 import { initInteraction } from './ui/Interaction.js';
 import {
+  initPoiEditor,
+  setMode as poiSetMode,
+  setRotation as poiSetRotation,
+  applyPlacement as poiApply,
+  cancelPlacement as poiCancel
+} from './scene/PoiEditor.js';
+import {
+  initRoadEditor,
+  setMode as roadSetMode,
+  setWidth as roadSetWidth,
+  applyRoads as roadApply,
+  cancelRoads as roadCancel,
+  undoLastPoint as roadUndoPoint
+} from './scene/RoadEditor.js';
+import {
   aStar,
   findNearestFree,
   worldToCell,
@@ -77,6 +92,14 @@ let multiFloorRouteSeg = null;
 await initScene(stage, null);
 initGrid(PLANE_W, PLANE_H);
 initInteraction();
+initPoiEditor(
+  () => currentData,
+  () => currentFloor
+);
+initRoadEditor(
+  () => currentData,
+  () => currentFloor
+);
 
 // Create floor tabs
 const floorTabs = /** @type {HTMLElement} */ (document.getElementById('floorTabs'));
@@ -166,7 +189,11 @@ async function loadFloor(name, transitionStair) {
     buildPoiMarkers(data);
     fillDropdowns(data);
 
-    // Reset selection
+    // Reset selection + cancel editors
+    poiCancel();
+    roadCancel();
+    document.querySelectorAll('[data-poi-mode]').forEach((c) => c.classList.remove('active'));
+    document.querySelectorAll('[data-road-mode]').forEach((c) => c.classList.remove('active'));
     if (sel.selected) {
       highlight(sel.selected, false);
       sel.selected = null;
@@ -405,6 +432,92 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(stage.clientWidth, stage.clientHeight);
 });
+
+// ── POI Editor ───────────────────────────────────────────────
+
+document.querySelectorAll('[data-poi-mode]').forEach((el) => {
+  const chip = /** @type {HTMLElement} */ (el);
+  chip.addEventListener('click', () => {
+    const mode = /** @type {string} */ (chip.dataset.poiMode);
+    document.querySelectorAll('[data-poi-mode]').forEach((c) => c.classList.remove('active'));
+    const entered = poiSetMode(mode);
+    if (!entered) return;
+    chip.classList.add('active');
+  });
+});
+
+/** @type {HTMLInputElement} */ (document.getElementById('poiRotSlider')).addEventListener(
+  'input',
+  () => {
+    const val = Number(
+      /** @type {HTMLInputElement} */ (document.getElementById('poiRotSlider')).value
+    );
+    poiSetRotation(val);
+  }
+);
+
+/** @type {HTMLElement} */ (document.getElementById('poiApplyBtn')).addEventListener(
+  'click',
+  () => {
+    poiApply();
+    document.querySelectorAll('[data-poi-mode]').forEach((c) => c.classList.remove('active'));
+  }
+);
+
+/** @type {HTMLElement} */ (document.getElementById('poiCancelBtn')).addEventListener(
+  'click',
+  () => {
+    poiCancel();
+    document.querySelectorAll('[data-poi-mode]').forEach((c) => c.classList.remove('active'));
+  }
+);
+
+// ── Road Editor ──────────────────────────────────────────────
+
+document.querySelectorAll('[data-road-mode]').forEach((el) => {
+  const chip = /** @type {HTMLElement} */ (el);
+  chip.addEventListener('click', () => {
+    const mode = /** @type {string} */ (chip.dataset.roadMode);
+    document.querySelectorAll('[data-road-mode]').forEach((c) => c.classList.remove('active'));
+    const entered = roadSetMode(mode);
+    if (!entered) return;
+    chip.classList.add('active');
+  });
+});
+
+/** @type {HTMLInputElement} */ (document.getElementById('roadWidthSlider')).addEventListener(
+  'input',
+  () => {
+    const val = Number(
+      /** @type {HTMLInputElement} */ (document.getElementById('roadWidthSlider')).value
+    );
+    roadSetWidth(val);
+  }
+);
+
+/** @type {HTMLElement} */ (document.getElementById('roadApplyBtn')).addEventListener(
+  'click',
+  () => {
+    roadApply();
+    roadCancel();
+    document.querySelectorAll('[data-road-mode]').forEach((c) => c.classList.remove('active'));
+  }
+);
+
+/** @type {HTMLElement} */ (document.getElementById('roadUndoBtn')).addEventListener(
+  'click',
+  () => {
+    roadUndoPoint();
+  }
+);
+
+/** @type {HTMLElement} */ (document.getElementById('roadCancelBtn')).addEventListener(
+  'click',
+  () => {
+    roadCancel();
+    document.querySelectorAll('[data-road-mode]').forEach((c) => c.classList.remove('active'));
+  }
+);
 
 // Sidebar resize
 const sidebar = /** @type {HTMLElement} */ (document.getElementById('sidebar'));

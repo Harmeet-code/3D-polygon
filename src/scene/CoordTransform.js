@@ -82,4 +82,32 @@ export function pxToWorld(px, py) {
   };
 }
 
+/** Inverse of pxToWorld: world (x,z) → pixel (px,py) */
+export function worldToPx(x, z) {
+  return {
+    px: (x / PLANE_W + 0.5) * IMG_W,
+    py: (0.5 - z / PLANE_H) * IMG_H
+  };
+}
+
+/** Inverse of fabricToPixel: pixel (px,py) → fabric (x,y) */
+export function pixelToFabric(px, py) {
+  const cal = readCal();
+  const sx = baseScaleX * cal.scaleX;
+  const sy = baseScaleY * cal.scaleY;
+  return {
+    x: (px - cal.offsetX) / sx + fb.minX,
+    y: (py - cal.offsetY) / sy + fb.minY
+  };
+}
+
+/** Convert a world-unit length to fabric-unit length using current calibration. */
+export function worldToFabricLength(worldLen) {
+  const cal = readCal();
+  const sx = baseScaleX * cal.scaleX;
+  const pxPerWorld = IMG_W / PLANE_W;
+  const px = worldLen * pxPerWorld;
+  return px / sx;
+}
+
 export { offXEl, offYEl, scXEl, scYEl, DEFAULT_CALIBRATION, storeKey };

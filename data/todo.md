@@ -53,31 +53,25 @@ A101-105,201-205,301-309,401-409,501-509,601-609,701-709,801-809,901-906,1001,10
 19. with the above also see if the polygonArea function is correctly finding the area and see why polygon on clockwise or anticlockwise matters and if it being Used to ensure consistent winding order is also correct or not.     DONE
 41. align all booths     DONE 
 27. how would this be used for a multi story floor plan    DONE
+30. add hooks, prompts, instructions for copilot    DONE
+28. make sure that for diff JSON files(dynamically changing files) can be done without breaking    DONE
+47. make a 3D structure for entrance and stairs    DONE
+46. need to add a function like coordinate debug for adding staircase/entrnace with accurate fabric coordinates possibly a drag and drop or click in stair and then click in scene to place       DONE
+48. doors arent rotating   DONE
 
 
 
-28. make sure that for diff JSON files(dynamically changing files) can be done without breaking
-30. add hooks, prompts, instructions for copilot
 33. display info for normal and heatmap which color means what 
 34. figure out what the high price/high price and sold and other combinations will e shown
 39. add walkable area colored grey and use that for finding routes
 42. understand the pathFinding functions and also figure out how the obstruction(booths are) and how to place a wall.
 43. figure out from the 2D code how does it do multifloor and find path in multifloor. how is the JSON for multifloor.how to maintain state in multifloor. 
-35. 
-40. 
-44. 
+35. current path finding algo sometimes goes through a block and can go around entire block of booths need to understand this 
+40. add color indicators for heatmap, check which color means what in heatmap   
+44. need to check if the staircase and entrance work fine with diff floors
+45. check the routing algo for in-floor and between floor. add booth searching in path finding sidebar 
+49. in booth direction have the option to select floor and then only display booths of that floor 
+50. fix the coordinate debug tool 
 
 
 
-
-
-Here's the recommended workflow:
-First — get calibration right globally. The 4 calibration values affect ALL booths. If those are wrong, the fabric coordinates you generate will be compensating for bad calibration, not reflecting real geometry. Use the debug tool to check a few reference booths that you know should be placed correctly.
-Then — tweak individual booths without touching calibration:
-1. Select a booth in the debug dropdown
-2. Check its World X,Z values — does it look right in the 3D scene?
-3. If not, edit the World X,Z fields — the cyan overlay shows the new position live
-4. Click Apply — this reverse-calculates the correct fabric coordinates and rebuilds the mesh
-5. Move to the next booth
-Don't reset calibration between booths — that would break every other booth you've already fixed. Calibration is a one-time setup. Only reset calibration if you're starting over or if you notice all booths are systematically shifted in the same direction.
-One gotcha: after clicking Apply, the fabric coordinates are updated in memory but NOT saved to the JSON file. You need to click Copy JSON and paste the output into booths_poly_v2.json to persist your changes.

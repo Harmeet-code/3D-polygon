@@ -113,6 +113,43 @@
     </div>
 
     <div class="section">
+      <h3>POI Editor <span class="tiny" style="font-weight:400">Add / Remove</span></h3>
+      <div class="chipRow">
+        <div class="chip" data-poi-mode="add-stair">+ Stair</div>
+        <div class="chip" data-poi-mode="add-entrance">+ Entrance</div>
+        <div class="chip" data-poi-mode="remove" style="color:var(--bad);border-color:rgba(255,92,106,.35)">Remove</div>
+      </div>
+      <div id="poiEditorStatus" class="tiny" style="min-height:18px;margin-bottom:6px"></div>
+      <div class="row2" style="align-items:center">
+        <div>
+          <label>Rotation <b><span id="poiRotVal">0&deg;</span></b></label>
+          <input id="poiRotSlider" type="range" min="0" max="360" step="1" value="0" />
+        </div>
+        <div class="btnRow" style="margin-top:0">
+          <button id="poiApplyBtn" disabled>Apply</button>
+          <button class="secondary" id="poiCancelBtn" disabled>Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Road Editor <span class="tiny" style="font-weight:400">Draw walkable paths</span></h3>
+      <div class="chipRow">
+        <div class="chip" data-road-mode="add-road">+ Road</div>
+      </div>
+      <div id="roadEditorStatus" class="tiny" style="min-height:18px;margin-bottom:6px"></div>
+      <div>
+        <label>Width: <b><span id="roadWidthVal">2.0</span></b></label>
+        <input id="roadWidthSlider" type="range" min="0.3" max="6.0" step="0.1" value="2.0" />
+      </div>
+      <div class="btnRow" style="margin-top:6px">
+        <button id="roadApplyBtn" disabled>Apply</button>
+        <button class="secondary" id="roadUndoBtn" disabled>Undo Pt</button>
+        <button class="secondary" id="roadCancelBtn" disabled>Cancel</button>
+      </div>
+    </div>
+
+    <div class="section">
       <h3>Coordinate Debug</h3>
       <div class="row2">
         <input id="debugSelect" list="debugBoothList" placeholder="Search booth no…" style="min-width:0;border:1px solid var(--border);border-radius:12px;padding:10px 12px;background:rgba(0,0,0,.18);color:var(--text);font-size:13px;outline:none" />

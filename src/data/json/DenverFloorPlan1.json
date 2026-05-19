@@ -15,59 +15,178 @@
     },
     "roads": [
       {
-        "id": "main-horizontal",
-        "points": [[500, 4340], [5695, 4340], [11000, 4340]],
-        "width": 250
-      },
-      {
-        "id": "cross-aisle-west",
-        "points": [[3000, 500], [3000, 4340], [3000, 8000]],
-        "width": 200
-      },
-      {
-        "id": "cross-aisle-east",
-        "points": [[8000, 500], [8000, 4340], [8000, 8000]],
-        "width": 200
-      },
-      {
-        "id": "upper-perimeter",
-        "points": [[500, 500], [5695, 500], [11000, 500]],
-        "width": 180
-      },
-      {
         "id": "lower-perimeter",
-        "points": [[500, 8000], [5695, 8000], [11000, 8000]],
+        "points": [
+          [
+            500,
+            8000
+          ],
+          [
+            5695,
+            8000
+          ],
+          [
+            11000,
+            8000
+          ]
+        ],
         "width": 180
-      }
+      },
+      {
+        "points": [
+          [
+            11253.2,
+            6084.9
+          ],
+          [
+            11523.9,
+            6125.5
+          ],
+          [
+            11480.6,
+            7005.7
+          ],
+          [
+            9484.3,
+            7073.9
+          ],
+          [
+            9450.5,
+            6821.8
+          ]
+        ],
+        "width": 2
+      },
+
+  {
+    "id": "road-1",
+    "points": [
+      [
+        3110,
+        628
+      ],
+      [
+        10131,
+        868
+      ],
+      [
+        10369,
+        2583
+      ],
+      [
+        11119,
+        2970
+      ],
+      [
+        11130,
+        3854
+      ],
+      [
+        11150,
+        5830
+      ]
+    ],
+    "width": 84
+  }
+
     ],
     "stairs": [
       {
-        "id": "stair-north",
-        "label": "North Staircase",
-        "connects": ["DenverFloorPlan1", "DenverFloorPlan2"],
-        "position": { "x": 5695, "y": 4340 },
-        "type": "staircase"
-      },
-      {
-        "id": "stair-south",
-        "label": "South Staircase",
-        "connects": ["DenverFloorPlan1", "DenverFloorPlan2"],
-        "position": { "x": 3000, "y": 7500 },
-        "type": "staircase"
+        "id": "stair-placed-1",
+        "label": "Staircase 1",
+        "connects": [
+          "DenverFloorPlan1",
+          "DenverFloorPlan2"
+        ],
+        "position": {
+          "x": 6153.7,
+          "y": 4343.6
+        },
+        "type": "staircase",
+        "rotation": 0.0
       }
     ],
     "entrances": [
       {
-        "id": "main-entrance",
-        "label": "Main Entrance",
-        "position": { "x": 5695, "y": 300 },
-        "description": "Main hall entrance from the convention center lobby."
+        "id": "entrance-placed-1",
+        "label": "Entrance 1",
+        "position": {
+          "x": 2792.9,
+          "y": 1054.7
+        },
+        "rotation": 0.0
       },
       {
-        "id": "side-entrance",
-        "label": "Side Entrance",
-        "position": { "x": 11000, "y": 4340 },
-        "description": "Side entrance leading to the parking lot."
+        "id": "entrance-placed-1",
+        "label": "Entrance 1",
+        "position": {
+          "x": 1935.8,
+          "y": 1279.3
+        },
+        "rotation": 90.0
+      },
+      {
+        "id": "entrance-placed-1",
+        "label": "Entrance 1",
+        "position": {
+          "x": 1948.9,
+          "y": 2342.3
+        },
+        "rotation": 90.0
+      },
+      {
+        "id": "entrance-placed-1",
+        "label": "Entrance 1",
+        "position": {
+          "x": 3615.8,
+          "y": 4269.8
+        },
+        "rotation": 0.0
+      },
+      {
+        "id": "entrance-placed-1",
+        "label": "Entrance 1",
+        "position": {
+          "x": 4906.6,
+          "y": 4279.7
+        },
+        "rotation": 0.0
+      },
+      {
+        "id": "entrance-placed-1",
+        "label": "Entrance 1",
+        "position": {
+          "x": 5514.3,
+          "y": 4288.9
+        },
+        "rotation": 0.0
+      },
+      {
+        "id": "entrance-placed-1",
+        "label": "Entrance 1",
+        "position": {
+          "x": 6821.8,
+          "y": 5674.7
+        },
+        "rotation": 90.0
+      },
+      {
+        "id": "entrance-placed-1",
+        "label": "Entrance 1",
+        "position": {
+          "x": 11162.2,
+          "y": 6124.0
+        },
+        "rotation": 90.0
+      },
+      {
+        "id": "entrance-placed-1",
+        "label": "Entrance 1",
+        "position": {
+          "x": 9441.1,
+          "y": 6747.6
+        },
+        "rotation": 0.0
       }
     ]
   },

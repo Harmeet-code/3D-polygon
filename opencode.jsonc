@@ -4,7 +4,7 @@
     "opencode-scheduler",
     "opencode-conductor-plugin",
     "opencode-firecrawl",
-    "@daytona/opencode",
+    // "@daytona/opencode",
     "@zenobius/opencode-skillful"
   ],
   "agent": {

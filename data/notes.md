@@ -164,4 +164,5 @@ Pre-rasterize the bounding boxes once, and the pathfinder just reads a boolean a
 ---
 For the chosen ones: There's a deeper insight hiding in your data. fabricBBox per booth is the axis-aligned bounding box in design space. But your booths rotate? No — they don't. Every polygon axis-aligned with the floor plan. So fabricBBox is actually the tight bounding box, meaning you could skip storing polygon points entirely for rectangular booths (~80% of them) and reconstruct the geometry from {x, y, w, h} alone. The JSON drops from 15K lines to ~3K. Your parser gets 5x faster. And the irregular booths (the remaining 20%) can be flagged with "type":"poly" vs "type":"rect". This isn't a micro-optimization — it's a data model insight that changes how you think about the problem from first principles.
 
+
     ```
