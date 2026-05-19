@@ -50,17 +50,17 @@
 
 ## Phase 4: Visualization & UI
 
-- [x] Task: Render road overlay mesh
+- [x] Task: Render road overlay mesh `554a636`
     - [~] Write tests for road mesh generation from corridor polygons (skipped per user)
     - [x] Build translucent dark-grey `MeshBasicMaterial` surface (`0x2a2a2a`, opacity 0.25)
     - [x] Render road outline with `LineLoop` segments
     - [x] Integrate into `loadFloor` rebuild cycle
-- [x] Task: Build stair and entrance POI markers
+- [x] Task: Build stair and entrance POI markers `554a636`
     - [~] Write tests for POI click interaction (skipped per user)
     - [x] Create 3D cylinder markers at stair positions
     - [x] Add click handler to show info in sidebar/tooltip
     - [x] Add entrance point markers (glowing circle + label)
-- [x] Task: Update route rendering for multi-floor display
+- [x] Task: Update route rendering for multi-floor display `554a636`
     - [~] Write tests for per-floor route segment extraction (skipped per user)
     - [x] Show only current floor's route segment
     - [x] Highlight stair connection point with pulsing ring/beam
