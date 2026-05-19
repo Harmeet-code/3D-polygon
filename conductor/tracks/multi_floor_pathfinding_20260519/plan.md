@@ -2,7 +2,7 @@
 
 ## Phase 1: JSON Schema & Data Layer
 
-- [~] Task: Define road, stair, and entrance JSON schemas
+- [x] Task: Define road, stair, and entrance JSON schemas `c5ef2c6`
     - [~] Write tests for schema validation (skipped per user)
     - [x] Add `meta.roads[]` (polylines + width), `meta.stairs[]`, `meta.entrances[]` to floor JSON format
     - [x] Update `enrichment.js` to handle new meta fields
