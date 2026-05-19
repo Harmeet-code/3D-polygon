@@ -65,6 +65,67 @@ Three steps:
 That's it. The tab system reads floors.json, creates a button labeled Floor N, and on click fetches the JSON + image automatically.
 
 
+Phase 1 — Data Layer (just completed)
+src/data/enrichment.js — Now handles meta.roads[], meta.stairs[], meta.entrances[]. If missing, defaults to []. Fills in sensible defaults (width, label, type).
+src/scene/PolylineCorridor.js — polylineToCorridor(points, radius) takes a polyline centerline + half-width and returns a closed polygon with mitered corners. Used later to render road surfaces and mark grid cells as walkable.
+src/scene/StairMap.js — Fetches all floor JSONs at boot, cross-references stairs by shared id. Exports:
+- stairToGridCell(id, floorName) → grid cell for A*
+- stairToWorldPos(id, floorName) → 3D position for camera fly-to
+- findConnectingStairs(floorA, floorB) → which stairs connect two floors
+How to define roads, stairs, entrances in your JSON
+Edit src/data/json/DenverFloorPlan1.json (and DenverFloorPlan2.json) inside meta:
+{
+  "meta": {
+    "image": "DenverFloorPlan1.jpg",
+    "fabricBounds": { "minX": 416, "minY": 369, "maxX": 11390, "maxY": 8319 },
+    "roads": [
+      {
+        "id": "main-aisle",
+        "points": [[500, 4340], [5695, 4340], [11000, 4340]],
+        "width": 250   // half-width per side (total corridor = 500 fabric units)
+      },
+      {
+        "id": "cross-aisle",
+        "points": [[3000, 500], [3000, 4340], [3000, 8000]],
+        "width": 200
+      }
+    ],
+    "stairs": [
+      {
+        "id": "stair-north",           // SHARED across floors — same id in both JSONs
+        "label": "North Staircase",
+        "connects": ["DenverFloorPlan1", "DenverFloorPlan2"],
+        "position": { "x": 5695, "y": 4340 },
+        "type": "staircase"            // or "elevator"
+      }
+    ],
+    "entrances": [
+      {
+        "id": "main-entrance",
+        "label": "Main Entrance",
+        "position": { "x": 5695, "y": 300 },
+        "description": "Main hall entrance from the convention center lobby."
+      }
+    ]
+  }
+}
+Road placement tips
+- Points are in fabric coordinates (the raw [x, y] units from your JSON booth data).
+- Draw polylines along centerlines of actual aisles in your floor plan image.
+- width is half-width — a road with width: 250 creates a corridor 500 units wide.
+- For a cross/intersection, define two roads that cross at a shared point.
+- Roads don't need to be pixel-perfect — the A* treats the entire corridor as walkable.
+Stairs rules
+- A stair on Floor 1 and the matching stair on Floor 2 must share the same id string.
+- Positions can differ per floor (stairs aren't always in the same pixel location on every floor plan).
+- connects tells the system which floors this stair links.
+What happens next in Phase 2
+The road data will be used to:
+1. Replace the current Uint8Array blocked grid with a Float32Array costGrid
+2. Mark road corridor cells as 1.0 (walkable), everything else as Infinity
+3. Booth cells override roads (booth wins)
+4. A* will only route along road corridors
+
 Here's the recommended workflow:
 First — get calibration right globally. The 4 calibration values affect ALL booths. If those are wrong, the fabric coordinates you generate will be compensating for bad calibration, not reflecting real geometry. Use the debug tool to check a few reference booths that you know should be placed correctly.
 Then — tweak individual booths without touching calibration:

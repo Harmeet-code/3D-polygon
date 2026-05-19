@@ -1,0 +1,15 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "opencode-scheduler",
+    "opencode-conductor-plugin",
+    "opencode-firecrawl",
+    "@daytona/opencode",
+    "@zenobius/opencode-skillful"
+  ],
+  "agent": {
+    "conductor": {
+      "model": "google/gemini-3-flash"
+    }
+  }
+}

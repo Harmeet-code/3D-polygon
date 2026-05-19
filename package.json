@@ -27,6 +27,8 @@
     "check": "bun lint && bun format:check && bun typecheck"
   },
   "dependencies": {
+    "opencode-conductor-plugin": "^1.32.0",
+    "opencode-scheduler": "^1.3.0",
     "three": "^0.184.0"
   },
   "devDependencies": {
