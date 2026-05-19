@@ -33,16 +33,16 @@
 
 ## Phase 3: Multi-Floor Routing Engine
 
-- [x] Task: Build `multiFloorAStar()` function
+- [x] Task: Build `multiFloorAStar()` function `d27e922`
     - [~] Write tests for cross-floor route discovery (skipped per user)
     - [x] Implement stair chain search across floors
     - [x] Compute per-floor A* segments via inline A* on cached grids
     - [x] Concatenate waypoints with stair penalty cost
-- [x] Task: Wire multi-floor routing into UI
+- [x] Task: Wire multi-floor routing into UI `d27e922`
     - [~] Write tests for correct route segment selection when switching floors (skipped per user)
     - [x] Update route button handler to detect cross-floor routing
     - [x] Store the full multi-floor route per floor in a lookup
-- [x] Task: Tab-switch camera animation
+- [x] Task: Tab-switch camera animation `d27e922`
     - [~] Write tests for stair world position lookup (skipped per user)
     - [x] Before `loadFloor`, detect the stair used for transition
     - [x] After `loadFloor`, call `flyTo` targeting the stair's world position
