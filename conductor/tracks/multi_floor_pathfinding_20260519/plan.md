@@ -6,7 +6,7 @@
     - [~] Write tests for schema validation (skipped per user)
     - [x] Add `meta.roads[]` (polylines + width), `meta.stairs[]`, `meta.entrances[]` to floor JSON format
     - [x] Update `enrichment.js` to handle new meta fields
-- [x] Task: Build road polygon generator from polylines
+- [x] Task: Build road polygon generator from polylines `e902ab6`
     - [~] Write tests for polyline-to-polygon offset math (miter joints, corridor generation) (skipped per user)
     - [x] Implement `polylineToCorridor(points, width)` utility returning corner vertices
 - [ ] Task: Build stair matching cross-reference
