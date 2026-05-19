@@ -33,19 +33,19 @@
 
 ## Phase 3: Multi-Floor Routing Engine
 
-- [ ] Task: Build `multiFloorAStar()` function
-    - [ ] Write tests for cross-floor route discovery
-    - [ ] Implement stair chain search across floors
-    - [ ] Compute per-floor A* segments via existing `aStar()`
-    - [ ] Concatenate waypoints with stair penalty cost
-- [ ] Task: Wire multi-floor routing into UI
-    - [ ] Write tests for correct route segment selection when switching floors
-    - [ ] Update route button handler to detect cross-floor routing
-    - [ ] Store the full multi-floor route per floor in a lookup
-- [ ] Task: Tab-switch camera animation
-    - [ ] Write tests for stair world position lookup
-    - [ ] Before `loadFloor`, detect the stair used for transition
-    - [ ] After `loadFloor`, call `flyTo` targeting the stair's world position
+- [x] Task: Build `multiFloorAStar()` function
+    - [~] Write tests for cross-floor route discovery (skipped per user)
+    - [x] Implement stair chain search across floors
+    - [x] Compute per-floor A* segments via inline A* on cached grids
+    - [x] Concatenate waypoints with stair penalty cost
+- [x] Task: Wire multi-floor routing into UI
+    - [~] Write tests for correct route segment selection when switching floors (skipped per user)
+    - [x] Update route button handler to detect cross-floor routing
+    - [x] Store the full multi-floor route per floor in a lookup
+- [x] Task: Tab-switch camera animation
+    - [~] Write tests for stair world position lookup (skipped per user)
+    - [x] Before `loadFloor`, detect the stair used for transition
+    - [x] After `loadFloor`, call `flyTo` targeting the stair's world position
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Multi-Floor Routing Engine' (Protocol in workflow.md)
 
 ## Phase 4: Visualization & UI

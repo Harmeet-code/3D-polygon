@@ -32,7 +32,8 @@ import { sel } from './state.js';
 import { enrichData } from './data/enrichment.js';
 import { initConsoleTools } from './debug/ConsoleTools.js';
 import { reloadCoordDebug, clearOverlay } from './ui/CoordDebug.js';
-import { buildStairMap } from './scene/StairMap.js';
+import { buildStairMap, stairToWorldPos } from './scene/StairMap.js';
+import { multiFloorAStar } from './scene/MultiFloorRoute.js';
 import { positionMarker } from './ui/BoothMarker.js';
 import { initInteraction } from './ui/Interaction.js';
 import {
@@ -57,6 +58,12 @@ const floors = await fetch('./data/floors.json').then((r) => r.json());
 
 let currentFloor = null;
 let currentData = null;
+/** @type {Record<string, any>} */
+const floorDataMap = {};
+/** @type {Record<string, string>} */
+const boothToFloor = {};
+/** @type {{ segments: Array<{floorName:string,worldPoints:Array<{x:number,z:number}>}>, stairUsed: string|null } | null} */
+let multiFloorRouteSeg = null;
 
 // Init one-time scene + UI
 await initScene(stage, null);
@@ -70,19 +77,45 @@ floors.forEach((name) => {
   btn.className = 'hudBtn';
   btn.textContent = name.replace('DenverFloorPlan', 'Floor ');
   btn.dataset.floor = name;
-  btn.addEventListener('click', () => loadFloor(name));
+  btn.addEventListener('click', () => {
+    // If cross-floor route active, note transition stair
+    if (multiFloorRouteSeg && currentFloor && multiFloorRouteSeg.stairUsed) {
+      const curSeg = multiFloorRouteSeg.segments.find((s) => s.floorName === currentFloor);
+      const nextSeg = multiFloorRouteSeg.segments.find((s) => s.floorName === name);
+      if (curSeg && nextSeg) {
+        loadFloor(name, multiFloorRouteSeg.stairUsed);
+        return;
+      }
+    }
+    loadFloor(name);
+  });
   floorTabs.appendChild(btn);
 });
 
-// Build cross-floor stair map (fires parallel fetches for all floors)
+// Build cross-floor stair map + pre-fetch all floor data
 buildStairMap(floors);
+(async () => {
+  for (const name of floors) {
+    try {
+      const res = await fetch(`./data/json/${name}.json`);
+      const data = await res.json();
+      enrichData(data);
+      floorDataMap[name] = data;
+      for (const b of data.booths) {
+        boothToFloor[b.boothNo] = name;
+      }
+    } catch (e) {
+      console.warn(`Failed to pre-fetch floor "${name}"`, e);
+    }
+  }
+})();
 
 // Load first floor
 loadFloor(floors[0]);
 
 // ── Core floor loader ──────────────────────────────────────────
 
-async function loadFloor(name) {
+async function loadFloor(name, transitionStair) {
   if (name === currentFloor) return;
   loader.classList.add('visible');
 
@@ -131,8 +164,26 @@ async function loadFloor(name) {
     clearRoute();
     clearFollow();
 
-    // Reset camera to default view with animation
-    flyTo(new THREE.Vector3(70, 70, 90), new THREE.Vector3(0, 0, 0), 600);
+    // Draw multi-floor route segment for this floor
+    if (multiFloorRouteSeg) {
+      const seg = multiFloorRouteSeg.segments.find((s) => s.floorName === name);
+      if (seg) {
+        drawRoute(seg.worldPoints);
+        followRoute(seg.worldPoints);
+      }
+    }
+
+    // Animate to stair if transitioning
+    if (transitionStair) {
+      const wp = stairToWorldPos(transitionStair, name);
+      if (wp) {
+        flyTo(new THREE.Vector3(wp.x + 30, 30, wp.z + 34), new THREE.Vector3(wp.x, 0.1, wp.z), 600);
+      } else {
+        flyTo(new THREE.Vector3(70, 70, 90), new THREE.Vector3(0, 0, 0), 600);
+      }
+    } else {
+      flyTo(new THREE.Vector3(70, 70, 90), new THREE.Vector3(0, 0, 0), 600);
+    }
 
     // Reload debug tools
     reloadCoordDebug(data);
@@ -193,29 +244,68 @@ function onCalChange() {
 
 // Routing
 /** @type {HTMLElement} */ (document.getElementById('routeBtn')).addEventListener('click', () => {
-  const from = boothCenterWorld(fromSelect.value);
-  const to = boothCenterWorld(toSelect.value);
+  const fromNo = fromSelect.value;
+  const toNo = toSelect.value;
+  if (!fromNo || !toNo) return;
 
-  let s = findNearestFree(worldToCell(from.x, from.z));
-  let t = findNearestFree(worldToCell(to.x, to.z));
-
-  const path = aStar(s, t);
-  if (!path) {
-    alert('No route found. Try other booths or increase CELL size.');
+  const fromFloor = boothToFloor[fromNo];
+  const toFloor = boothToFloor[toNo];
+  if (!fromFloor || !toFloor) {
+    alert('Booth not found on any floor.');
     return;
   }
 
-  const wp = [
-    { x: from.x, z: from.z },
-    ...path.map((p) => cellToWorld(p.r, p.c)),
-    { x: to.x, z: to.z }
-  ];
+  if (fromFloor === currentFloor && toFloor === currentFloor) {
+    // Single-floor route (existing behavior)
+    const from = boothCenterWorld(fromNo);
+    const to = boothCenterWorld(toNo);
+    let s = findNearestFree(worldToCell(from.x, from.z));
+    let t = findNearestFree(worldToCell(to.x, to.z));
+    const path = aStar(s, t);
+    if (!path) {
+      alert('No route found. Try other booths or increase CELL size.');
+      return;
+    }
+    const wp = [
+      { x: from.x, z: from.z },
+      ...path.map((p) => cellToWorld(p.r, p.c)),
+      { x: to.x, z: to.z }
+    ];
+    drawRoute(wp);
+    multiFloorRouteSeg = null;
+    const start = new THREE.Vector3(from.x, 0.1, from.z);
+    flyTo(start.clone().add(new THREE.Vector3(30, 30, 34)), start.clone(), 900);
+    followRoute(wp);
+    return;
+  }
 
-  drawRoute(wp);
+  // Cross-floor route
+  clearRoute();
+  const result = multiFloorAStar(fromFloor, fromNo, toFloor, toNo, floorDataMap);
+  if (!result) {
+    alert('No cross-floor route found. Ensure stairs connect these floors.');
+    return;
+  }
 
-  const start = new THREE.Vector3(from.x, 0.1, from.z);
-  flyTo(start.clone().add(new THREE.Vector3(30, 30, 34)), start.clone(), 900);
-  followRoute(wp);
+  multiFloorRouteSeg = result;
+
+  // Draw current floor's segment
+  const curSeg = result.segments.find((s) => s.floorName === currentFloor);
+  if (curSeg) {
+    drawRoute(curSeg.worldPoints);
+    followRoute(curSeg.worldPoints);
+    const start = curSeg.worldPoints[0];
+    if (start) {
+      flyTo(
+        new THREE.Vector3(start.x + 30, 30, start.z + 34),
+        new THREE.Vector3(start.x, 0.1, start.z),
+        900
+      );
+    }
+  } else {
+    // Switch to start floor
+    loadFloor(fromFloor);
+  }
 });
 
 /** @type {HTMLElement} */ (document.getElementById('clearRouteBtn')).addEventListener(
