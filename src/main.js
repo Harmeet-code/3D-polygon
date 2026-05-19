@@ -34,6 +34,14 @@ import { initConsoleTools } from './debug/ConsoleTools.js';
 import { reloadCoordDebug, clearOverlay } from './ui/CoordDebug.js';
 import { buildStairMap, stairToWorldPos } from './scene/StairMap.js';
 import { multiFloorAStar } from './scene/MultiFloorRoute.js';
+import { buildRoadOverlay, clearRoadOverlay } from './scene/RoadOverlay.js';
+import {
+  buildPoiMarkers,
+  clearPoiMarkers,
+  highlightRouteStair,
+  clearRouteStairHighlight,
+  updateRouteStairPulse
+} from './scene/PoiMarkers.js';
 import { positionMarker } from './ui/BoothMarker.js';
 import { initInteraction } from './ui/Interaction.js';
 import {
@@ -142,8 +150,11 @@ async function loadFloor(name, transitionStair) {
     initCalibration(data);
     initGrid(PLANE_W, PLANE_H);
 
-    // Clear debug overlay
+    // Clear overlays
     clearOverlay();
+    clearRoadOverlay();
+    clearPoiMarkers();
+    clearRouteStairHighlight();
 
     // Rebuild booths
     const heatEnabled = /** @type {HTMLInputElement} */ (
@@ -151,6 +162,8 @@ async function loadFloor(name, transitionStair) {
     ).checked;
     buildBooths(data, heatEnabled);
     rebuildCostGrid(data);
+    buildRoadOverlay(data);
+    buildPoiMarkers(data);
     fillDropdowns(data);
 
     // Reset selection
@@ -175,6 +188,7 @@ async function loadFloor(name, transitionStair) {
 
     // Animate to stair if transitioning
     if (transitionStair) {
+      highlightRouteStair(transitionStair, data);
       const wp = stairToWorldPos(transitionStair, name);
       if (wp) {
         flyTo(new THREE.Vector3(wp.x + 30, 30, wp.z + 34), new THREE.Vector3(wp.x, 0.1, wp.z), 600);
@@ -239,11 +253,16 @@ function onCalChange() {
 // Reset button
 /** @type {HTMLElement} */ (document.getElementById('resetBtn')).addEventListener('click', () => {
   clearRoute();
+  clearRouteStairHighlight();
+  multiFloorRouteSeg = null;
   flyTo(new THREE.Vector3(70, 70, 90), new THREE.Vector3(0, 0, 0), 900);
 });
 
 // Routing
 /** @type {HTMLElement} */ (document.getElementById('routeBtn')).addEventListener('click', () => {
+  clearRoute();
+  clearRouteStairHighlight();
+  multiFloorRouteSeg = null;
   const fromNo = fromSelect.value;
   const toNo = toSelect.value;
   if (!fromNo || !toNo) return;
@@ -310,7 +329,11 @@ function onCalChange() {
 
 /** @type {HTMLElement} */ (document.getElementById('clearRouteBtn')).addEventListener(
   'click',
-  clearRoute
+  () => {
+    clearRoute();
+    clearRouteStairHighlight();
+    multiFloorRouteSeg = null;
+  }
 );
 /** @type {HTMLInputElement} */ (document.getElementById('followCam')).addEventListener(
   'change',
@@ -370,6 +393,7 @@ function tick() {
   controls.update();
   positionMarker();
   updateRouteAnimation();
+  updateRouteStairPulse();
   renderer.render(scene, camera);
   requestAnimationFrame(tick);
 }

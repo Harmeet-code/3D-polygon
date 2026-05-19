@@ -3,6 +3,7 @@ import { camera, renderer, placeTooltipAt } from '../scene/SceneSetup.js';
 import { boothMeshes } from '../scene/BoothBuilder.js';
 import { highlight, updateSidebar, focusMesh } from './Sidebar.js';
 import { openMarkerFor } from './BoothMarker.js';
+import { handlePoiClick, poiMeshes } from '../scene/PoiMarkers.js';
 import { sel } from '../state.js';
 
 const tooltip = /** @type {HTMLElement} */ (document.getElementById('tooltip'));
@@ -46,12 +47,16 @@ export function initInteraction() {
   });
 
   renderer.domElement.addEventListener('click', () => {
-    if (!sel.hovered) return;
+    // Check POI click first
+    raycaster.setFromCamera(mouse, camera);
+    const poiHits = raycaster.intersectObjects(poiMeshes, false);
+    if (handlePoiClick(poiHits)) return;
 
+    // Then check booth click
+    if (!sel.hovered) return;
     if (sel.selected && sel.selected !== sel.hovered) highlight(sel.selected, false);
     sel.selected = sel.hovered;
     highlight(sel.selected, true);
-
     updateSidebar(sel.selected.userData.booth);
     focusMesh(sel.selected);
     openMarkerFor(sel.selected);
