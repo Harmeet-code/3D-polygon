@@ -32,6 +32,7 @@ import { sel } from './state.js';
 import { enrichData } from './data/enrichment.js';
 import { initConsoleTools } from './debug/ConsoleTools.js';
 import { reloadCoordDebug, clearOverlay } from './ui/CoordDebug.js';
+import { buildStairMap } from './scene/StairMap.js';
 import { positionMarker } from './ui/BoothMarker.js';
 import { initInteraction } from './ui/Interaction.js';
 import {
@@ -72,6 +73,9 @@ floors.forEach((name) => {
   btn.addEventListener('click', () => loadFloor(name));
   floorTabs.appendChild(btn);
 });
+
+// Build cross-floor stair map (fires parallel fetches for all floors)
+buildStairMap(floors);
 
 // Load first floor
 loadFloor(floors[0]);

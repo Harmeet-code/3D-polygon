@@ -9,9 +9,9 @@
 - [x] Task: Build road polygon generator from polylines `e902ab6`
     - [~] Write tests for polyline-to-polygon offset math (miter joints, corridor generation) (skipped per user)
     - [x] Implement `polylineToCorridor(points, width)` utility returning corner vertices
-- [ ] Task: Build stair matching cross-reference
-    - [ ] Write tests for stair map construction
-    - [ ] Implement cross-floor stair map built from all floor JSONs at boot
+- [x] Task: Build stair matching cross-reference
+    - [~] Write tests for stair map construction (skipped per user)
+    - [x] Implement cross-floor stair map built from all floor JSONs at boot
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: JSON Schema & Data Layer' (Protocol in workflow.md)
 
 ## Phase 2: Road Network Grid Integration
