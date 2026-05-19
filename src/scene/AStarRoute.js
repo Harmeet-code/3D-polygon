@@ -1,6 +1,8 @@
 import * as THREE from 'three';
-import { scene } from './SceneSetup.js';
+import { scene, PLANE_W, PLANE_H } from './SceneSetup.js';
 import { boothMeshes } from './BoothBuilder.js';
+import { fabricToPixel, pxToWorld } from './CoordTransform.js';
+import { distSqToPolyline } from './PolylineCorridor.js';
 import { flyTo } from '../ui/Sidebar.js';
 
 const CELL = 1.2;
@@ -10,14 +12,14 @@ export let cols = 0,
 let halfW = 0,
   halfH = 0;
 const idx = (r, c) => r * cols + c;
-let blocked = new Uint8Array(0);
+let costGrid = new Float32Array();
 
-export function initGrid(PLANE_W, PLANE_H) {
-  halfW = PLANE_W / 2;
-  halfH = PLANE_H / 2;
-  cols = Math.ceil(PLANE_W / CELL);
-  rows = Math.ceil(PLANE_H / CELL);
-  blocked = new Uint8Array(rows * cols);
+export function initGrid(pw, ph) {
+  halfW = pw / 2;
+  halfH = ph / 2;
+  cols = Math.ceil(pw / CELL);
+  rows = Math.ceil(ph / CELL);
+  costGrid = new Float32Array(rows * cols);
 }
 
 const DEMO_BLOCKED_BOOTHS = /** @type {Set<string>} */ (new Set());
@@ -34,8 +36,25 @@ export function cellToWorld(r, c) {
   return { x, z };
 }
 
-export function rebuildBlockedGrid() {
-  blocked = new Uint8Array(rows * cols);
+let fbMinX = 0,
+  fbMaxX = 0,
+  fbMinY = 0,
+  fbMaxY = 0;
+
+const INF = Infinity;
+
+export function rebuildCostGrid(data) {
+  costGrid = new Float32Array(rows * cols).fill(INF);
+
+  // Store fabric bounds for scale computation
+  if (data?.meta?.fabricBounds) {
+    fbMinX = data.meta.fabricBounds.minX;
+    fbMaxX = data.meta.fabricBounds.maxX;
+    fbMinY = data.meta.fabricBounds.minY;
+    fbMaxY = data.meta.fabricBounds.maxY;
+  }
+
+  // Booth AABB cells → Infinity
   for (const m of boothMeshes) {
     const b = m.userData.booth;
     if (DEMO_BLOCKED_BOOTHS.has(/** @type {string} */ (b.boothNo))) continue;
@@ -56,7 +75,63 @@ export function rebuildBlockedGrid() {
 
     for (let r = r0; r <= r1; r++) {
       for (let c = c0; c <= c1; c++) {
-        blocked[idx(r, c)] = 1;
+        costGrid[idx(r, c)] = INF;
+      }
+    }
+  }
+
+  // Road corridor cells → 1.0
+  const roads = data?.meta?.roads || [];
+  for (const road of roads) {
+    const radius = road.width || 200;
+    // Convert road polyline to world coords for distance checks
+    const worldPts = road.points.map((/** @type {number[]} */ pt) => {
+      const { px, py } = fabricToPixel(pt[0], pt[1]);
+      return pxToWorld(px, py);
+    });
+    // Compute approximate world-space half-width
+    const fabricRangeX = fbMaxX - fbMinX;
+    const fabricRangeY = fbMaxY - fbMinY;
+    const scaleX = PLANE_W / fabricRangeX;
+    const scaleY = PLANE_H / fabricRangeY;
+    const worldRadius = radius * ((scaleX + scaleY) / 2);
+
+    const polylineWp = worldPts.map((/** @type {{x:number,z:number}} */ wp) => [wp.x, wp.z]);
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const ni = idx(r, c);
+        if (costGrid[ni] === INF) {
+          const { x, z } = cellToWorld(r, c);
+          const dSq = distSqToPolyline([x, z], polylineWp);
+          if (dSq <= worldRadius * worldRadius) {
+            costGrid[ni] = 1.0;
+          }
+        }
+      }
+    }
+  }
+
+  // Stair cells → 1.0 (accessible even if overlapping booth)
+  const stairs = data?.meta?.stairs || [];
+  for (const s of stairs) {
+    if (s.position) {
+      const { px, py } = fabricToPixel(s.position.x, s.position.y);
+      const { x, z } = pxToWorld(px, py);
+      const cell = worldToCell(x, z);
+      if (cell.r >= 0 && cell.r < rows && cell.c >= 0 && cell.c < cols) {
+        const ni = idx(cell.r, cell.c);
+        costGrid[ni] = 1.0;
+        // Also mark 3x3 area around stair
+        for (let dr = -1; dr <= 1; dr++) {
+          for (let dc = -1; dc <= 1; dc++) {
+            const rr = cell.r + dr,
+              cc = cell.c + dc;
+            if (rr >= 0 && rr < rows && cc >= 0 && cc < cols) {
+              costGrid[idx(rr, cc)] = 1.0;
+            }
+          }
+        }
       }
     }
   }
@@ -152,7 +227,7 @@ export function aStar(start, goal) {
         nc = cur.c + d.dc;
       if (nr < 0 || nc < 0 || nr >= rows || nc >= cols) continue;
       const ni = idx(nr, nc);
-      if (blocked[ni]) continue;
+      if (costGrid[ni] === INF) continue;
       const ng = /** @type {number} */ (g[cur.i]) + d.cost;
       if (ng < /** @type {number} */ (g[ni])) {
         g[ni] = ng;
@@ -166,14 +241,14 @@ export function aStar(start, goal) {
 
 export function findNearestFree(cell) {
   const inBounds = (r, c) => r >= 0 && c >= 0 && r < rows && c < cols;
-  if (inBounds(cell.r, cell.c) && !blocked[idx(cell.r, cell.c)]) return cell;
+  if (inBounds(cell.r, cell.c) && costGrid[idx(cell.r, cell.c)] !== INF) return cell;
   for (let rad = 1; rad < 16; rad++) {
     for (let dr = -rad; dr <= rad; dr++) {
       for (let dc = -rad; dc <= rad; dc++) {
         const rr = cell.r + dr,
           cc = cell.c + dc;
         if (!inBounds(rr, cc)) continue;
-        if (!blocked[idx(rr, cc)]) return { r: rr, c: cc };
+        if (costGrid[idx(rr, cc)] !== INF) return { r: rr, c: cc };
       }
     }
   }
@@ -274,7 +349,7 @@ export function drawRoute(worldPoints) {
 export function followRoute(points) {
   clearFollow();
   if (
-    !/** @type {HTMLInputElement} */ (document.getElementById('followCam')).checked ||
+    !(/** @type {HTMLInputElement} */ (document.getElementById('followCam')).checked) ||
     !points ||
     points.length < 3
   )

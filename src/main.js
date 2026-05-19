@@ -45,7 +45,7 @@ import {
   followRoute,
   clearFollow,
   routeWorldPoints,
-  rebuildBlockedGrid,
+  rebuildCostGrid,
   updateRouteAnimation,
   initGrid
 } from './scene/AStarRoute.js';
@@ -117,7 +117,7 @@ async function loadFloor(name) {
       document.getElementById('heatmap')
     ).checked;
     buildBooths(data, heatEnabled);
-    rebuildBlockedGrid();
+    rebuildCostGrid(data);
     fillDropdowns(data);
 
     // Reset selection
@@ -156,7 +156,7 @@ function onCalChange() {
     currentData,
     /** @type {HTMLInputElement} */ (document.getElementById('heatmap')).checked
   );
-  rebuildBlockedGrid();
+  if (currentData) rebuildCostGrid(currentData);
   applyFilters();
 }
 [offXEl, offYEl, scXEl, scYEl].forEach((el) => el.addEventListener('input', onCalChange));
@@ -180,7 +180,7 @@ function onCalChange() {
       currentData,
       /** @type {HTMLInputElement} */ (document.getElementById('heatmap')).checked
     );
-    rebuildBlockedGrid();
+    rebuildCostGrid(currentData);
     applyFilters();
   }
 );

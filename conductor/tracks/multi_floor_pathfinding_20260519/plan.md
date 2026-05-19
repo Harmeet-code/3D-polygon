@@ -16,19 +16,19 @@
 
 ## Phase 2: Road Network Grid Integration
 
-- [ ] Task: Replace binary blocked grid with cost grid
-    - [ ] Write tests for cost grid initialization and road cell marking
-    - [ ] Change `Uint8Array blocked` → `Float32Array costGrid` in `AStarRoute.js`
-    - [ ] Default all cells to `Infinity`; mark road corridor cells as `1.0`
-- [ ] Task: Update `rebuildBlockedGrid` → `rebuildCostGrid`
-    - [ ] Write tests for booth-road overlap resolution (booth wins)
-    - [ ] Convert booth AABB cells to `Infinity`
-    - [ ] Convert road polyline corridor cells to `1.0`
-    - [ ] Tag stair cells as walkable `1.0`
-- [ ] Task: Update `aStar` and `findNearestFree` for cost grid
-    - [ ] Write tests for road-only A* (no off-road paths)
-    - [ ] Modify `aStar` to check `costGrid[idx] === Infinity` instead of `blocked[idx]`
-    - [ ] Modify `findNearestFree` to search for nearest road cell within radius
+- [x] Task: Replace binary blocked grid with cost grid
+    - [~] Write tests for cost grid initialization and road cell marking (skipped per user)
+    - [x] Change `Uint8Array blocked` → `Float32Array costGrid` in `AStarRoute.js`
+    - [x] Default all cells to `Infinity`; mark road corridor cells as `1.0`
+- [x] Task: Update `rebuildBlockedGrid` → `rebuildCostGrid`
+    - [~] Write tests for booth-road overlap resolution (booth wins) (skipped per user)
+    - [x] Convert booth AABB cells to `Infinity`
+    - [x] Convert road polyline corridor cells to `1.0`
+    - [x] Tag stair cells as walkable `1.0`
+- [x] Task: Update `aStar` and `findNearestFree` for cost grid
+    - [~] Write tests for road-only A* (no off-road paths) (skipped per user)
+    - [x] Modify `aStar` to check `costGrid[idx] === Infinity` instead of `blocked[idx]`
+    - [x] Modify `findNearestFree` to search for nearest road cell within radius
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Road Network Grid Integration' (Protocol in workflow.md)
 
 ## Phase 3: Multi-Floor Routing Engine
