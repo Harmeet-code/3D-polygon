@@ -7,7 +7,7 @@ const DEFAULT_CALIBRATION = {
   offsetX: 300,
   offsetY: 300,
   scaleX: 0.938,
-  scaleY: 0.912
+  scaleY: 0.912,
 };
 
 const offXEl = /** @type {HTMLInputElement} */ (document.getElementById('offX'));
@@ -21,7 +21,7 @@ const scYVal = /** @type {HTMLElement} */ (document.getElementById('scYVal'));
 
 function normalizeScaleValue(value, fallback) {
   const n = Number(value);
-  if (!Number.isFinite(n) || n <= 0) return fallback;
+  if (!Number.isFinite(n) || n <= 0) {return fallback;}
   return n > 10 ? n / 1000 : n;
 }
 
@@ -35,7 +35,7 @@ export function readCal() {
     offsetX: Number.isFinite(+offXEl.value) ? +offXEl.value : DEFAULT_CALIBRATION.offsetX,
     offsetY: Number.isFinite(+offYEl.value) ? +offYEl.value : DEFAULT_CALIBRATION.offsetY,
     scaleX: normalizeScaleValue(scXEl.value, DEFAULT_CALIBRATION.scaleX),
-    scaleY: normalizeScaleValue(scYEl.value, DEFAULT_CALIBRATION.scaleY)
+    scaleY: normalizeScaleValue(scYEl.value, DEFAULT_CALIBRATION.scaleY),
   };
 }
 
@@ -71,14 +71,14 @@ export function fabricToPixel(x, y) {
   const sy = baseScaleY * cal.scaleY;
   return {
     px: (x - fb.minX) * sx + cal.offsetX,
-    py: (y - fb.minY) * sy + cal.offsetY
+    py: (y - fb.minY) * sy + cal.offsetY,
   };
 }
 
 export function pxToWorld(px, py) {
   return {
     x: (px / IMG_W - 0.5) * PLANE_W,
-    z: (0.5 - py / IMG_H) * PLANE_H
+    z: (0.5 - py / IMG_H) * PLANE_H,
   };
 }
 
@@ -86,7 +86,7 @@ export function pxToWorld(px, py) {
 export function worldToPx(x, z) {
   return {
     px: (x / PLANE_W + 0.5) * IMG_W,
-    py: (0.5 - z / PLANE_H) * IMG_H
+    py: (0.5 - z / PLANE_H) * IMG_H,
   };
 }
 
@@ -97,7 +97,7 @@ export function pixelToFabric(px, py) {
   const sy = baseScaleY * cal.scaleY;
   return {
     x: (px - cal.offsetX) / sx + fb.minX,
-    y: (py - cal.offsetY) / sy + fb.minY
+    y: (py - cal.offsetY) / sy + fb.minY,
   };
 }
 

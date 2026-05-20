@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+// import * as THREE from 'three';
 import { renderer, floor, IMG_W, IMG_H, PLANE_W, PLANE_H } from '../scene/SceneSetup.js';
 import {
   fabricToPixel,
@@ -6,7 +6,7 @@ import {
   readCal,
   fb,
   baseScaleX,
-  baseScaleY
+  baseScaleY,
 } from '../scene/CoordTransform.js';
 import { boothMeshes, boothByNo } from '../scene/BoothBuilder.js';
 
@@ -60,7 +60,7 @@ export function initConsoleTools(data) {
       console.log(
         `World Coords:`,
         worldPt,
-        `(plane is ${PLANE_W.toFixed(1)}x${PLANE_H.toFixed(1)})`
+        `(plane is ${PLANE_W.toFixed(1)}x${PLANE_H.toFixed(1)})`,
       );
       console.log('Calibration values:', readCal());
       console.groupEnd();
@@ -70,12 +70,12 @@ export function initConsoleTools(data) {
       console.group('Multi-Booth Comparison');
       boothNos.forEach((no) => {
         const b = data.booths.find((x) => x.boothNo === no);
-        if (!b) return;
+        if (!b) {return;}
         const pt = b.geometry.points[0];
         const pix = fabricToPixel(pt[0], pt[1]);
         const world = pxToWorld(pix.px, pix.py);
         console.log(
-          `${no}: fabric[${pt[0]},${pt[1]}] pixel[${pix.px.toFixed(0)},${pix.py.toFixed(0)}] world[${world.x.toFixed(2)},${world.z.toFixed(2)}]`
+          `${no}: fabric[${pt[0]},${pt[1]}] pixel[${pix.px.toFixed(0)},${pix.py.toFixed(0)}] world[${world.x.toFixed(2)},${world.z.toFixed(2)}]`,
         );
       });
       console.groupEnd();
@@ -106,7 +106,7 @@ export function initConsoleTools(data) {
           minY: fb.minY,
           maxY: fb.maxY,
           width: fb.maxX - fb.minX,
-          height: fb.maxY - fb.minY
+          height: fb.maxY - fb.minY,
         },
         baseScale: { x: baseScaleX, y: baseScaleY },
         calibration: cal,
@@ -116,8 +116,8 @@ export function initConsoleTools(data) {
           height: renderer.domElement.height,
           cssWidth: renderer.domElement.clientWidth,
           cssHeight: renderer.domElement.clientHeight,
-          devicePixelRatio: renderer.getPixelRatio()
-        }
+          devicePixelRatio: renderer.getPixelRatio(),
+        },
       };
       console.table({
         texture: `${info.textureWidth} x ${info.textureHeight}`,
@@ -126,7 +126,7 @@ export function initConsoleTools(data) {
         fabric: `${info.fabricBounds.width.toFixed(2)} x ${info.fabricBounds.height.toFixed(2)}`,
         baseScale: `${info.baseScale.x.toFixed(6)}, ${info.baseScale.y.toFixed(6)}`,
         calibration: `offset ${cal.offsetX}, ${cal.offsetY}; scale ${cal.scaleX.toFixed(3)}, ${cal.scaleY.toFixed(3)}`,
-        effectiveScale: `${info.effectiveScale.x.toFixed(6)}, ${info.effectiveScale.y.toFixed(6)}`
+        effectiveScale: `${info.effectiveScale.x.toFixed(6)}, ${info.effectiveScale.y.toFixed(6)}`,
       });
       console.log('Raw info object:', info);
       console.log('IMG_W / IMG_H from code:', { IMG_W, IMG_H });
@@ -152,15 +152,15 @@ export function initConsoleTools(data) {
           minX: Math.min(...pixels.map((p) => p.px)),
           maxX: Math.max(...pixels.map((p) => p.px)),
           minY: Math.min(...pixels.map((p) => p.py)),
-          maxY: Math.max(...pixels.map((p) => p.py))
+          maxY: Math.max(...pixels.map((p) => p.py)),
         },
         world: {
           minX: Math.min(...worlds.map((p) => p.x)),
           maxX: Math.max(...worlds.map((p) => p.x)),
           minZ: Math.min(...worlds.map((p) => p.z)),
-          maxZ: Math.max(...worlds.map((p) => p.z))
+          maxZ: Math.max(...worlds.map((p) => p.z)),
         },
-        calibration: readCal()
+        calibration: readCal(),
       };
       console.log(`Booth ${boothNo} projected box:`, box);
       return box;
@@ -170,7 +170,7 @@ export function initConsoleTools(data) {
       const rows = boothNos
         .map((no) => {
           const box = this.getBoothBox(no);
-          if (!box) return null;
+          if (!box) {return null;}
           return {
             booth: no,
             pxMinX: box.pixel.minX.toFixed(1),
@@ -181,7 +181,7 @@ export function initConsoleTools(data) {
               box.pixel.minX >= 0 &&
               box.pixel.maxX <= IMG_W &&
               box.pixel.minY >= 0 &&
-              box.pixel.maxY <= IMG_H
+              box.pixel.maxY <= IMG_H,
           };
         })
         .filter(Boolean);
@@ -197,27 +197,27 @@ export function initConsoleTools(data) {
           left: cal.offsetX,
           right: (fb.maxX - fb.minX) * baseScaleX * cal.scaleX + cal.offsetX,
           top: cal.offsetY,
-          bottom: (fb.maxY - fb.minY) * baseScaleY * cal.scaleY + cal.offsetY
+          bottom: (fb.maxY - fb.minY) * baseScaleY * cal.scaleY + cal.offsetY,
         },
-        calibration: cal
+        calibration: cal,
       };
       mapping.mappedFabricRect.width =
         mapping.mappedFabricRect.right - mapping.mappedFabricRect.left;
       mapping.mappedFabricRect.height =
         mapping.mappedFabricRect.bottom - mapping.mappedFabricRect.top;
-      if (!mapping.mappedFabricRect.marginsPx) mapping.mappedFabricRect.marginsPx = {};
+      if (!mapping.mappedFabricRect.marginsPx) {mapping.mappedFabricRect.marginsPx = {};}
       console.log('Fabric bounds mapped into image pixels:', mapping);
       return mapping;
     },
 
     logConsoleHelp() {
       console.log(
-        'Use these in DevTools Console:\n' + window.DEBUG.showImageInfo(),
-        '\n' + window.DEBUG.getBoothBox('T2'),
-        '\n' + window.DEBUG.checkImageBounds(['T1', 'T2', 'P18']),
-        '\n' + window.DEBUG.traceTransform('T2'),
-        '\n' + window.AUDIT.runAll(),
-        '\n' + window.AUDIT.auditBoothTransformation('T2')
+        `Use these in DevTools Console:\n${  window.DEBUG.showImageInfo()}`,
+        `\n${  window.DEBUG.getBoothBox('T2')}`,
+        `\n${  window.DEBUG.checkImageBounds(['T1', 'T2', 'P18'])}`,
+        `\n${  window.DEBUG.traceTransform('T2')}`,
+        `\n${  window.AUDIT.runAll()}`,
+        `\n${  window.AUDIT.auditBoothTransformation('T2')}`,
       );
     },
 
@@ -235,11 +235,11 @@ export function initConsoleTools(data) {
           '- If 3D blocks are too narrow, increase Scale X',
           '- If 3D blocks are too tall, decrease Scale Y',
           '- If 3D blocks are too short, increase Scale Y',
-          "\nTry: DEBUG.traceTransform('P18') to see exact values"
-        ].join('\n')
+          "\nTry: DEBUG.traceTransform('P18') to see exact values",
+        ].join('\n'),
       );
       console.groupEnd();
-    }
+    },
   };
 
   /** @type {any} */
@@ -249,7 +249,7 @@ export function initConsoleTools(data) {
       console.log('Plane dimensions:', {
         width: PLANE_W,
         height: PLANE_H,
-        aspectRatio: (PLANE_W / PLANE_H).toFixed(3)
+        aspectRatio: (PLANE_W / PLANE_H).toFixed(3),
       });
       console.log('Image info:', { width: IMG_W, height: IMG_H });
       console.log('Position:', { x: floor.position.x, y: floor.position.y, z: floor.position.z });
@@ -261,17 +261,17 @@ export function initConsoleTools(data) {
       console.log('  min:', {
         x: box.min.x.toFixed(2),
         y: box.min.y.toFixed(2),
-        z: box.min.z.toFixed(2)
+        z: box.min.z.toFixed(2),
       });
       console.log('  max:', {
         x: box.max.x.toFixed(2),
         y: box.max.y.toFixed(2),
-        z: box.max.z.toFixed(2)
+        z: box.max.z.toFixed(2),
       });
       console.log('  center:', {
         x: ((box.max.x + box.min.x) / 2).toFixed(4),
         y: ((box.max.y + box.min.y) / 2).toFixed(4),
-        z: ((box.max.z + box.min.z) / 2).toFixed(4)
+        z: ((box.max.z + box.min.z) / 2).toFixed(4),
       });
       console.log('Floor plane is centered at origin');
       console.groupEnd();
@@ -281,7 +281,7 @@ export function initConsoleTools(data) {
       console.group('Coordinate Transform Audit');
       console.log('Scaling factors:', {
         baseScaleX: baseScaleX.toFixed(6),
-        baseScaleY: baseScaleY.toFixed(6)
+        baseScaleY: baseScaleY.toFixed(6),
       });
       console.log('Fabric bounds:', {
         minX: fb.minX,
@@ -289,15 +289,15 @@ export function initConsoleTools(data) {
         minY: fb.minY,
         maxY: fb.maxY,
         width: (fb.maxX - fb.minX).toFixed(2),
-        height: (fb.maxY - fb.minY).toFixed(2)
+        height: (fb.maxY - fb.minY).toFixed(2),
       });
       console.log('Image dimensions:', { width: IMG_W, height: IMG_H });
       console.log('Scale calculation verify:');
       console.log(
-        `  ${IMG_W} / ${(fb.maxX - fb.minX).toFixed(2)} = ${(IMG_W / (fb.maxX - fb.minX)).toFixed(6)}`
+        `  ${IMG_W} / ${(fb.maxX - fb.minX).toFixed(2)} = ${(IMG_W / (fb.maxX - fb.minX)).toFixed(6)}`,
       );
       console.log(
-        `  ${IMG_H} / ${(fb.maxY - fb.minY).toFixed(2)} = ${(IMG_H / (fb.maxY - fb.minY)).toFixed(6)}`
+        `  ${IMG_H} / ${(fb.maxY - fb.minY).toFixed(2)} = ${(IMG_H / (fb.maxY - fb.minY)).toFixed(6)}`,
       );
       console.groupEnd();
     },
@@ -324,17 +324,17 @@ export function initConsoleTools(data) {
       if (mesh) {
         console.log('Mesh in scene:');
         console.log(
-          `  Position: [${mesh.position.x.toFixed(3)}, ${mesh.position.y.toFixed(3)}, ${mesh.position.z.toFixed(3)}]`
+          `  Position: [${mesh.position.x.toFixed(3)}, ${mesh.position.y.toFixed(3)}, ${mesh.position.z.toFixed(3)}]`,
         );
         if (mesh.userData.center) {
           console.log(
-            `  Stored center: [${mesh.userData.center.x.toFixed(3)}, ${mesh.userData.center.y.toFixed(3)}, ${mesh.userData.center.z.toFixed(3)}]`
+            `  Stored center: [${mesh.userData.center.x.toFixed(3)}, ${mesh.userData.center.y.toFixed(3)}, ${mesh.userData.center.z.toFixed(3)}]`,
           );
         }
         mesh.geometry.computeBoundingBox();
         const bb = /** @type {THREE.Box3} */ (mesh.geometry.boundingBox);
         console.log(
-          `  Geometry X/Z center: [${((bb.max.x + bb.min.x) / 2).toFixed(4)}, ${((bb.max.z + bb.min.z) / 2).toFixed(4)}]`
+          `  Geometry X/Z center: [${((bb.max.x + bb.min.x) / 2).toFixed(4)}, ${((bb.max.z + bb.min.z) / 2).toFixed(4)}]`,
         );
         console.log(`  Geometry Y extent: [${bb.min.y.toFixed(4)}, ${bb.max.y.toFixed(4)}]`);
       }
@@ -351,15 +351,15 @@ export function initConsoleTools(data) {
         const cz = (bb.max.z + bb.min.z) / 2;
         if (Math.abs(cx) > 0.001 || Math.abs(cz) > 0.001 || bb.min.y < -0.001) {
           console.warn(
-            `${mesh.userData.booth.boothNo}: geometry not placed correctly! centerXZ=[${cx.toFixed(4)}, ${cz.toFixed(4)}], yMin=${bb.min.y.toFixed(4)}`
+            `${mesh.userData.booth.boothNo}: geometry not placed correctly! centerXZ=[${cx.toFixed(4)}, ${cz.toFixed(4)}], yMin=${bb.min.y.toFixed(4)}`,
           );
           centersCorrect = false;
         }
       });
       if (centersCorrect)
-        console.log(
-          `All ${boothMeshes.length} booths are centered on X/Z and sit above the floor plane`
-        );
+        {console.log(
+          `All ${boothMeshes.length} booths are centered on X/Z and sit above the floor plane`,
+        );}
       console.groupEnd();
     },
 
@@ -368,7 +368,7 @@ export function initConsoleTools(data) {
       let windingIssues = 0;
       data.booths.forEach((b) => {
         const pts = b.geometry.points;
-        if (pts.length < 3) return;
+        if (pts.length < 3) {return;}
         let area = 0;
         for (let i = 0; i < pts.length; i++) {
           const p = pts[i],
@@ -387,7 +387,7 @@ export function initConsoleTools(data) {
         area3d /= 2;
         if (Math.sign(area) === Math.sign(area3d)) {
           console.warn(
-            `${b.boothNo}: winding sign did not flip as expected during image-to-world transform`
+            `${b.boothNo}: winding sign did not flip as expected during image-to-world transform`,
           );
           windingIssues++;
         }
@@ -408,22 +408,22 @@ export function initConsoleTools(data) {
       this.auditWindingOrder();
       console.log('All systems nominal!');
       console.log("Try: AUDIT.auditBoothTransformation('P18')");
-    }
+    },
   };
 
   console.log(
-    'DEBUG UTILITIES\n' +
-      window.DEBUG.showImageInfo() +
-      '\n' +
-      window.DEBUG.traceTransform('P18') +
-      '\n' +
-      window.DEBUG.checkBoothPolygon('P18') +
-      '\n' +
-      window.DEBUG.compareBooths() +
-      '\n' +
-      'AUDIT UTILITIES\n' +
-      window.AUDIT.runAll() +
-      '\n' +
-      window.AUDIT.auditBoothTransformation('P18')
+    `DEBUG UTILITIES\n${ 
+      window.DEBUG.showImageInfo() 
+      }\n${ 
+      window.DEBUG.traceTransform('P18') 
+      }\n${ 
+      window.DEBUG.checkBoothPolygon('P18') 
+      }\n${ 
+      window.DEBUG.compareBooths() 
+      }\n` +
+      `AUDIT UTILITIES\n${ 
+      window.AUDIT.runAll() 
+      }\n${ 
+      window.AUDIT.auditBoothTransformation('P18')}`,
   );
 }

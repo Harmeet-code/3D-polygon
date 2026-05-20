@@ -32,7 +32,7 @@ import type { OpencodeClient } from './types';
 export function logWarn(
   client: OpencodeClient | undefined,
   service: string,
-  message: string
+  message: string,
 ): void {
   // Guard: No client available, use console fallback (Law 1: Early Exit)
   if (!client) {
@@ -43,7 +43,7 @@ export function logWarn(
   // Happy path: Use OpenCode logging API
   client.app
     .log({
-      body: { service, level: 'warn', message }
+      body: { service, level: 'warn', message },
     })
     .catch(() => {
       // Silently ignore logging failures - don't disrupt caller

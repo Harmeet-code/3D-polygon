@@ -24,7 +24,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 export function parseOscTitleContext(
-  env: Record<string, string | undefined> = process.env
+  env: Record<string, string | undefined> = process.env,
 ): OscTitleContext | null {
   const rawContext = toNonEmptyString(env[OCX_TITLE_CONTEXT_ENV_KEY]);
   if (!rawContext) {
@@ -53,7 +53,7 @@ export function parseOscTitleContext(
 
   return {
     mayWriteOscTitle: parsedContext.mayWriteOscTitle,
-    baseTitle
+    baseTitle,
   };
 }
 
@@ -63,7 +63,7 @@ export function sanitizeOscTitleText(title: string): string {
 
 export function writeOscTitleBestEffort(
   title: string,
-  writer: Pick<NodeJS.WriteStream, 'write'> = process.stdout
+  writer: Pick<NodeJS.WriteStream, 'write'> = process.stdout,
 ): void {
   const sanitizedTitle = sanitizeOscTitleText(title);
   if (!sanitizedTitle) {

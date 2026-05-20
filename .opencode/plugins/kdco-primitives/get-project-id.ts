@@ -127,7 +127,7 @@ export async function getProjectId(projectRoot: string, client?: OpencodeClient)
       cwd: projectRoot,
       stdout: 'pipe',
       stderr: 'pipe',
-      env: { ...process.env, GIT_DIR: undefined, GIT_WORK_TREE: undefined }
+      env: { ...process.env, GIT_DIR: undefined, GIT_WORK_TREE: undefined },
     });
 
     // 5 second timeout to prevent hangs on network filesystems
@@ -138,7 +138,7 @@ export async function getProjectId(projectRoot: string, client?: OpencodeClient)
           proc.kill();
         }
         return 1; // Treat timeout/errors as failure, fall back to path hash
-      }
+      },
     );
 
     if (exitCode === 0) {

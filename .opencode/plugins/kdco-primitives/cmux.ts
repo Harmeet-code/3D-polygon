@@ -18,14 +18,14 @@ export function detectCmuxContext(env: CmuxEnvironment = process.env): CmuxConte
     workspaceID: normalizeCmuxValue(env.CMUX_WORKSPACE_ID),
     surfaceID: normalizeCmuxValue(env.CMUX_SURFACE_ID),
     socketPath: normalizeCmuxValue(env.CMUX_SOCKET_PATH),
-    socketMode: normalizeCmuxValue(env.CMUX_SOCKET_MODE)
+    socketMode: normalizeCmuxValue(env.CMUX_SOCKET_MODE),
   };
 }
 
 export function canUseCmuxWorkflow(
   env: CmuxEnvironment = process.env,
   resolveExecutable: ResolveExecutable = (command) => Bun.which(command),
-  cmuxExecutable: string = 'cmux'
+  cmuxExecutable: string = 'cmux',
 ): boolean {
   if (!resolveExecutable(cmuxExecutable)) {
     return false;

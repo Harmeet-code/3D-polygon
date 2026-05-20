@@ -6,30 +6,30 @@ export type CmuxSessionStatusTransition = {
 };
 
 function toNonEmptyString(value: unknown): string | null {
-  if (typeof value !== 'string') return null;
+  if (typeof value !== 'string') {return null;}
 
   const normalized = value.trim();
-  if (!normalized) return null;
+  if (!normalized) {return null;}
 
   return normalized;
 }
 
 function toStatusType(properties: Record<string, unknown>): string | null {
   const status = properties.status;
-  if (!status || typeof status !== 'object') return null;
+  if (!status || typeof status !== 'object') {return null;}
 
   const statusType = toNonEmptyString((status as Record<string, unknown>).type);
-  if (!statusType) return null;
+  if (!statusType) {return null;}
 
   return statusType.toLowerCase();
 }
 
 export function buildCmuxSessionStatusTransitionForEvent(
   eventType: string,
-  properties: Record<string, unknown>
+  properties: Record<string, unknown>,
 ): CmuxSessionStatusTransition | null {
   const sessionID = toNonEmptyString(properties.sessionID);
-  if (!sessionID) return null;
+  if (!sessionID) {return null;}
 
   if (
     eventType === 'question.asked' ||
@@ -64,20 +64,20 @@ export function buildCmuxSessionStatusTransitionForEvent(
 }
 
 export function buildCmuxSessionStatusTransitionForQuestionTool(
-  sessionID: unknown
+  sessionID: unknown,
 ): CmuxSessionStatusTransition | null {
   const normalizedSessionID = toNonEmptyString(sessionID);
-  if (!normalizedSessionID) return null;
+  if (!normalizedSessionID) {return null;}
 
   return {
     sessionID: normalizedSessionID,
-    logicalState: 'needs-input'
+    logicalState: 'needs-input',
   };
 }
 
 export function getCmuxSessionStatusText(
-  logicalState: Exclude<CmuxSessionLogicalState, 'idle' | 'animated-busy'>
+  logicalState: Exclude<CmuxSessionLogicalState, 'idle' | 'animated-busy'>,
 ): string {
-  if (logicalState === 'needs-input') return 'Needs input';
+  if (logicalState === 'needs-input') {return 'Needs input';}
   return 'Error';
 }

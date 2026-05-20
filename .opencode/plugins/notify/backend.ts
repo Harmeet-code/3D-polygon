@@ -51,7 +51,7 @@ export function buildAlerterArguments(options: DesktopNotificationOptions): stri
 
 export async function sendMacOSAlerterNotification(
   options: DesktopNotificationOptions,
-  runtime: AlerterRuntime = {}
+  runtime: AlerterRuntime = {},
 ): Promise<boolean> {
   const which = runtime.which ?? Bun.which;
   const warn = runtime.warn ?? console.warn;
@@ -60,7 +60,7 @@ export async function sendMacOSAlerterNotification(
     const alerterPath = await which('alerter');
     if (!alerterPath) {
       warn(
-        `notify: macOS desktop notification skipped; alerter not found on PATH (${ALERTER_INSTALL_HINT}).`
+        `notify: macOS desktop notification skipped; alerter not found on PATH (${ALERTER_INSTALL_HINT}).`,
       );
       return false;
     }
@@ -72,7 +72,7 @@ export async function sendMacOSAlerterNotification(
     const process = spawnProcess([alerterPath, ...alerterArguments.slice(1)]);
     const exitCode = await process.exited;
 
-    if (exitCode === 0) return true;
+    if (exitCode === 0) {return true;}
 
     warn(`notify: macOS desktop notification skipped; alerter exited with code ${exitCode}.`);
     return false;
@@ -84,7 +84,7 @@ export async function sendMacOSAlerterNotification(
 }
 
 export async function sendDesktopNotificationByPlatform(
-  options: DesktopNotificationRouterOptions
+  options: DesktopNotificationRouterOptions,
 ): Promise<void> {
   const { platform, sendNodeNotifierNotification, sendMacOSNotification, ...notificationOptions } =
     options;
@@ -105,7 +105,7 @@ export async function sendNotificationWithFallback(options: NotifyBackendOptions
 
   try {
     const sentViaCmux = await options.tryCmuxNotify();
-    if (sentViaCmux) return;
+    if (sentViaCmux) {return;}
   } catch {
     // Fall through to desktop notification fallback
   }

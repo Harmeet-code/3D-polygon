@@ -14,6 +14,16 @@ const priceEl = /** @type {HTMLElement} */ (document.getElementById('price'));
 export const focusBtn = /** @type {HTMLButtonElement} */ (document.getElementById('focusBtn'));
 
 export function updateSidebar(b) {
+  if (!b) {
+    statusPill.style.display = 'none';
+    kv.style.display = 'none';
+    /** @type {HTMLElement} */ (document.getElementById('infoTitle')).textContent =
+      'Select a booth';
+    /** @type {HTMLElement} */ (document.getElementById('infoHint')).textContent =
+      'Click any booth.';
+    focusBtn.disabled = true;
+    return;
+  }
   /** @type {HTMLElement} */ (document.getElementById('infoTitle')).textContent = 'Booth Selected';
   /** @type {HTMLElement} */ (document.getElementById('infoHint')).textContent =
     'Focus / Route / Filters / Heatmap';
@@ -30,11 +40,10 @@ export function updateSidebar(b) {
   priceEl.textContent = (b.price ?? '\u2014').toString();
 
   focusBtn.disabled = false;
-  /** @type {HTMLSelectElement} */ (document.getElementById('fromSelect')).value = b.boothNo;
 }
 
 export function highlight(mesh, on) {
-  if (!mesh) return;
+  if (!mesh) {return;}
   if (on) {
     mesh.material.emissive = new THREE.Color(0x6aa9ff).multiplyScalar(0.65);
     mesh.scale.set(1.05, 1.02, 1.05);
@@ -64,7 +73,7 @@ export function flyTo(targetPos, targetLook, ms = 900) {
     camera.position.lerpVectors(startPos, targetPos, e);
     controls.target.lerpVectors(startTarget, targetLook, e);
     controls.update();
-    if (t < 1) requestAnimationFrame(step);
+    if (t < 1) {requestAnimationFrame(step);}
   }
   requestAnimationFrame(step);
 }
@@ -75,5 +84,5 @@ export function focusMesh(mesh) {
 }
 
 focusBtn.addEventListener('click', () => {
-  if (sel.selected) focusMesh(sel.selected);
+  if (sel.selected) {focusMesh(sel.selected);}
 });

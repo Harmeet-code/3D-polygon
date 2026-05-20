@@ -11,8 +11,8 @@ function hashStr(s) {
 
 function demoStatus(no) {
   const r = hashStr(no) % 100;
-  if (r < 68) return 'AVAILABLE';
-  if (r < 84) return 'HOLD';
+  if (r < 68) {return 'AVAILABLE';}
+  if (r < 84) {return 'HOLD';}
   return 'BOOKED';
 }
 
@@ -25,7 +25,7 @@ function demoCompany(no) {
     'Orbit Systems',
     'PineWorks',
     'Zenith AI',
-    'RiverStone'
+    'RiverStone',
   ];
   return names[hashStr(no) % names.length];
 }

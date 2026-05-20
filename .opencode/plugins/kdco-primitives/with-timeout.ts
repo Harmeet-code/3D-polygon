@@ -58,7 +58,7 @@ export class TimeoutError extends Error {
 export async function withTimeout<T>(
   promise: Promise<T>,
   ms: number,
-  message = 'Operation timed out'
+  message = 'Operation timed out',
 ): Promise<T> {
   // Guard: Invalid timeout value (Law 1: Early Exit, Law 4: Fail Fast)
   if (typeof ms !== 'number' || ms < 0) {
@@ -79,6 +79,6 @@ export async function withTimeout<T>(
       timeoutId = setTimeout(() => {
         reject(new TimeoutError(message, ms));
       }, ms);
-    })
+    }),
   ]);
 }

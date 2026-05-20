@@ -37,7 +37,7 @@ export function assertShellSafe(value: string, context: string): void {
   // Law 4: Fail Fast - reject invalid input immediately with clear message
   if (SHELL_FORBIDDEN_CHARS.test(value)) {
     throw new Error(
-      `${context} contains null bytes which cannot be safely escaped for shell execution`
+      `${context} contains null bytes which cannot be safely escaped for shell execution`,
     );
   }
 }

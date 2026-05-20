@@ -3,7 +3,7 @@
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["typescript"],
   "categories": {
-    "correctness": "warn"
+    "correctness": "warn",
   },
   "rules": {
     // Possible Errors (maps to your 'no-*' rules)
@@ -36,6 +36,6 @@
     "prefer-destructuring": "warn",
     // TypeScript-specific rules (tsgolint backend type-aware execution)
     "typescript/no-floating-promises": "error",
-    "typescript/no-misused-promises": "error"
-  }
+    "typescript/no-misused-promises": "error",
+  },
 }

@@ -5,11 +5,11 @@
   "small_model": "opencode/minimax-m2.5",
   "compaction": {
     "auto": true,
-    "tail_turns": 15
+    "tail_turns": 15,
   },
   "tool_output": {
     "max_lines": 400,
-    "max_bytes": 8192
+    "max_bytes": 8192,
   },
   "formatter": false,
   "lsp": false,
@@ -18,60 +18,60 @@
     "opencode-conductor-plugin",
     "opencode-firecrawl",
     // "@daytona/opencode",
-    "@zenobius/opencode-skillful"
+    "@zenobius/opencode-skillful",
   ],
   "skills": {
-    "paths": [".opencode/skills", ".opencode/skill"]
+    "paths": [".opencode/skills", ".opencode/skill"],
   },
   "command": {
     "check": {
       "description": "Run full project check (lint + format + typecheck)",
-      "template": "Run `bun check` and report any errors. Fix lint/format issues if found, then re-run until clean."
+      "template": "Run `bun check` and report any errors. Fix lint/format issues if found, then re-run until clean.",
     },
     "typecheck": {
       "description": "Run TypeScript type checking",
-      "template": "Run `bun typecheck` and report any type errors. Explain the issue and suggest fixes."
+      "template": "Run `bun typecheck` and report any type errors. Explain the issue and suggest fixes.",
     },
     "dev": {
       "description": "Start the dev server",
-      "template": "Start the dev server with `bun run dev` on port 3000. Confirm it's running and accessible."
+      "template": "Start the dev server with `bun run dev` on port 3000. Confirm it's running and accessible.",
     },
     "add-floor": {
       "description": "Add a new floor to the 3D viewer",
-      "template": "Help me add a new floor. I need to: 1) Add the floor name to src/data/floors.json, 2) Create the JSON data file in src/data/json/, 3) Add the floor plan image in src/data/floor plan/, 4) Verify the floor loads correctly. Walk me through each step."
+      "template": "Help me add a new floor. I need to: 1) Add the floor name to src/data/floors.json, 2) Create the JSON data file in src/data/json/, 3) Add the floor plan image in src/data/floor plan/, 4) Verify the floor loads correctly. Walk me through each step.",
     },
     "calibrate": {
       "description": "Debug and calibrate booth coordinates",
-      "template": "Help debug coordinate calibration issues. Check the coordinate pipeline: Fabric JSON → fabricToPixel() → pxToWorld() → 3D World. Review localStorage key `sems_demo_cal_v2` and calibration slider values."
-    }
+      "template": "Help debug coordinate calibration issues. Check the coordinate pipeline: Fabric JSON → fabricToPixel() → pxToWorld() → 3D World. Review localStorage key `sems_demo_cal_v2` and calibration slider values.",
+    },
   },
   "agent": {
     "conductor": {
-      "model": "opencode/qwen3.6-plus"
+      "model": "opencode/qwen3.6-plus",
     },
     "threejs-expert": {
-      "model": "opencode/deepseek-v4-flash-free"
+      "model": "opencode/deepseek-v4-flash-free",
     },
     "frontend-ui": {
-      "model": "opencode/deepseek-v4-flash-free"
-    }
+      "model": "opencode/deepseek-v4-flash-free",
+    },
   },
   "permission": {
     "read": {
-      "*": "allow"
+      "*": "allow",
     },
     "glob": {
-      "*": "allow"
+      "*": "allow",
     },
     "grep": {
-      "*": "allow"
+      "*": "allow",
     },
     "edit": {
       "src/**": "allow",
       ".opencode/**": "allow",
       "opencode.jsonc": "allow",
       "AGENTS.md": "allow",
-      "*": "ask"
+      "*": "ask",
     },
     "bash": {
       "bun run *": "allow",
@@ -81,7 +81,7 @@
       "bun check": "allow",
       "bun install": "allow",
       "git *": "ask",
-      "*": "ask"
-    }
-  }
+      "*": "ask",
+    },
+  },
 }

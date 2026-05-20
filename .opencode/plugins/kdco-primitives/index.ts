@@ -24,7 +24,7 @@ export {
   detectCmuxContext,
   type CmuxContext,
   type CmuxEnvironment,
-  type ResolveExecutable
+  type ResolveExecutable,
 } from './cmux';
 export { isInsideTmux } from './terminal-detect';
 // Types

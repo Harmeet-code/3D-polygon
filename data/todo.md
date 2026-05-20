@@ -72,4 +72,4 @@
     Your A* runs on a grid you generate by walking bounding boxes. But fabricBBox already gives you the occupied rectangles for every booth. You can build an occupancy grid in O(n) by scanline-rendering these boxes onto a binary grid — instead of doing A* node expansions that check each booth's polygon for collision.
     Worse: A* on a dense grid with 200 booths is O(n²) in practice because each path expansion checks against all booth polygons. Your route demo says "A* on grid + avoids booth bounding boxes" — but the current code re-validates against polygon geometry per step, which means it's doing point-in-polygon tests for every candidate node. Those polygon tests are doing cross-product math on 4+ vertices each time. At 10,000+ nodes explored, that's millions of floating-point operations for a single route.
     Pre-rasterize the bounding boxes once, and the pathfinder just reads a boolean array. 10x faster, zero polygon math.
-52.  need to fix show route for one floor and multifloor
+52. need to fix show route for one floor and multifloor

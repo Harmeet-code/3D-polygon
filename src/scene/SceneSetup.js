@@ -16,7 +16,7 @@ export function worldToScreen(worldVec3) {
     x: (v.x * 0.5 + 0.5) * rect.width,
     y: (-v.y * 0.5 + 0.5) * rect.height,
     ndcZ: v.z,
-    rect
+    rect,
   };
 }
 
@@ -58,7 +58,7 @@ function loadTexture(url) {
       () => {
         console.warn('Floor texture failed to load, using fallback');
         res(null);
-      }
+      },
     );
   });
 }
@@ -80,7 +80,7 @@ function buildFloorMesh(tex) {
     map: tex,
     color: tex ? 0xffffff : 0x1a1a2e,
     roughness: 0.95,
-    metalness: 0
+    metalness: 0,
   });
   const mesh = new THREE.Mesh(new THREE.PlaneGeometry(PLANE_W, PLANE_H), mat);
   mesh.rotation.x = -Math.PI / 2;

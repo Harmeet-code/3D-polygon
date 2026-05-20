@@ -34,13 +34,13 @@ import {
   canUseCmuxNotification,
   clearCmuxStatus,
   sendCmuxNotification,
-  sendCmuxStatus
+  sendCmuxStatus,
 } from './notify/cmux';
 import {
   buildCmuxSessionStatusTransitionForEvent,
   buildCmuxSessionStatusTransitionForQuestionTool,
   getCmuxSessionStatusText,
-  type CmuxSessionStatusTransition
+  type CmuxSessionStatusTransition,
 } from './notify/status';
 import { parseOscTitleContext, writeOscTitleBestEffort } from './notify/title';
 
@@ -75,13 +75,13 @@ const DEFAULT_CONFIG: NotifyConfig = {
   sounds: {
     idle: 'Glass',
     error: 'Basso',
-    permission: 'Submarine'
+    permission: 'Submarine',
   },
   quietHours: {
     enabled: false,
     start: '22:00',
-    end: '08:00'
-  }
+    end: '08:00',
+  },
 };
 
 // Terminal name to macOS process name mapping (for focus detection)
@@ -97,7 +97,7 @@ const TERMINAL_PROCESS_NAMES: Record<string, string> = {
   hyper: 'Hyper',
   warp: 'Warp',
   vscode: 'Code',
-  'vscode-insiders': 'Code - Insiders'
+  'vscode-insiders': 'Code - Insiders',
 };
 
 // ==========================================
@@ -117,12 +117,12 @@ async function loadConfig(): Promise<NotifyConfig> {
       ...userConfig,
       sounds: {
         ...DEFAULT_CONFIG.sounds,
-        ...userConfig.sounds
+        ...userConfig.sounds,
       },
       quietHours: {
         ...DEFAULT_CONFIG.quietHours,
-        ...userConfig.quietHours
-      }
+        ...userConfig.quietHours,
+      },
     };
   } catch {
     // Config doesn't exist or is invalid, use defaults
@@ -135,12 +135,12 @@ async function loadConfig(): Promise<NotifyConfig> {
 // ==========================================
 
 async function runOsascript(script: string): Promise<string | null> {
-  if (process.platform !== 'darwin') return null;
+  if (process.platform !== 'darwin') {return null;}
 
   try {
     const proc = Bun.spawn(['osascript', '-e', script], {
       stdout: 'pipe',
-      stderr: 'pipe'
+      stderr: 'pipe',
     });
     const output = await new Response(proc.stdout).text();
     return output.trim();
@@ -155,7 +155,7 @@ async function getBundleId(appName: string): Promise<string | null> {
 
 async function getFrontmostApp(): Promise<string | null> {
   return runOsascript(
-    'tell application "System Events" to get name of first application process whose frontmost is true'
+    'tell application "System Events" to get name of first application process whose frontmost is true',
   );
 }
 
@@ -176,16 +176,16 @@ async function detectTerminalInfo(config: NotifyConfig): Promise<TerminalInfo> {
   return {
     name: terminalName,
     bundleId,
-    processName
+    processName,
   };
 }
 
 async function isTerminalFocused(terminalInfo: TerminalInfo): Promise<boolean> {
-  if (!terminalInfo.processName) return false;
-  if (process.platform !== 'darwin') return false;
+  if (!terminalInfo.processName) {return false;}
+  if (process.platform !== 'darwin') {return false;}
 
   const frontmost = await getFrontmostApp();
-  if (!frontmost) return false;
+  if (!frontmost) {return false;}
 
   // Case-insensitive comparison
   return frontmost.toLowerCase() === terminalInfo.processName.toLowerCase();
@@ -196,7 +196,7 @@ async function isTerminalFocused(terminalInfo: TerminalInfo): Promise<boolean> {
 // ==========================================
 
 function isQuietHours(config: NotifyConfig): boolean {
-  if (!config.quietHours.enabled) return false;
+  if (!config.quietHours.enabled) {return false;}
 
   const now = new Date();
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
@@ -271,28 +271,28 @@ type CmuxSessionStatusWriteIntent =
 
 function isCmuxSessionStatusWriteIntentEqual(
   left: CmuxSessionStatusWriteIntent,
-  right: CmuxSessionStatusWriteIntent
+  right: CmuxSessionStatusWriteIntent,
 ): boolean {
-  if (left.kind !== right.kind) return false;
-  if (left.kind === 'clear-status' || right.kind === 'clear-status') return true;
+  if (left.kind !== right.kind) {return false;}
+  if (left.kind === 'clear-status' || right.kind === 'clear-status') {return true;}
   return left.text === right.text;
 }
 
 function buildCmuxSessionStatusWriteIntentForLogicalState(
   sessionID: string,
-  logicalState: Exclude<CmuxSessionStatusTransition['logicalState'], 'animated-busy'>
+  logicalState: Exclude<CmuxSessionStatusTransition['logicalState'], 'animated-busy'>,
 ): CmuxSessionStatusWriteIntent {
   if (logicalState === 'idle') {
     return {
       sessionID,
-      kind: 'clear-status'
+      kind: 'clear-status',
     };
   }
 
   return {
     sessionID,
     kind: 'set-status',
-    text: getCmuxSessionStatusText(logicalState)
+    text: getCmuxSessionStatusText(logicalState),
   };
 }
 
@@ -301,10 +301,10 @@ function buildCmuxSessionStatusKey(sessionID: string): string {
 }
 
 function toNonEmptyString(value: unknown): string | null {
-  if (typeof value !== 'string') return null;
+  if (typeof value !== 'string') {return null;}
 
   const normalized = value.trim();
-  if (!normalized) return null;
+  if (!normalized) {return null;}
 
   return normalized;
 }
@@ -313,7 +313,7 @@ function shouldSendDedupedNotification(
   recentNotifications: RecentNotifications,
   dedupeKey: string,
   windowMs: number,
-  nowMs = Date.now()
+  nowMs = Date.now(),
 ): boolean {
   for (const [key, timestamp] of recentNotifications) {
     if (nowMs - timestamp >= windowMs) {
@@ -332,20 +332,20 @@ function shouldSendDedupedNotification(
 
 function buildQuestionToolDedupeKey(sessionID: unknown, callID: unknown): string | null {
   const normalizedSessionID = toNonEmptyString(sessionID);
-  if (!normalizedSessionID) return null;
+  if (!normalizedSessionID) {return null;}
 
   const normalizedCallID = toNonEmptyString(callID);
-  if (!normalizedCallID) return null;
+  if (!normalizedCallID) {return null;}
 
   return `question:${normalizedSessionID}:${normalizedCallID}`;
 }
 
 function buildQuestionEventDedupeKey(properties: unknown): string | null {
-  if (!properties || typeof properties !== 'object') return null;
+  if (!properties || typeof properties !== 'object') {return null;}
 
   const record = properties as Record<string, unknown>;
   const normalizedSessionID = toNonEmptyString(record.sessionID);
-  if (!normalizedSessionID) return null;
+  if (!normalizedSessionID) {return null;}
 
   const toolInfo =
     record.tool && typeof record.tool === 'object'
@@ -366,17 +366,17 @@ function buildQuestionEventDedupeKey(properties: unknown): string | null {
 
 function buildSessionReadyDedupeKey(sessionID: unknown): string | null {
   const normalizedSessionID = toNonEmptyString(sessionID);
-  if (!normalizedSessionID) return null;
+  if (!normalizedSessionID) {return null;}
 
   return `session-ready:${normalizedSessionID}`;
 }
 
 function buildPermissionEventDedupeKey(properties: unknown): string | null {
-  if (!properties || typeof properties !== 'object') return null;
+  if (!properties || typeof properties !== 'object') {return null;}
 
   const record = properties as Record<string, unknown>;
   const normalizedRequestID = toNonEmptyString(record.id);
-  if (!normalizedRequestID) return null;
+  if (!normalizedRequestID) {return null;}
 
   return `permission:request:${normalizedRequestID}`;
 }
@@ -388,7 +388,7 @@ async function sendDesktopNotification(options: NotificationOptions): Promise<vo
   const notifyOptions: Record<string, unknown> = {
     title,
     message,
-    sound
+    sound,
   };
 
   await sendDesktopNotificationByPlatform({
@@ -398,13 +398,13 @@ async function sendDesktopNotification(options: NotificationOptions): Promise<vo
     subtitle: options.subtitle,
     sound,
     senderBundleId: terminalInfo.bundleId,
-    sendNodeNotifierNotification: () => notifier.notify(notifyOptions)
+    sendNodeNotifierNotification: () => notifier.notify(notifyOptions),
   });
 }
 
 async function sendNotification(
   options: NotificationOptions,
-  runtime: NotificationRuntime
+  runtime: NotificationRuntime,
 ): Promise<void> {
   await sendNotificationWithFallback({
     preferCmux: runtime.preferCmux,
@@ -412,9 +412,9 @@ async function sendNotification(
       sendCmuxNotification({
         title: options.title,
         subtitle: options.subtitle,
-        body: options.cmuxBody ?? options.message
+        body: options.cmuxBody ?? options.message,
       }),
-    sendDesktopNotification: () => sendDesktopNotification(options)
+    sendDesktopNotification: () => sendDesktopNotification(options),
   });
 }
 
@@ -427,19 +427,19 @@ async function handleSessionIdle(
   sessionID: string,
   config: NotifyConfig,
   terminalInfo: TerminalInfo,
-  notificationRuntime: NotificationRuntime
+  notificationRuntime: NotificationRuntime,
 ): Promise<void> {
   // Check if we should notify for this session
   if (!config.notifyChildSessions) {
     const isParent = await isParentSession(client, sessionID);
-    if (!isParent) return;
+    if (!isParent) {return;}
   }
 
   // Check quiet hours
-  if (isQuietHours(config)) return;
+  if (isQuietHours(config)) {return;}
 
   // Check if terminal is focused (suppress notification if user is already looking)
-  if (await isTerminalFocused(terminalInfo)) return;
+  if (await isTerminalFocused(terminalInfo)) {return;}
 
   // Get session info for context
   let sessionTitle = 'Task';
@@ -459,9 +459,9 @@ async function handleSessionIdle(
       subtitle: sessionTitle,
       cmuxBody: 'OpenCode task is ready for review',
       sound: config.sounds.idle,
-      terminalInfo
+      terminalInfo,
     },
-    notificationRuntime
+    notificationRuntime,
   );
 }
 
@@ -471,19 +471,19 @@ async function handleSessionError(
   error: string | undefined,
   config: NotifyConfig,
   terminalInfo: TerminalInfo,
-  notificationRuntime: NotificationRuntime
+  notificationRuntime: NotificationRuntime,
 ): Promise<void> {
   // Check if we should notify for this session
   if (!config.notifyChildSessions) {
     const isParent = await isParentSession(client, sessionID);
-    if (!isParent) return;
+    if (!isParent) {return;}
   }
 
   // Check quiet hours
-  if (isQuietHours(config)) return;
+  if (isQuietHours(config)) {return;}
 
   // Check if terminal is focused (suppress notification if user is already looking)
-  if (await isTerminalFocused(terminalInfo)) return;
+  if (await isTerminalFocused(terminalInfo)) {return;}
 
   const errorMessage = error?.slice(0, 100) || 'Something went wrong';
 
@@ -492,44 +492,44 @@ async function handleSessionError(
       title: 'Something went wrong',
       message: errorMessage,
       sound: config.sounds.error,
-      terminalInfo
+      terminalInfo,
     },
-    notificationRuntime
+    notificationRuntime,
   );
 }
 
 async function handlePermissionUpdated(
   config: NotifyConfig,
   terminalInfo: TerminalInfo,
-  notificationRuntime: NotificationRuntime
+  notificationRuntime: NotificationRuntime,
 ): Promise<void> {
   // Always notify for permission events - AI is blocked waiting for human
   // No parent check needed: permissions always need human attention
 
   // Check quiet hours
-  if (isQuietHours(config)) return;
+  if (isQuietHours(config)) {return;}
 
   // Check if terminal is focused (suppress notification if user is already looking)
-  if (await isTerminalFocused(terminalInfo)) return;
+  if (await isTerminalFocused(terminalInfo)) {return;}
 
   await sendNotification(
     {
       title: 'Waiting for you',
       message: 'OpenCode needs your input',
       sound: config.sounds.permission,
-      terminalInfo
+      terminalInfo,
     },
-    notificationRuntime
+    notificationRuntime,
   );
 }
 
 async function handleQuestionAsked(
   config: NotifyConfig,
   terminalInfo: TerminalInfo,
-  notificationRuntime: NotificationRuntime
+  notificationRuntime: NotificationRuntime,
 ): Promise<void> {
   // Guard: quiet hours only (no focus check for questions - tmux workflow)
-  if (isQuietHours(config)) return;
+  if (isQuietHours(config)) {return;}
 
   const sound = config.sounds.question ?? config.sounds.permission;
 
@@ -538,9 +538,9 @@ async function handleQuestionAsked(
       title: 'Question for you',
       message: 'OpenCode needs your input',
       sound,
-      terminalInfo
+      terminalInfo,
     },
-    notificationRuntime
+    notificationRuntime,
   );
 }
 
@@ -557,7 +557,7 @@ const NotifyPlugin: Plugin = async (ctx) => {
   // Detect terminal once at startup (cached for performance)
   const terminalInfo = await detectTerminalInfo(config);
   const notificationRuntime: NotificationRuntime = {
-    preferCmux: canUseCmuxNotification()
+    preferCmux: canUseCmuxNotification(),
   };
   const oscTitleContext = parseOscTitleContext();
   const shouldSuppressCmuxSessionStatusWrites = oscTitleContext?.mayWriteOscTitle === true;
@@ -580,8 +580,8 @@ const NotifyPlugin: Plugin = async (ctx) => {
   let inFlightCmuxSessionStatusWrite: CmuxSessionStatusWriteIntent | null = null;
 
   const writeOscTitleIfNeeded = (title: string): void => {
-    if (!oscTitleContext?.mayWriteOscTitle) return;
-    if (lastWrittenOscTitle === title) return;
+    if (!oscTitleContext?.mayWriteOscTitle) {return;}
+    if (lastWrittenOscTitle === title) {return;}
 
     lastWrittenOscTitle = title;
     writeOscTitleBestEffort(title);
@@ -596,7 +596,7 @@ const NotifyPlugin: Plugin = async (ctx) => {
   };
 
   const stopTitleBusySpinnerTicker = (): void => {
-    if (!titleBusySpinnerTicker) return;
+    if (!titleBusySpinnerTicker) {return;}
 
     clearInterval(titleBusySpinnerTicker);
     titleBusySpinnerTicker = null;
@@ -611,8 +611,8 @@ const NotifyPlugin: Plugin = async (ctx) => {
   };
 
   const startTitleBusySpinnerTicker = (): void => {
-    if (!oscTitleContext?.mayWriteOscTitle) return;
-    if (titleBusySpinnerTicker || titleBusySessionIDs.size === 0) return;
+    if (!oscTitleContext?.mayWriteOscTitle) {return;}
+    if (titleBusySpinnerTicker || titleBusySessionIDs.size === 0) {return;}
 
     const interval = setInterval(() => {
       if (titleBusySessionIDs.size === 0) {
@@ -654,12 +654,12 @@ const NotifyPlugin: Plugin = async (ctx) => {
   };
 
   const applyOscTitleSessionStatusTransition = (
-    transition: CmuxSessionStatusTransition | null
+    transition: CmuxSessionStatusTransition | null,
   ): void => {
-    if (!oscTitleContext?.mayWriteOscTitle || !transition) return;
+    if (!oscTitleContext?.mayWriteOscTitle || !transition) {return;}
 
     const previousLogicalState = titleSessionLogicalStates.get(transition.sessionID);
-    if (previousLogicalState === transition.logicalState) return;
+    if (previousLogicalState === transition.logicalState) {return;}
 
     titleSessionLogicalStates.set(transition.sessionID, transition.logicalState);
 
@@ -672,9 +672,9 @@ const NotifyPlugin: Plugin = async (ctx) => {
   };
 
   const pruneCmuxSessionStateAfterTerminalClear = (sessionID: string): boolean => {
-    if (cmuxSessionLogicalStates.get(sessionID) !== 'idle') return false;
-    if (pendingCmuxSessionStatusWrites.has(sessionID)) return false;
-    if (inFlightCmuxSessionStatusWrite?.sessionID === sessionID) return false;
+    if (cmuxSessionLogicalStates.get(sessionID) !== 'idle') {return false;}
+    if (pendingCmuxSessionStatusWrites.has(sessionID)) {return false;}
+    if (inFlightCmuxSessionStatusWrite?.sessionID === sessionID) {return false;}
 
     cmuxSessionLogicalStates.delete(sessionID);
     committedCmuxSessionStatusWrites.delete(sessionID);
@@ -689,7 +689,7 @@ const NotifyPlugin: Plugin = async (ctx) => {
   };
 
   const stopBusyAnimationTicker = (): void => {
-    if (!busyAnimationTicker) return;
+    if (!busyAnimationTicker) {return;}
 
     clearInterval(busyAnimationTicker);
     busyAnimationTicker = null;
@@ -702,7 +702,7 @@ const NotifyPlugin: Plugin = async (ctx) => {
   };
 
   const getLatestCmuxSessionStatusWriteForSession = (
-    sessionID: string
+    sessionID: string,
   ): CmuxSessionStatusWriteIntent | undefined => {
     const pendingWrite = pendingCmuxSessionStatusWrites.get(sessionID);
     if (pendingWrite) {
@@ -718,14 +718,14 @@ const NotifyPlugin: Plugin = async (ctx) => {
 
   const dequeueNextCmuxSessionStatusWrite = (): CmuxSessionStatusWriteIntent | null => {
     const next = pendingCmuxSessionStatusWrites.values().next().value;
-    if (!next) return null;
+    if (!next) {return null;}
 
     pendingCmuxSessionStatusWrites.delete(next.sessionID);
     return next;
   };
 
   const runCmuxSessionStatusWrite = async (
-    writeIntent: CmuxSessionStatusWriteIntent
+    writeIntent: CmuxSessionStatusWriteIntent,
   ): Promise<boolean> => {
     const statusKey = buildCmuxSessionStatusKey(writeIntent.sessionID);
     if (writeIntent.kind === 'clear-status') {
@@ -734,19 +734,19 @@ const NotifyPlugin: Plugin = async (ctx) => {
 
     return sendCmuxStatus({
       key: statusKey,
-      text: writeIntent.text
+      text: writeIntent.text,
     });
   };
 
   const drainCmuxSessionStatusWrites = async (): Promise<void> => {
-    if (isCmuxStatusDrainActive || cmuxStatusUpdatesDisabled) return;
+    if (isCmuxStatusDrainActive || cmuxStatusUpdatesDisabled) {return;}
 
     isCmuxStatusDrainActive = true;
 
     try {
       while (!cmuxStatusUpdatesDisabled) {
         const nextWriteIntent = dequeueNextCmuxSessionStatusWrite();
-        if (!nextWriteIntent) return;
+        if (!nextWriteIntent) {return;}
 
         inFlightCmuxSessionStatusWrite = nextWriteIntent;
         const didUpdateStatus = await runCmuxSessionStatusWrite(nextWriteIntent);
@@ -779,37 +779,37 @@ const NotifyPlugin: Plugin = async (ctx) => {
   };
 
   const enqueueCmuxSessionStatusWrite = (writeIntent: CmuxSessionStatusWriteIntent): void => {
-    if (!notificationRuntime.preferCmux || cmuxStatusUpdatesDisabled) return;
+    if (!notificationRuntime.preferCmux || cmuxStatusUpdatesDisabled) {return;}
 
     const latestWriteIntent = getLatestCmuxSessionStatusWriteForSession(writeIntent.sessionID);
     if (latestWriteIntent && isCmuxSessionStatusWriteIntentEqual(latestWriteIntent, writeIntent))
-      return;
+      {return;}
 
     pendingCmuxSessionStatusWrites.set(writeIntent.sessionID, writeIntent);
     void drainCmuxSessionStatusWrites();
   };
 
   const enqueueNextBusyAnimationFrame = (sessionID: string): void => {
-    if (!animatedBusySessionIDs.has(sessionID)) return;
+    if (!animatedBusySessionIDs.has(sessionID)) {return;}
 
     const frameIndex = busyAnimationFrameIndexBySessionID.get(sessionID) ?? 0;
     const frameText = CMUX_BUSY_ANIMATION_FRAMES[frameIndex] ?? CMUX_BUSY_ANIMATION_FRAMES[0];
 
     busyAnimationFrameIndexBySessionID.set(
       sessionID,
-      (frameIndex + 1) % CMUX_BUSY_ANIMATION_FRAMES.length
+      (frameIndex + 1) % CMUX_BUSY_ANIMATION_FRAMES.length,
     );
 
     enqueueCmuxSessionStatusWrite({
       sessionID,
       kind: 'set-status',
-      text: frameText
+      text: frameText,
     });
   };
 
   const startBusyAnimationTicker = (): void => {
     if (busyAnimationTicker || cmuxStatusUpdatesDisabled || animatedBusySessionIDs.size === 0)
-      return;
+      {return;}
 
     const interval = setInterval(() => {
       if (cmuxStatusUpdatesDisabled) {
@@ -853,12 +853,12 @@ const NotifyPlugin: Plugin = async (ctx) => {
   };
 
   const applyCmuxSessionStatusTransition = (
-    transition: CmuxSessionStatusTransition | null
+    transition: CmuxSessionStatusTransition | null,
   ): void => {
-    if (!notificationRuntime.preferCmux || !transition || cmuxStatusUpdatesDisabled) return;
+    if (!notificationRuntime.preferCmux || !transition || cmuxStatusUpdatesDisabled) {return;}
 
     const previousLogicalState = cmuxSessionLogicalStates.get(transition.sessionID);
-    if (previousLogicalState === transition.logicalState) return;
+    if (previousLogicalState === transition.logicalState) {return;}
 
     cmuxSessionLogicalStates.set(transition.sessionID, transition.logicalState);
 
@@ -871,13 +871,13 @@ const NotifyPlugin: Plugin = async (ctx) => {
     enqueueCmuxSessionStatusWrite(
       buildCmuxSessionStatusWriteIntentForLogicalState(
         transition.sessionID,
-        transition.logicalState
-      )
+        transition.logicalState,
+      ),
     );
   };
 
   const applyRuntimeSessionStatusTransition = (
-    transition: CmuxSessionStatusTransition | null
+    transition: CmuxSessionStatusTransition | null,
   ): void => {
     applyOscTitleSessionStatusTransition(transition);
     applyCmuxSessionStatusTransition(transition);
@@ -889,7 +889,7 @@ const NotifyPlugin: Plugin = async (ctx) => {
       !shouldSendDedupedNotification(
         recentQuestionNotifications,
         dedupeKey,
-        QUESTION_DEDUPE_WINDOW_MS
+        QUESTION_DEDUPE_WINDOW_MS,
       )
     ) {
       return;
@@ -900,10 +900,10 @@ const NotifyPlugin: Plugin = async (ctx) => {
 
   const notifySessionReadyIfNeeded = async (sessionID: unknown): Promise<void> => {
     const normalizedSessionID = toNonEmptyString(sessionID);
-    if (!normalizedSessionID) return;
+    if (!normalizedSessionID) {return;}
 
     const dedupeKey = buildSessionReadyDedupeKey(normalizedSessionID);
-    if (!dedupeKey) return;
+    if (!dedupeKey) {return;}
 
     if (
       !shouldSendDedupedNotification(recentReadyNotifications, dedupeKey, READY_DEDUPE_WINDOW_MS)
@@ -916,7 +916,7 @@ const NotifyPlugin: Plugin = async (ctx) => {
       normalizedSessionID,
       config,
       terminalInfo,
-      notificationRuntime
+      notificationRuntime,
     );
   };
 
@@ -928,7 +928,7 @@ const NotifyPlugin: Plugin = async (ctx) => {
       !shouldSendDedupedNotification(
         recentPermissionNotifications,
         dedupeKey,
-        PERMISSION_DEDUPE_WINDOW_MS
+        PERMISSION_DEDUPE_WINDOW_MS,
       )
     ) {
       return;
@@ -941,7 +941,7 @@ const NotifyPlugin: Plugin = async (ctx) => {
     'tool.execute.before': async (input: { tool: string; sessionID: string; callID: string }) => {
       if (input.tool === 'question') {
         applyRuntimeSessionStatusTransition(
-          buildCmuxSessionStatusTransitionForQuestionTool(input.sessionID)
+          buildCmuxSessionStatusTransitionForQuestionTool(input.sessionID),
         );
         await notifyQuestionIfNeeded(buildQuestionToolDedupeKey(input.sessionID, input.callID));
       }
@@ -950,7 +950,7 @@ const NotifyPlugin: Plugin = async (ctx) => {
       const runtimeEvent = event as { type: string; properties: Record<string, unknown> };
       const runtimeSessionStatusTransition = buildCmuxSessionStatusTransitionForEvent(
         runtimeEvent.type,
-        runtimeEvent.properties
+        runtimeEvent.properties,
       );
       applyRuntimeSessionStatusTransition(runtimeSessionStatusTransition);
 
@@ -974,7 +974,7 @@ const NotifyPlugin: Plugin = async (ctx) => {
               errorMessage,
               config,
               terminalInfo,
-              notificationRuntime
+              notificationRuntime,
             );
           }
           break;
@@ -991,7 +991,7 @@ const NotifyPlugin: Plugin = async (ctx) => {
           break;
         }
       }
-    }
+    },
   };
 };
 

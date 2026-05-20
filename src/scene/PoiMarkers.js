@@ -15,17 +15,17 @@ function buildStaircase(wx, wz, rotDeg) {
   const matConcrete = new THREE.MeshStandardMaterial({
     color: 0x9a9a9a,
     roughness: 0.85,
-    metalness: 0.05
+    metalness: 0.05,
   });
   const matRiser = new THREE.MeshStandardMaterial({
     color: 0x6a6a6a,
     roughness: 0.9,
-    metalness: 0.05
+    metalness: 0.05,
   });
   const matMetal = new THREE.MeshStandardMaterial({
     color: 0x555555,
     roughness: 0.4,
-    metalness: 0.7
+    metalness: 0.7,
   });
   const stepW = 2.8;
   const stepD = 0.7;
@@ -36,7 +36,7 @@ function buildStaircase(wx, wz, rotDeg) {
   // Common click target for the whole staircase (invisible box at center)
   const hitBox = new THREE.Mesh(
     new THREE.BoxGeometry(stepW + 0.6, totalRise, stepD * n + 0.6),
-    new THREE.MeshBasicMaterial({ visible: false })
+    new THREE.MeshBasicMaterial({ visible: false }),
   );
   hitBox.position.set(0, totalRise / 2, (-stepD * (n - 1)) / 2);
 
@@ -53,7 +53,7 @@ function buildStaircase(wx, wz, rotDeg) {
     // Tread slab
     const tread = new THREE.Mesh(
       new THREE.BoxGeometry(stepW, 0.04, stepD),
-      i === 0 ? matConcrete : matRiser
+      i === 0 ? matConcrete : matRiser,
     );
     tread.position.set(0, y + stepH, z);
     group.add(tread);
@@ -61,7 +61,7 @@ function buildStaircase(wx, wz, rotDeg) {
     // Tread top surface (slightly lighter)
     const top = new THREE.Mesh(
       new THREE.BoxGeometry(stepW - 0.04, 0.02, stepD - 0.04),
-      matConcrete
+      matConcrete,
     );
     top.position.set(0, y + stepH + 0.02, z);
     group.add(top);
@@ -74,7 +74,7 @@ function buildStaircase(wx, wz, rotDeg) {
     const shape = new THREE.Shape();
     const pts = [
       [0, -0.1],
-      [0, 0]
+      [0, 0],
     ];
     for (let i = 0; i < n; i++) {
       const xs = side * (-i * stepD);
@@ -116,11 +116,11 @@ function buildStaircase(wx, wz, rotDeg) {
     railPath.lineTo(-(n - 1) * stepD, railY);
     const railPts = railPath.getPoints(20);
     const railGeom = new THREE.BufferGeometry().setFromPoints(
-      railPts.map((p) => new THREE.Vector3(p.x, p.y, 0))
+      railPts.map((p) => new THREE.Vector3(p.x, p.y, 0)),
     );
     const railLine = new THREE.Line(
       railGeom,
-      new THREE.LineBasicMaterial({ color: 0x999999, linewidth: 1 })
+      new THREE.LineBasicMaterial({ color: 0x999999, linewidth: 1 }),
     );
     railLine.position.set(sx, 0, 0);
     group.add(railLine);
@@ -139,7 +139,7 @@ function buildStaircase(wx, wz, rotDeg) {
   const landMat = new THREE.MeshStandardMaterial({
     color: 0x7a7a7a,
     roughness: 0.85,
-    metalness: 0.05
+    metalness: 0.05,
   });
   const landing = new THREE.Mesh(new THREE.BoxGeometry(stepW + 0.3, 0.08, stepD), landMat);
   landing.position.set(0, totalRise, -(n - 1) * stepD - stepD / 2);
@@ -164,18 +164,18 @@ function buildEntrance(wx, wz, rotDeg) {
   const matStone = new THREE.MeshStandardMaterial({
     color: 0xcccccc,
     roughness: 0.8,
-    metalness: 0.05
+    metalness: 0.05,
   });
   const matStoneDark = new THREE.MeshStandardMaterial({
     color: 0x999999,
     roughness: 0.85,
-    metalness: 0.05
+    metalness: 0.05,
   });
   const matGlow = new THREE.MeshBasicMaterial({
     color: 0xffd700,
     transparent: true,
     opacity: 0.4,
-    side: THREE.DoubleSide
+    side: THREE.DoubleSide,
   });
 
   const pillarW = 0.35;
@@ -189,14 +189,14 @@ function buildEntrance(wx, wz, rotDeg) {
   // Common click target
   const hitBox = new THREE.Mesh(
     new THREE.BoxGeometry(totalW + 0.3, pillarH + beamH + 0.3, pillarD + 0.3),
-    new THREE.MeshBasicMaterial({ visible: false })
+    new THREE.MeshBasicMaterial({ visible: false }),
   );
   hitBox.position.set(0, (pillarH + beamH) / 2, 0);
 
   // Base platform
   const base = new THREE.Mesh(
     new THREE.BoxGeometry(totalW + 0.6, 0.1, pillarD + 0.8),
-    matStoneDark
+    matStoneDark,
   );
   base.position.set(0, 0.05, 0);
   group.add(base);
@@ -238,7 +238,7 @@ function buildEntrance(wx, wz, rotDeg) {
   // Beam decorative band
   const band = new THREE.Mesh(
     new THREE.BoxGeometry(totalW - 0.2, 0.06, beamD + 0.04),
-    matStoneDark
+    matStoneDark,
   );
   band.position.set(0, pillarH + beamH * 0.75, 0);
   group.add(band);
@@ -291,7 +291,7 @@ function buildEntrance(wx, wz, rotDeg) {
   // Threshold step
   const threshold = new THREE.Mesh(
     new THREE.BoxGeometry(openingW + 0.2, 0.08, pillarD + 0.2),
-    matStoneDark
+    matStoneDark,
   );
   threshold.position.set(0, 0.1, 0);
   group.add(threshold);
@@ -299,7 +299,7 @@ function buildEntrance(wx, wz, rotDeg) {
   // Sign / nameplate above beam
   const sign = new THREE.Mesh(
     new THREE.BoxGeometry(totalW - 0.4, 0.25, 0.05),
-    new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.3, metalness: 0.2 })
+    new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.3, metalness: 0.2 }),
   );
   sign.position.set(0, pillarH + beamH + 0.15, beamD / 2 + 0.025);
   group.add(sign);
@@ -308,7 +308,7 @@ function buildEntrance(wx, wz, rotDeg) {
   const signBorder = new THREE.EdgesGeometry(new THREE.BoxGeometry(totalW - 0.4, 0.25, 0.05));
   const signLine = new THREE.LineSegments(
     signBorder,
-    new THREE.LineBasicMaterial({ color: 0xffd700, transparent: true, opacity: 0.5 })
+    new THREE.LineBasicMaterial({ color: 0xffd700, transparent: true, opacity: 0.5 }),
   );
   signLine.position.copy(sign.position);
   group.add(signLine);
@@ -332,7 +332,7 @@ export function buildPoiMarkers(data) {
   // Stair markers
   const stairs = data.meta.stairs || [];
   for (const s of stairs) {
-    if (!s.position) continue;
+    if (!s.position) {continue;}
     const { px, py } = fabricToPixel(s.position.x, s.position.y);
     const { x, z } = pxToWorld(px, py);
 
@@ -348,7 +348,7 @@ export function buildPoiMarkers(data) {
   // Entrance markers
   const entrances = data.meta.entrances || [];
   for (const e of entrances) {
-    if (!e.position) continue;
+    if (!e.position) {continue;}
     const { px, py } = fabricToPixel(e.position.x, e.position.y);
     const { x, z } = pxToWorld(px, py);
 
@@ -356,7 +356,7 @@ export function buildPoiMarkers(data) {
     hitBox.userData.poiType = 'entrance';
     hitBox.userData.poiId = e.id;
     hitBox.userData.poiLabel = e.label || e.id;
-    hitBox.userData.poiInfo = `Entrance: ${e.label || e.id}${e.description ? ' | ' + e.description : ''}`;
+    hitBox.userData.poiInfo = `Entrance: ${e.label || e.id}${e.description ? ` | ${  e.description}` : ''}`;
     poiMeshes.push(hitBox);
     poiGroup.add(group);
   }
@@ -369,8 +369,8 @@ export function clearPoiMarkers() {
   if (poiGroup) {
     scene.remove(poiGroup);
     poiGroup.traverse((/** @type {any} */ c) => {
-      if (c.geometry) c.geometry.dispose();
-      if (c.material) c.material.dispose();
+      if (c.geometry) {c.geometry.dispose();}
+      if (c.material) {c.material.dispose();}
     });
     poiGroup = null;
   }
@@ -385,7 +385,7 @@ let routeStairRing = null;
 export function highlightRouteStair(stairId, data) {
   clearRouteStairHighlight();
   const stair = (data.meta.stairs || []).find((/** @type {{id:string}} */ s) => s.id === stairId);
-  if (!stair || !stair.position) return;
+  if (!stair || !stair.position) {return;}
   const { px, py } = fabricToPixel(stair.position.x, stair.position.y);
   const { x, z } = pxToWorld(px, py);
 
@@ -395,7 +395,7 @@ export function highlightRouteStair(stairId, data) {
     transparent: true,
     opacity: 0.6,
     side: THREE.DoubleSide,
-    depthWrite: false
+    depthWrite: false,
   });
   routeStairRing = new THREE.Mesh(ringGeom, ringMat);
   routeStairRing.position.set(x, 0.06, z);
@@ -416,7 +416,7 @@ export function clearRouteStairHighlight() {
 
 /** Animate pulsing ring (call from render loop). */
 export function updateRouteStairPulse() {
-  if (!routeStairRing) return;
+  if (!routeStairRing) {return;}
   const t = performance.now() * 0.003;
   const scale = 1 + 0.2 * Math.sin(t);
   routeStairRing.scale.set(scale, scale, 1);
@@ -430,7 +430,7 @@ export function handlePoiClick(intersects) {
     const obj = hit.object;
     if (obj.userData.poiType) {
       const info = obj.userData.poiInfo;
-      if (info) alert(info);
+      if (info) {alert(info);}
       const pos = obj.position;
       flyTo(new THREE.Vector3(pos.x + 15, 15, pos.z + 15), pos.clone(), 600);
       return true;

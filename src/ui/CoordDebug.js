@@ -2,16 +2,17 @@ import * as THREE from 'three';
 import {
   fabricToPixel,
   pxToWorld,
+  worldToPx,
+  pixelToFabric,
   offXEl,
   offYEl,
   scXEl,
   scYEl,
-  readCal,
   fb,
   baseScaleX,
-  baseScaleY
+  baseScaleY,
 } from '../scene/CoordTransform.js';
-import { IMG_W, IMG_H, PLANE_W, PLANE_H, scene, boothGroup } from '../scene/SceneSetup.js';
+import { IMG_W, IMG_H, scene, boothGroup } from '../scene/SceneSetup.js';
 import { buildBooths } from '../scene/BoothBuilder.js';
 
 const debugSelect = /** @type {HTMLInputElement} */ (document.getElementById('debugSelect'));
@@ -37,17 +38,6 @@ let _refBooth = null;
 
 function getHeight(b) {
   return b.status === 'BOOKED' ? 2.0 : b.status === 'HOLD' ? 1.6 : 1.2;
-}
-
-function worldToPixel(wx, wz) {
-  return { px: (wx / PLANE_W + 0.5) * IMG_W, py: (0.5 - wz / PLANE_H) * IMG_H };
-}
-
-function pixelToFabric(px, py) {
-  const cal = readCal();
-  const sx = baseScaleX * cal.scaleX;
-  const sy = baseScaleY * cal.scaleY;
-  return { fx: (px - cal.offsetX) / sx + fb.minX, fy: (py - cal.offsetY) / sy + fb.minY };
 }
 
 function centroidPx(corners) {
@@ -84,8 +74,8 @@ function updateAspectInfo() {
     `Img ${IMG_W}×${IMG_H} (${imgAspect.toFixed(3)}) · ` +
     `Fab ${fw.toFixed(0)}×${fh.toFixed(0)} (${fabAspect.toFixed(3)}) · ` +
     `Scale ratio ${ratio.toFixed(4)}${diffPct >= 1 ? ` · ⚠ ${diffPct.toFixed(1)}% mismatch` : ''}`;
-  if (cls === 'err') debugAspect.style.color = '#ffb020';
-  else debugAspect.style.color = '';
+  if (cls === 'err') {debugAspect.style.color = '#ffb020';}
+  else {debugAspect.style.color = '';}
 }
 
 // ── table ────────────────────────────────────────────────────
@@ -167,7 +157,7 @@ export function clearOverlay() {
 
 function buildOverlay(b, corners) {
   clearOverlay();
-  if (!debugOverlayToggle.checked) return;
+  if (!debugOverlayToggle.checked) {return;}
 
   const pts2 = corners.map((c) => new THREE.Vector2(c.world.x, c.world.z));
   const h = getHeight(b);
@@ -190,7 +180,7 @@ function buildOverlay(b, corners) {
   });
 
   // origin crosshair
-  if (debugShowOrigin.checked) buildOriginCrosshair();
+  if (debugShowOrigin.checked) {buildOriginCrosshair();}
 }
 
 function buildOriginCrosshair() {
@@ -228,7 +218,7 @@ function buildOriginCrosshair() {
     color: 0xffffff,
     side: THREE.DoubleSide,
     transparent: true,
-    opacity: 0.5
+    opacity: 0.5,
   });
   const ringMesh = new THREE.Mesh(ring, ringMat);
   ringMesh.rotation.x = -Math.PI / 2;
@@ -245,14 +235,14 @@ function onWorldEdit() {
   for (const row of rows) {
     const wx = parseFloat(/** @type {HTMLInputElement} */ (row.querySelector('.wxInput')).value);
     const wz = parseFloat(/** @type {HTMLInputElement} */ (row.querySelector('.wzInput')).value);
-    if (!isFinite(wx) || !isFinite(wz)) return;
+    if (!isFinite(wx) || !isFinite(wz)) {return;}
 
-    const pixel = worldToPixel(wx, wz);
+    const pixel = worldToPx(wx, wz);
     const fabric = pixelToFabric(pixel.px, pixel.py);
     const inside = pixel.px >= 0 && pixel.px <= IMG_W && pixel.py >= 0 && pixel.py <= IMG_H;
 
     /** @type {HTMLElement} */ (row.querySelector('.fabCell')).textContent =
-      `${fabric.fx.toFixed(2)}, ${fabric.fy.toFixed(2)}`;
+      `${fabric.x.toFixed(2)}, ${fabric.y.toFixed(2)}`;
     /** @type {HTMLElement} */ (row.querySelector('.pxlCell')).textContent =
       `${pixel.px.toFixed(1)}, ${pixel.py.toFixed(1)}`;
     /** @type {HTMLElement} */ (row.querySelector('.statusCell')).textContent = inside
@@ -270,7 +260,7 @@ function onWorldEdit() {
 
   if (debugOverlayToggle.checked) {
     const b = _data.booths.find((x) => x.boothNo === debugSelect.value);
-    if (b) buildOverlay(b, corners);
+    if (b) {buildOverlay(b, corners);}
   }
 }
 
@@ -280,21 +270,21 @@ function currentFabricPoints() {
   for (const row of rows) {
     const wx = parseFloat(/** @type {HTMLInputElement} */ (row.querySelector('.wxInput')).value);
     const wz = parseFloat(/** @type {HTMLInputElement} */ (row.querySelector('.wzInput')).value);
-    if (!isFinite(wx) || !isFinite(wz)) return null;
-    const pixel = worldToPixel(wx, wz);
+    if (!isFinite(wx) || !isFinite(wz)) {return null;}
+    const pixel = worldToPx(wx, wz);
     const fabric = pixelToFabric(pixel.px, pixel.py);
-    pts.push([fabric.fx, fabric.fy]);
+    pts.push([fabric.x, fabric.y]);
   }
   return pts;
 }
 
 function onApply() {
   const boothNo = debugSelect.value;
-  if (!boothNo) return;
+  if (!boothNo) {return;}
   const b = _data.booths.find((x) => x.boothNo === boothNo);
-  if (!b) return;
+  if (!b) {return;}
   const pts = currentFabricPoints();
-  if (!pts || pts.length < 3) return;
+  if (!pts || pts.length < 3) {return;}
   b.geometry.points = pts;
   const heat = /** @type {HTMLInputElement} */ (document.getElementById('heatmap')).checked;
   buildBooths(_data, heat);
@@ -303,7 +293,7 @@ function onApply() {
 
 function onCopyJson() {
   const pts = currentFabricPoints();
-  if (!pts) return;
+  if (!pts) {return;}
   navigator.clipboard.writeText(JSON.stringify(pts, null, 2));
 }
 
@@ -339,17 +329,17 @@ function onBoothSelect() {
   const corners = computeCornerData(b);
   renderTable(corners);
 
-  if (debugOverlayToggle.checked) buildOverlay(b, corners);
-  else clearOverlay();
+  if (debugOverlayToggle.checked) {buildOverlay(b, corners);}
+  else {clearOverlay();}
 }
 
 function onOverlayToggle() {
-  if (debugSelect.value) onBoothSelect();
-  else clearOverlay();
+  if (debugSelect.value) {onBoothSelect();}
+  else {clearOverlay();}
 }
 
 function onShowOriginToggle() {
-  if (debugSelect.value) onBoothSelect();
+  if (debugSelect.value) {onBoothSelect();}
 }
 
 // ── init ──────────────────────────────────────────────────────
@@ -360,7 +350,7 @@ export function initCoordDebug(data) {
   scene.add(debugOverlayGroup);
   reloadCoordDebug(data);
 
-  if (_initDone) return;
+  if (_initDone) {return;}
   _initDone = true;
 
   debugSelect.addEventListener('change', onBoothSelect);
@@ -370,14 +360,14 @@ export function initCoordDebug(data) {
   debugCopyJson.addEventListener('click', onCopyJson);
   debugRef.addEventListener('click', () => {
     if (debugSelect.value) {
-      if (_refBooth === debugSelect.value) _refBooth = null;
-      else _refBooth = debugSelect.value;
+      if (_refBooth === debugSelect.value) {_refBooth = null;}
+      else {_refBooth = debugSelect.value;}
       onBoothSelect();
     }
   });
 
   const onCalInput = () => {
-    if (debugSelect.value) onBoothSelect();
+    if (debugSelect.value) {onBoothSelect();}
   };
   [offXEl, offYEl, scXEl, scYEl].forEach((el) => el.addEventListener('input', onCalInput));
 }

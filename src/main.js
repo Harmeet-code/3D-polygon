@@ -32,7 +32,7 @@ import { flyTo, focusMesh, highlight, updateSidebar } from './ui/Sidebar.js';
 import { sel } from './state.js';
 import { enrichData } from './data/enrichment.js';
 import { initConsoleTools } from './debug/ConsoleTools.js';
-import { reloadCoordDebug, clearOverlay } from './ui/CoordDebug.js';
+import { initCoordDebug, clearOverlay } from './ui/CoordDebug.js';
 import { buildStairMap, stairToWorldPos } from './scene/StairMap.js';
 import { multiFloorAStar } from './scene/MultiFloorRoute.js';
 import { buildZoneOverlay, clearZoneOverlay } from './scene/ZoneOverlay.js';
@@ -236,7 +236,7 @@ async function loadFloor(name, transitionStair) {
     }
 
     // Reload debug tools
-    reloadCoordDebug(data);
+    initCoordDebug(data);
     initConsoleTools(data);
 
     console.log(`Switched to ${name} (${data.booths.length} booths)`);
