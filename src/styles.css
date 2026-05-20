@@ -9,10 +9,18 @@
   --bad: #ff5c6a;
   --warn: #ffb020;
 }
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 body {
   margin: 0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Arial;
   color: var(--text);
   background: radial-gradient(1200px 800px at 20% 10%, #14203a 0%, var(--bg) 55%);
   display: flex;
@@ -22,71 +30,111 @@ body {
 #sidebar {
   width: 380px;
   border-right: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(18,24,35,.92), rgba(15,20,29,.92));
+  background: linear-gradient(180deg, rgba(18, 24, 35, 0.92), rgba(15, 20, 29, 0.92));
   backdrop-filter: blur(8px);
   padding: 16px;
   overflow: auto;
 }
-.title { font-weight: 850; font-size: 16px; margin: 0 0 6px; }
-.subtitle { color: var(--muted); margin: 0 0 12px; font-size: 12px; line-height: 1.4; }
+.title {
+  font-weight: 850;
+  font-size: 16px;
+  margin: 0 0 6px;
+}
+.subtitle {
+  color: var(--muted);
+  margin: 0 0 12px;
+  font-size: 12px;
+  line-height: 1.4;
+}
 .section {
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 12px;
-  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
   margin-bottom: 12px;
 }
-.section h3 { margin: 0 0 10px; font-size: 13px; }
+.section h3 {
+  margin: 0 0 10px;
+  font-size: 13px;
+}
 
 .search {
-  display: flex; gap: 8px; align-items: center;
+  display: flex;
+  gap: 8px;
+  align-items: center;
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 10px 12px;
-  background: rgba(0,0,0,.18);
+  background: rgba(0, 0, 0, 0.18);
   margin: 10px 0 12px;
 }
 .search input {
   width: 100%;
-  border: none; outline: none;
+  border: none;
+  outline: none;
   background: transparent;
   color: var(--text);
   font-size: 13px;
 }
 
-.chipRow { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 12px; }
+.chipRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 0 0 12px;
+}
 .chip {
   font-size: 12px;
   padding: 6px 10px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: rgba(255,255,255,.04);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--muted);
   cursor: pointer;
   user-select: none;
 }
 .chip.active {
   color: var(--text);
-  border-color: rgba(106,169,255,.55);
-  background: rgba(106,169,255,.12);
+  border-color: rgba(106, 169, 255, 0.55);
+  background: rgba(106, 169, 255, 0.12);
 }
 
-.kv { display: grid; grid-template-columns: 92px 1fr; gap: 8px 10px; margin-top: 8px; }
-.k { color: var(--muted); font-size: 12px; }
-.v { font-size: 13px; }
+.kv {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 8px 10px;
+  margin-top: 8px;
+}
+.k {
+  color: var(--muted);
+  font-size: 12px;
+}
+.v {
+  font-size: 13px;
+}
 
 .status {
-  display: inline-flex; align-items: center; gap: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 6px 10px;
   border-radius: 999px;
   font-size: 12px;
   border: 1px solid var(--border);
   margin-top: 10px;
-  background: rgba(0,0,0,.18);
+  background: rgba(0, 0, 0, 0.18);
 }
-.dot { width: 9px; height: 9px; border-radius: 50%; }
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
 
-.btnRow { display: flex; gap: 10px; margin-top: 12px; }
+.btnRow {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
 button {
   flex: 1;
   border: none;
@@ -95,19 +143,19 @@ button {
   cursor: pointer;
   font-weight: 750;
   color: var(--text);
-  background: rgba(106,169,255,.16);
-  border: 1px solid rgba(106,169,255,.35);
+  background: rgba(106, 169, 255, 0.16);
+  border: 1px solid rgba(106, 169, 255, 0.35);
 }
 button.secondary {
-  background: rgba(255,255,255,.06);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--border);
   color: var(--muted);
 }
 
 /* ✅ Style the select control itself */
-select{
-  background-color: #0f1623;      /* dark background */
-  color: #e7eefc;                 /* readable text */
+select {
+  background-color: #0f1623; /* dark background */
+  color: #e7eefc; /* readable text */
   border: 1px solid #233043;
   border-radius: 12px;
   padding: 10px 12px;
@@ -116,76 +164,91 @@ select{
 }
 
 /* ✅ Style dropdown options (THIS fixes your issue) */
-select option{
-  background-color: #0f1623;      /* dark dropdown */
-  color: #e7eefc;                 /* light text */
+select option {
+  background-color: #0f1623; /* dark dropdown */
+  color: #e7eefc; /* light text */
   padding: 8px;
 }
 
 /* ✅ Highlighted / selected option */
-select option:checked{
-  background-color: #2a3b55;      /* clearly visible selection */
+select option:checked {
+  background-color: #2a3b55; /* clearly visible selection */
   color: #ffffff;
 }
 
 /* ✅ Hover (works in Chromium-based browsers) */
-select option:hover{
+select option:hover {
   background-color: #334766;
   color: #ffffff;
 }
 
-label { font-size: 12px; color: var(--muted); }
-.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+label {
+  font-size: 12px;
+  color: var(--muted);
+}
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
 
 .pill {
-  display: flex; align-items: center; gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-top: 10px;
   padding: 8px 10px;
   border-radius: 12px;
   border: 1px solid var(--border);
-  background: rgba(0,0,0,.18);
+  background: rgba(0, 0, 0, 0.18);
   color: var(--muted);
   font-size: 12px;
 }
 
-input[type=range],
-input[type=number] {
+input[type='range'],
+input[type='number'] {
   width: 100%;
 }
 
-input[type=number] {
+input[type='number'] {
   margin-top: 4px;
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 8px 10px;
-  background: rgba(0,0,0,.18);
+  background: rgba(0, 0, 0, 0.18);
   color: var(--text);
   outline: none;
 }
 
-#stage { position: relative; flex: 1; min-width: 0; }
+#stage {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
 
 #resizeHandle {
   width: 4px;
   cursor: col-resize;
   background: var(--border);
   flex-shrink: 0;
-  transition: background .15s;
+  transition: background 0.15s;
 }
 #resizeHandle:hover,
-#resizeHandle.active { background: var(--accent); }
-#tooltip{
-  position:absolute;
-  pointer-events:none;
-  padding:8px 10px;
-  font-size:12px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(10,14,20,.72);
-  box-shadow:0 12px 28px rgba(0,0,0,.4);
+#resizeHandle.active {
+  background: var(--accent);
+}
+#tooltip {
+  position: absolute;
+  pointer-events: none;
+  padding: 8px 10px;
+  font-size: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(10, 14, 20, 0.72);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(6px);
-  display:none;
-  white-space:nowrap;
+  display: none;
+  white-space: nowrap;
   z-index: 6;
 
   /* ✅ anchor above point */
@@ -223,27 +286,33 @@ input[type=number] {
   gap: 12px;
   color: var(--text);
   font-size: 13px;
-  background: rgba(0,0,0,.6);
+  background: rgba(0, 0, 0, 0.6);
   padding: 24px 32px;
   border-radius: 16px;
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
-#loader.visible { display: flex; }
+#loader.visible {
+  display: flex;
+}
 .spinner {
   width: 28px;
   height: 28px;
-  border: 3px solid rgba(255,255,255,.15);
+  border: 3px solid rgba(255, 255, 255, 0.15);
   border-top: 3px solid var(--accent);
   border-radius: 50%;
-  animation: spin .7s linear infinite;
+  animation: spin 0.7s linear infinite;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .hudBtn {
   padding: 10px 12px;
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.25);
   color: var(--text);
   font-size: 12px;
   cursor: pointer;
@@ -251,8 +320,8 @@ input[type=number] {
   backdrop-filter: blur(8px);
 }
 .hudBtn.active {
-  border-color: rgba(106,169,255,.55);
-  background: rgba(106,169,255,.16);
+  border-color: rgba(106, 169, 255, 0.55);
+  background: rgba(106, 169, 255, 0.16);
   color: #fff;
 }
 .hint {
@@ -261,44 +330,81 @@ input[type=number] {
   left: 14px;
   padding: 10px 12px;
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.25);
   color: var(--muted);
   font-size: 12px;
   z-index: 5;
   backdrop-filter: blur(8px);
 }
-.tiny { font-size: 11px; color: var(--muted); line-height: 1.35; }
+.tiny {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.35;
+}
 
-.debugGrid { display: grid; grid-template-columns: auto 1fr 1fr 1fr auto; gap: 2px 6px; font-size: 11px; align-items: center; }
-.debugGrid span { padding: 2px 0; }
-.debugHead { color: var(--muted); border-bottom: 1px solid var(--border); padding-bottom: 4px; margin-bottom: 2px; }
-.debugRow:nth-child(even) { background: rgba(255,255,255,.03); }
-.debugStatus { font-size: 12px; padding: 4px 8px; border-radius: 6px; }
-.debugStatus.ok { color: #2ecc71; }
-.debugStatus.err { color: #ff5c6a; }
-.debugInput { width:85px; background:rgba(0,0,0,.25); border:1px solid var(--border); border-radius:6px; color:var(--text); font-size:11px; padding:2px 4px; outline:none; }
-.debugInput:focus { border-color:var(--accent); }
+.debugGrid {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr 1fr auto;
+  gap: 2px 6px;
+  font-size: 11px;
+  align-items: center;
+}
+.debugGrid span {
+  padding: 2px 0;
+}
+.debugHead {
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+  margin-bottom: 2px;
+}
+.debugRow:nth-child(even) {
+  background: rgba(255, 255, 255, 0.03);
+}
+.debugStatus {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.debugStatus.ok {
+  color: #2ecc71;
+}
+.debugStatus.err {
+  color: #ff5c6a;
+}
+.debugInput {
+  width: 85px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 11px;
+  padding: 2px 4px;
+  outline: none;
+}
+.debugInput:focus {
+  border-color: var(--accent);
+}
 
-
-#boothMarker{
-  position:absolute;
-  z-index: 30;                  /* ✅ above iframe */
+#boothMarker {
+  position: absolute;
+  z-index: 30; /* ✅ above iframe */
   width: 320px;
   height: 220px;
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(10,14,20,.96);
-  box-shadow: 0 18px 50px rgba(0,0,0,.55);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(10, 14, 20, 0.96);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(10px);
 
   transform: translate(-50%, -110%);
   pointer-events: auto;
-  overflow: hidden;             /* ✅ important */
+  overflow: hidden; /* ✅ important */
 }
 
 /* ✅ HEADER IS NOW AN OVERLAY */
-#boothMarker .markerHeader{
+#boothMarker .markerHeader {
   position: absolute;
   top: 0;
   left: 0;
@@ -308,22 +414,18 @@ input[type=number] {
   display: flex;
   align-items: center;
 
-  padding: 0 36px 0 12px;       /* space only for ❌ */
+  padding: 0 36px 0 12px; /* space only for ❌ */
   font-size: 13px;
   font-weight: 600;
   color: white;
 
-  background: linear-gradient(
-    to bottom,
-    rgba(10,14,20,.95),
-    rgba(10,14,20,.75)
-  );
+  background: linear-gradient(to bottom, rgba(10, 14, 20, 0.95), rgba(10, 14, 20, 0.75));
 
-  z-index: 2;                   /* ✅ ALWAYS ABOVE VIDEO */
+  z-index: 2; /* ✅ ALWAYS ABOVE VIDEO */
 }
 
 /* ✅ TITLE */
-#markerTitle{
+#markerTitle {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -331,7 +433,7 @@ input[type=number] {
 }
 
 /* ✅ SMALL, FLOATING CLOSE ICON */
-#markerClose{
+#markerClose {
   position: absolute;
   right: 8px;
   top: 50%;
@@ -349,7 +451,7 @@ input[type=number] {
 
   border-radius: 50%;
   border: none;
-  background: rgba(255,255,255,.18);
+  background: rgba(255, 255, 255, 0.18);
   color: white;
 
   font-size: 13px;
@@ -359,16 +461,16 @@ input[type=number] {
   z-index: 3;
 }
 
-#markerClose:hover{
-  background: rgba(255,255,255,.35);
+#markerClose:hover {
+  background: rgba(255, 255, 255, 0.35);
 }
 
 /* ✅ VIDEO AREA PUSHED BELOW HEADER */
-#markerVideo{
+#markerVideo {
   position: absolute;
   left: 0;
   right: 0;
-  top: 36px;                    /* ✅ EXACT HEADER HEIGHT */
+  top: 36px; /* ✅ EXACT HEADER HEIGHT */
   bottom: 0;
 
   width: 100%;

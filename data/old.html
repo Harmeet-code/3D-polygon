@@ -1,1519 +1,1756 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SEMS • 3D Floor Plan (Interactive Demo)</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SEMS • 3D Floor Plan (Interactive Demo)</title>
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='44'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='44'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E"
+    />
 
-  <style>
-    :root {
-      --bg: #0b0f14;
-      --panel: #121823;
-      --border: #233043;
-      --text: #e7eefc;
-      --muted: #9fb0cc;
-      --accent: #6aa9ff;
-      --good: #2ecc71;
-      --bad: #ff5c6a;
-      --warn: #ffb020;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color: var(--text);
-      background: radial-gradient(1200px 800px at 20% 10%, #14203a 0%, var(--bg) 55%);
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
-    }
-    #sidebar {
-      width: 380px;
-      border-right: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(18,24,35,.92), rgba(15,20,29,.92));
-      backdrop-filter: blur(8px);
-      padding: 16px;
-      overflow: auto;
-    }
-    .title { font-weight: 850; font-size: 16px; margin: 0 0 6px; }
-    .subtitle { color: var(--muted); margin: 0 0 12px; font-size: 12px; line-height: 1.4; }
-    .section {
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 12px;
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      margin-bottom: 12px;
-    }
-    .section h3 { margin: 0 0 10px; font-size: 13px; }
+    <style>
+      :root {
+        --bg: #0b0f14;
+        --panel: #121823;
+        --border: #233043;
+        --text: #e7eefc;
+        --muted: #9fb0cc;
+        --accent: #6aa9ff;
+        --good: #2ecc71;
+        --bad: #ff5c6a;
+        --warn: #ffb020;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Arial;
+        color: var(--text);
+        background: radial-gradient(1200px 800px at 20% 10%, #14203a 0%, var(--bg) 55%);
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #sidebar {
+        width: 380px;
+        border-right: 1px solid var(--border);
+        background: linear-gradient(180deg, rgba(18, 24, 35, 0.92), rgba(15, 20, 29, 0.92));
+        backdrop-filter: blur(8px);
+        padding: 16px;
+        overflow: auto;
+      }
+      .title {
+        font-weight: 850;
+        font-size: 16px;
+        margin: 0 0 6px;
+      }
+      .subtitle {
+        color: var(--muted);
+        margin: 0 0 12px;
+        font-size: 12px;
+        line-height: 1.4;
+      }
+      .section {
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 12px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+        margin-bottom: 12px;
+      }
+      .section h3 {
+        margin: 0 0 10px;
+        font-size: 13px;
+      }
 
-    .search {
-      display: flex; gap: 8px; align-items: center;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 12px;
-      background: rgba(0,0,0,.18);
-      margin: 10px 0 12px;
-    }
-    .search input {
-      width: 100%;
-      border: none; outline: none;
-      background: transparent;
-      color: var(--text);
-      font-size: 13px;
-    }
+      .search {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px 12px;
+        background: rgba(0, 0, 0, 0.18);
+        margin: 10px 0 12px;
+      }
+      .search input {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: var(--text);
+        font-size: 13px;
+      }
 
-    .chipRow { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 12px; }
-    .chip {
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.04);
-      color: var(--muted);
-      cursor: pointer;
-      user-select: none;
-    }
-    .chip.active {
-      color: var(--text);
-      border-color: rgba(106,169,255,.55);
-      background: rgba(106,169,255,.12);
-    }
+      .chipRow {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 0 0 12px;
+      }
+      .chip {
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--muted);
+        cursor: pointer;
+        user-select: none;
+      }
+      .chip.active {
+        color: var(--text);
+        border-color: rgba(106, 169, 255, 0.55);
+        background: rgba(106, 169, 255, 0.12);
+      }
 
-    .kv { display: grid; grid-template-columns: 92px 1fr; gap: 8px 10px; margin-top: 8px; }
-    .k { color: var(--muted); font-size: 12px; }
-    .v { font-size: 13px; }
+      .kv {
+        display: grid;
+        grid-template-columns: 92px 1fr;
+        gap: 8px 10px;
+        margin-top: 8px;
+      }
+      .k {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .v {
+        font-size: 13px;
+      }
 
-    .status {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      border: 1px solid var(--border);
-      margin-top: 10px;
-      background: rgba(0,0,0,.18);
-    }
-    .dot { width: 9px; height: 9px; border-radius: 50%; }
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        border: 1px solid var(--border);
+        margin-top: 10px;
+        background: rgba(0, 0, 0, 0.18);
+      }
+      .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+      }
 
-    .btnRow { display: flex; gap: 10px; margin-top: 12px; }
-    button {
-      flex: 1;
-      border: none;
-      border-radius: 12px;
-      padding: 10px 12px;
-      cursor: pointer;
-      font-weight: 750;
-      color: var(--text);
-      background: rgba(106,169,255,.16);
-      border: 1px solid rgba(106,169,255,.35);
-    }
-    button.secondary {
-      background: rgba(255,255,255,.06);
-      border: 1px solid var(--border);
-      color: var(--muted);
-    }
+      .btnRow {
+        display: flex;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      button {
+        flex: 1;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 12px;
+        cursor: pointer;
+        font-weight: 750;
+        color: var(--text);
+        background: rgba(106, 169, 255, 0.16);
+        border: 1px solid rgba(106, 169, 255, 0.35);
+      }
+      button.secondary {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--border);
+        color: var(--muted);
+      }
 
-    /* ✅ Style the select control itself */
-select{
-  background-color: #0f1623;      /* dark background */
-  color: #e7eefc;                 /* readable text */
-  border: 1px solid #233043;
-  border-radius: 12px;
-  padding: 10px 12px;
-  outline: none;
-  font-size: 13px;
-}
+      /* ✅ Style the select control itself */
+      select {
+        background-color: #0f1623; /* dark background */
+        color: #e7eefc; /* readable text */
+        border: 1px solid #233043;
+        border-radius: 12px;
+        padding: 10px 12px;
+        outline: none;
+        font-size: 13px;
+      }
 
-/* ✅ Style dropdown options (THIS fixes your issue) */
-select option{
-  background-color: #0f1623;      /* dark dropdown */
-  color: #e7eefc;                 /* light text */
-  padding: 8px;
-}
+      /* ✅ Style dropdown options (THIS fixes your issue) */
+      select option {
+        background-color: #0f1623; /* dark dropdown */
+        color: #e7eefc; /* light text */
+        padding: 8px;
+      }
 
-/* ✅ Highlighted / selected option */
-select option:checked{
-  background-color: #2a3b55;      /* clearly visible selection */
-  color: #ffffff;
-}
+      /* ✅ Highlighted / selected option */
+      select option:checked {
+        background-color: #2a3b55; /* clearly visible selection */
+        color: #ffffff;
+      }
 
-/* ✅ Hover (works in Chromium-based browsers) */
-select option:hover{
-  background-color: #334766;
-  color: #ffffff;
-}
+      /* ✅ Hover (works in Chromium-based browsers) */
+      select option:hover {
+        background-color: #334766;
+        color: #ffffff;
+      }
 
-    label { font-size: 12px; color: var(--muted); }
-    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+      label {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .row2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
 
-    .pill {
-      display: flex; align-items: center; gap: 10px;
-      margin-top: 10px;
-      padding: 8px 10px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(0,0,0,.18);
-      color: var(--muted);
-      font-size: 12px;
-    }
+      .pill {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+        padding: 8px 10px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: rgba(0, 0, 0, 0.18);
+        color: var(--muted);
+        font-size: 12px;
+      }
 
-    input[type=range] { width: 100%; }
+      input[type='range'] {
+        width: 100%;
+      }
 
-    #stage { position: relative; flex: 1; min-width: 0; }
-    #tooltip{
-  position:absolute;
-  pointer-events:none;
-  padding:8px 10px;
-  font-size:12px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(10,14,20,.72);
-  box-shadow:0 12px 28px rgba(0,0,0,.4);
-  backdrop-filter: blur(6px);
-  display:none;
-  white-space:nowrap;
-  z-index: 6;
+      #stage {
+        position: relative;
+        flex: 1;
+        min-width: 0;
+      }
+      #tooltip {
+        position: absolute;
+        pointer-events: none;
+        padding: 8px 10px;
+        font-size: 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(10, 14, 20, 0.72);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(6px);
+        display: none;
+        white-space: nowrap;
+        z-index: 6;
 
-  /* ✅ anchor above point */
-  transform: translate(-50%, -120%);
-}
+        /* ✅ anchor above point */
+        transform: translate(-50%, -120%);
+      }
 
-    #hud {
-      position: absolute;
-      top: 14px;
-      left: 14px;
-      display: flex;
-      gap: 10px;
-      z-index: 5;
-    }
-    .hudBtn {
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.25);
-      color: var(--text);
-      font-size: 12px;
-      cursor: pointer;
-      user-select: none;
-      backdrop-filter: blur(8px);
-    }
-    .hint {
-      position: absolute;
-      bottom: 14px;
-      left: 14px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.25);
-      color: var(--muted);
-      font-size: 12px;
-      z-index: 5;
-      backdrop-filter: blur(8px);
-    }
-    .tiny { font-size: 11px; color: var(--muted); line-height: 1.35; }
-  
-    
-#boothMarker{
-  position:absolute;
-  z-index: 30;                  /* ✅ above iframe */
-  width: 320px;
-  height: 220px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(10,14,20,.96);
-  box-shadow: 0 18px 50px rgba(0,0,0,.55);
-  backdrop-filter: blur(10px);
+      #hud {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        display: flex;
+        gap: 10px;
+        z-index: 5;
+      }
+      .hudBtn {
+        padding: 10px 12px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.25);
+        color: var(--text);
+        font-size: 12px;
+        cursor: pointer;
+        user-select: none;
+        backdrop-filter: blur(8px);
+      }
+      .hint {
+        position: absolute;
+        bottom: 14px;
+        left: 14px;
+        padding: 10px 12px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.25);
+        color: var(--muted);
+        font-size: 12px;
+        z-index: 5;
+        backdrop-filter: blur(8px);
+      }
+      .tiny {
+        font-size: 11px;
+        color: var(--muted);
+        line-height: 1.35;
+      }
 
-  transform: translate(-50%, -110%);
-  pointer-events: auto;
-  overflow: hidden;             /* ✅ important */
-}
+      #boothMarker {
+        position: absolute;
+        z-index: 30; /* ✅ above iframe */
+        width: 320px;
+        height: 220px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(10, 14, 20, 0.96);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(10px);
 
-/* ✅ HEADER IS NOW AN OVERLAY */
-#boothMarker .markerHeader{
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+        transform: translate(-50%, -110%);
+        pointer-events: auto;
+        overflow: hidden; /* ✅ important */
+      }
 
-  height: 36px;
-  display: flex;
-  align-items: center;
+      /* ✅ HEADER IS NOW AN OVERLAY */
+      #boothMarker .markerHeader {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
 
-  padding: 0 36px 0 12px;       /* space only for ❌ */
-  font-size: 13px;
-  font-weight: 600;
-  color: white;
+        height: 36px;
+        display: flex;
+        align-items: center;
 
-  background: linear-gradient(
-    to bottom,
-    rgba(10,14,20,.95),
-    rgba(10,14,20,.75)
-  );
+        padding: 0 36px 0 12px; /* space only for ❌ */
+        font-size: 13px;
+        font-weight: 600;
+        color: white;
 
-  z-index: 2;                   /* ✅ ALWAYS ABOVE VIDEO */
-}
+        background: linear-gradient(to bottom, rgba(10, 14, 20, 0.95), rgba(10, 14, 20, 0.75));
 
-/* ✅ TITLE */
-#markerTitle{
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100%;
-}
+        z-index: 2; /* ✅ ALWAYS ABOVE VIDEO */
+      }
 
-/* ✅ SMALL, FLOATING CLOSE ICON */
-#markerClose{
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
+      /* ✅ TITLE */
+      #markerTitle {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+      }
 
-  width: 18px;
-  height: 18px;
+      /* ✅ SMALL, FLOATING CLOSE ICON */
+      #markerClose {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+        width: 18px;
+        height: 18px;
 
-  padding: 0;
-  margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-  border-radius: 50%;
-  border: none;
-  background: rgba(255,255,255,.18);
-  color: white;
+        padding: 0;
+        margin: 0;
 
-  font-size: 13px;
-  line-height: 1;
-  cursor: pointer;
+        border-radius: 50%;
+        border: none;
+        background: rgba(255, 255, 255, 0.18);
+        color: white;
 
-  z-index: 3;
-}
+        font-size: 13px;
+        line-height: 1;
+        cursor: pointer;
 
-#markerClose:hover{
-  background: rgba(255,255,255,.35);
-}
+        z-index: 3;
+      }
 
-/* ✅ VIDEO AREA PUSHED BELOW HEADER */
-#markerVideo{
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 36px;                    /* ✅ EXACT HEADER HEIGHT */
-  bottom: 0;
+      #markerClose:hover {
+        background: rgba(255, 255, 255, 0.35);
+      }
 
-  width: 100%;
-  height: auto;
+      /* ✅ VIDEO AREA PUSHED BELOW HEADER */
+      #markerVideo {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 36px; /* ✅ EXACT HEADER HEIGHT */
+        bottom: 0;
 
-  border: 0;
-}
+        width: 100%;
+        height: auto;
 
-   
-  </style>
+        border: 0;
+      }
+    </style>
 
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-    }
-  }
-  </script>
-</head>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
 
-<body>
-  <aside id="sidebar">
-    <p class="title">SEMS • 3D Interactive Floor Plan</p>
-    <p class="subtitle">
-      Click booth → highlight + focus. Filters, animated route, camera follow, heatmap included.
-    </p>
+  <body>
+    <aside id="sidebar">
+      <p class="title">SEMS • 3D Interactive Floor Plan</p>
+      <p class="subtitle">
+        Click booth → highlight + focus. Filters, animated route, camera follow, heatmap included.
+      </p>
 
-    <div class="section">
-      <h3>Search & Filters</h3>
-      <div class="search">
-        <span style="opacity:.7">🔎</span>
-        <input id="q" placeholder="Search booth/company…" />
-      </div>
-      <div class="chipRow">
-        <div class="chip active" data-filter="ALL">All</div>
-        <div class="chip" data-filter="AVAILABLE">Available</div>
-        <div class="chip" data-filter="HOLD">Hold</div>
-        <div class="chip" data-filter="BOOKED">Booked</div>
-      </div>
-
-      <div class="pill"><input id="heatmap" type="checkbox"><span>Heatmap (by price)</span></div>
-      <div class="pill"><input id="followCam" type="checkbox" checked><span>Camera follow route</span></div>
-      <div class="pill"><input id="night" type="checkbox"><span>Night lighting</span></div>
-    </div>
-
-    <div class="section">
-      <h3>Booth Information</h3>
-      <div id="infoTitle" style="font-weight:800; font-size:14px;">Select a booth</div>
-      <div id="infoHint" style="color:var(--muted); font-size:12px; margin-top:6px;">Click any booth.</div>
-      <div class="status" id="statusPill" style="display:none;">
-        <span class="dot" id="statusDot"></span>
-        <span id="statusText"></span>
-      </div>
-      <div class="kv" id="kv" style="display:none;">
-        <div class="k">Booth</div><div class="v" id="boothNo"></div>
-        <div class="k">Company</div><div class="v" id="company"></div>
-        <div class="k">Size</div><div class="v" id="size"></div>
-        <div class="k">Price</div><div class="v" id="price"></div>
-      </div>
-      <div class="btnRow">
-        <button id="focusBtn" disabled>Focus</button>
-        <button class="secondary" id="resetBtn">Reset View</button>
-      </div>
-    </div>
-
-    <div class="section">
-      <h3>Directions (Booth → Booth)</h3>
-      <div class="row2">
-        <div>
-          <label>From</label>
-          <select id="fromSelect"></select>
+      <div class="section">
+        <h3>Search & Filters</h3>
+        <div class="search">
+          <span style="opacity: 0.7">🔎</span>
+          <input id="q" placeholder="Search booth/company…" />
         </div>
-        <div>
-          <label>To</label>
-          <select id="toSelect"></select>
+        <div class="chipRow">
+          <div class="chip active" data-filter="ALL">All</div>
+          <div class="chip" data-filter="AVAILABLE">Available</div>
+          <div class="chip" data-filter="HOLD">Hold</div>
+          <div class="chip" data-filter="BOOKED">Booked</div>
+        </div>
+
+        <div class="pill">
+          <input id="heatmap" type="checkbox" /><span>Heatmap (by price)</span>
+        </div>
+        <div class="pill">
+          <input id="followCam" type="checkbox" checked /><span>Camera follow route</span>
+        </div>
+        <div class="pill"><input id="night" type="checkbox" /><span>Night lighting</span></div>
+      </div>
+
+      <div class="section">
+        <h3>Booth Information</h3>
+        <div id="infoTitle" style="font-weight: 800; font-size: 14px">Select a booth</div>
+        <div id="infoHint" style="color: var(--muted); font-size: 12px; margin-top: 6px">
+          Click any booth.
+        </div>
+        <div class="status" id="statusPill" style="display: none">
+          <span class="dot" id="statusDot"></span>
+          <span id="statusText"></span>
+        </div>
+        <div class="kv" id="kv" style="display: none">
+          <div class="k">Booth</div>
+          <div class="v" id="boothNo"></div>
+          <div class="k">Company</div>
+          <div class="v" id="company"></div>
+          <div class="k">Size</div>
+          <div class="v" id="size"></div>
+          <div class="k">Price</div>
+          <div class="v" id="price"></div>
+        </div>
+        <div class="btnRow">
+          <button id="focusBtn" disabled>Focus</button>
+          <button class="secondary" id="resetBtn">Reset View</button>
         </div>
       </div>
-      <div class="btnRow">
-        <button id="routeBtn">Show Route</button>
-        <button class="secondary" id="clearRouteBtn">Clear</button>
-      </div>
-      <div class="tiny" style="margin-top:8px;">Route is demo-grade: A* on grid + avoids booth bounding boxes. Animated glow + walking dots included.</div>
-    </div>
 
-    <div class="section">
-      <h3>Calibration (optional)</h3>
-      <div class="tiny">If tiny drift exists, adjust. Saved in browser.</div>
-      <div style="height:8px"></div>
-      <div class="row2">
-        <div>
-<label>Offset X (px): <b><span id="offXVal">0</span></b></label>
-<input id="offX" type="range" min="-300" max="300" step="1" value="0" />
-</div>
-        <div>
-<label>Offset Y (px): <b><span id="offYVal">0</span></b></label>
-<input id="offY" type="range" min="-300" max="300" step="1" value="0" />
-</div>
+      <div class="section">
+        <h3>Directions (Booth → Booth)</h3>
+        <div class="row2">
+          <div>
+            <label>From</label>
+            <select id="fromSelect"></select>
+          </div>
+          <div>
+            <label>To</label>
+            <select id="toSelect"></select>
+          </div>
+        </div>
+        <div class="btnRow">
+          <button id="routeBtn">Show Route</button>
+          <button class="secondary" id="clearRouteBtn">Clear</button>
+        </div>
+        <div class="tiny" style="margin-top: 8px">
+          Route is demo-grade: A* on grid + avoids booth bounding boxes. Animated glow + walking
+          dots included.
+        </div>
       </div>
-      <div style="height:8px"></div>
-      <div class="row2">
-        <div>
-<label>Scale X (×1000): <b><span id="scXVal">1000</span></b></label>
-<input id="scX" type="range" min="500" max="2000" step="1" value="1000" />
-</div>
-        <div>
-<label>Scale Y (×1000): <b><span id="scYVal">1000</span></b></label>
-<input id="scY" type="range" min="500" max="2000" step="1" value="1000" />
-</div>
-      </div>
-      <div style="height:10px"></div>
-      <button id="resetCal" class="secondary">Reset calibration</button>
-    </div>
-  </aside>
 
-  <main id="stage">
-    <div id="hud">
-      <div class="hudBtn" id="camIso">Isometric</div>
-      <div class="hudBtn" id="camTop">Top</div>
-      <div class="hudBtn" id="camReset">Reset</div>
-      <div class="hudBtn" id="tour">Auto Tour</div>
-    </div>
-    <div id="tooltip"></div>
-    <div id="boothMarker" style="display:none;">
-  <div class="markerHeader">
-    <div id="markerTitle">Booth</div>
-    <button id="markerClose" title="Close">✕</button>
-  </div>
-  <iframe id="markerVideo"
+      <div class="section">
+        <h3>Calibration (optional)</h3>
+        <div class="tiny">If tiny drift exists, adjust. Saved in browser.</div>
+        <div style="height: 8px"></div>
+        <div class="row2">
+          <div>
+            <label
+              >Offset X (px): <b><span id="offXVal">0</span></b></label
+            >
+            <input id="offX" type="range" min="-300" max="300" step="1" value="0" />
+          </div>
+          <div>
+            <label
+              >Offset Y (px): <b><span id="offYVal">0</span></b></label
+            >
+            <input id="offY" type="range" min="-300" max="300" step="1" value="0" />
+          </div>
+        </div>
+        <div style="height: 8px"></div>
+        <div class="row2">
+          <div>
+            <label
+              >Scale X (×1000): <b><span id="scXVal">1000</span></b></label
+            >
+            <input id="scX" type="range" min="500" max="2000" step="1" value="1000" />
+          </div>
+          <div>
+            <label
+              >Scale Y (×1000): <b><span id="scYVal">1000</span></b></label
+            >
+            <input id="scY" type="range" min="500" max="2000" step="1" value="1000" />
+          </div>
+        </div>
+        <div style="height: 10px"></div>
+        <button id="resetCal" class="secondary">Reset calibration</button>
+      </div>
+    </aside>
+
+    <main id="stage">
+      <div id="hud">
+        <div class="hudBtn" id="camIso">Isometric</div>
+        <div class="hudBtn" id="camTop">Top</div>
+        <div class="hudBtn" id="camReset">Reset</div>
+        <div class="hudBtn" id="tour">Auto Tour</div>
+      </div>
+      <div id="tooltip"></div>
+      <div id="boothMarker" style="display: none">
+        <div class="markerHeader">
+          <div id="markerTitle">Booth</div>
+          <button id="markerClose" title="Close">✕</button>
+        </div>
+        <iframe
+          id="markerVideo"
           src=""
           allow="autoplay; encrypted-media; picture-in-picture"
           allowfullscreen
-          loading="lazy"></iframe>
-</div>
+          loading="lazy"
+        ></iframe>
+      </div>
 
-    <div class="hint">🖱️ Drag rotate • Wheel zoom • Shift+Drag pan • Click booth to focus</div>
-  </main>
+      <div class="hint">🖱️ Drag rotate • Wheel zoom • Shift+Drag pan • Click booth to focus</div>
+    </main>
 
-<script type="module">
-  import * as THREE from "three";
-  import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+    <script type="module">
+      import * as THREE from 'three';
+      import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-  function worldToScreen(worldVec3){
-  const v = worldVec3.clone().project(camera); // NDC
-  const rect = renderer.domElement.getBoundingClientRect();
-  return {
-    x: (v.x * 0.5 + 0.5) * rect.width,
-    y: (-v.y * 0.5 + 0.5) * rect.height,
-    ndcZ: v.z,
-    rect
-  };
-}
-
-function clamp(val, min, max){
-  return Math.max(min, Math.min(max, val));
-}
-
-function placeTooltipAt(worldPos){
-  const {x, y, ndcZ, rect} = worldToScreen(worldPos);
-
-  // If behind camera, hide tooltip
-  if (ndcZ < -1 || ndcZ > 1){
-    tooltip.style.display = "none";
-    return;
-  }
-
-  tooltip.style.display = "block";
-
-  // Temporarily place, measure size, then clamp
-  tooltip.style.left = `${x}px`;
-  tooltip.style.top  = `${y}px`;
-
-  const pad = 8;
-  const w = tooltip.offsetWidth;
-  const h = tooltip.offsetHeight;
-
-  // clamp so it never goes outside canvas area
-  const cx = clamp(x, pad + w/2, rect.width - pad - w/2);
-  const cy = clamp(y, pad + h, rect.height - pad);
-
-  tooltip.style.left = `${cx}px`;
-  tooltip.style.top  = `${cy}px`;
-}
-
-  /* ------------------------------ */
-  /* DEMO ENRICH (if status/company missing) */
-  function hashStr(s){
-    let h=2166136261;
-    for(let i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
-    return h>>>0;
-  }
-  function demoStatus(no){
-    const r = hashStr(no) % 100;
-    if(r < 68) return "AVAILABLE";
-    if(r < 84) return "HOLD";
-    return "BOOKED";
-  }
-  function demoCompany(no){
-    const names=["Acme Corp","BluePeak","Cedar & Co","Nova Labs","Orbit Systems","PineWorks","Zenith AI","RiverStone"];
-    return names[hashStr(no)%names.length];
-  }
-  function demoPrice(no, base=1000){ return base + (hashStr(no)%5)*250; }
-
-  /* ------------------------------ */
-  /* LOAD DATA */
-  const data = await fetch("booths_poly_v2.json").then(r=>r.json());
-
-  for(const b of data.booths){
-    b.status = b.status || demoStatus(b.boothNo);
-    b.company = b.company || demoCompany(b.boothNo);
-    b.price = (b.price ?? demoPrice(b.boothNo));
-    b.size = b.size || "10x10";
-  }
-
-  /* ------------------------------ */
-  /* SCENE */
-  const stage = document.getElementById("stage");
-  const tooltip = document.getElementById("tooltip");
-
-  const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x05070b, 80, 240);
-
-  const camera = new THREE.PerspectiveCamera(55, stage.clientWidth/stage.clientHeight, 0.1, 1000);
-  camera.position.set(70,70,90);
-
-  const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
-  renderer.setSize(stage.clientWidth, stage.clientHeight);
-  renderer.setPixelRatio(Math.min(2, devicePixelRatio || 1));
-  renderer.shadowMap.enabled = true;
-  stage.appendChild(renderer.domElement);
-
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.06;
-  controls.screenSpacePanning = true;
-  controls.maxPolarAngle = Math.PI * 0.49;
-  controls.minDistance = 25;
-  controls.maxDistance = 260;
-  controls.target.set(0,0,0);
-
-  const hemi = new THREE.HemisphereLight(0xaecbff, 0x081018, 0.95);
-  scene.add(hemi);
-  const dir = new THREE.DirectionalLight(0xffffff, 1.1);
-  dir.position.set(80,120,60);
-  dir.castShadow = true;
-  dir.shadow.mapSize.set(2048,2048);
-  scene.add(dir);
-
-  /* ------------------------------ */
-  /* LOAD FLOOR TEXTURE SAFELY */
-  const floorTex = await new Promise((res, rej)=> new THREE.TextureLoader().load(encodeURI(data.meta.image), res, undefined, rej));
-  floorTex.colorSpace = THREE.SRGBColorSpace;
-
-  const IMG_W = floorTex.image.width;
-  const IMG_H = floorTex.image.height;
-  const PLANE_W = 140;
-  const PLANE_H = PLANE_W * (IMG_H / IMG_W);
-
-  const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(PLANE_W, PLANE_H),
-    new THREE.MeshStandardMaterial({ map: floorTex, roughness:0.95, metalness:0 })
-  );
-  floor.rotation.x = -Math.PI/2;
-  floor.receiveShadow = true;
-  scene.add(floor);
-
-  const grid = new THREE.GridHelper(PLANE_W, 60, 0x20324a, 0x132033);
-  grid.position.y = 0.02;
-  grid.material.opacity = 0.18;
-  grid.material.transparent = true;
-  scene.add(grid);
-
-  /* ------------------------------ */
-  /* DEBUGGING UTILITIES - Check alignment issues */
-  window.DEBUG = {
-    // Verify booth polygon data is valid
-    checkBoothPolygon: function(boothNo) {
-      const b = data.booths.find(x => x.boothNo === boothNo);
-      if(!b) { console.error("Booth not found:", boothNo); return; }
-      
-      const bbox = b.fabricBBox;
-      const pts = b.geometry.points;
-      
-      console.group(`📊 Booth ${boothNo} Polygon Check`);
-      console.log("Points:", pts);
-      console.log("BBox from JSON:", bbox);
-      
-      // Calculate bbox from points
-      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-      pts.forEach(p => {
-        minX = Math.min(minX, p[0]); maxX = Math.max(maxX, p[0]);
-        minY = Math.min(minY, p[1]); maxY = Math.max(maxY, p[1]);
-      });
-      
-      const calcW = maxX - minX, calcH = maxY - minY;
-      console.log("Calculated:", { minX, minY, maxX, maxY, w: calcW, h: calcH });
-      
-      if(Math.abs(calcW - bbox.w) < 0.1 && Math.abs(calcH - bbox.h) < 0.1) {
-        console.log("✅ BBox matches! Polygon is valid.");
-      } else {
-        console.warn("⚠️ BBox mismatch! Polygon data may be corrupted.");
+      function worldToScreen(worldVec3) {
+        const v = worldVec3.clone().project(camera); // NDC
+        const rect = renderer.domElement.getBoundingClientRect();
+        return {
+          x: (v.x * 0.5 + 0.5) * rect.width,
+          y: (-v.y * 0.5 + 0.5) * rect.height,
+          ndcZ: v.z,
+          rect
+        };
       }
-      console.groupEnd();
-    },
-    
-    // Show full transformation pipeline for a booth
-    traceTransform: function(boothNo) {
-      const b = data.booths.find(x => x.boothNo === boothNo);
-      if(!b) { console.error("Booth not found:", boothNo); return; }
-      
-      const pt = b.geometry.points[0];
-      console.group(`🔍 Transform Pipeline: ${boothNo} [${pt[0]}, ${pt[1]}]`);
-      
-      console.log("1️⃣ Fabric Coords (from JSON):", pt);
-      
-      const pixPt = fabricToPixel(pt[0], pt[1]);
-      console.log("2️⃣ Pixel Coords:", pixPt, `(image is ${IMG_W}x${IMG_H})`);
-      
-      const worldPt = pxToWorld(pixPt.px, pixPt.py);
-      console.log("3️⃣ World Coords:", worldPt, `(plane is ${PLANE_W.toFixed(1)}x${PLANE_H.toFixed(1)})`);
-      
-      console.log("Calibration values:", {
-        offsetX: +offXEl.value,
-        offsetY: +offYEl.value,
-        scaleX: scXEl.value/1000,
-        scaleY: scYEl.value/1000
-      });
-      console.groupEnd();
-    },
-    
-    // Compare multiple booths to find patterns
-    compareBooaths: function(boothNos = ["P18", "P19", "P66", "NE4"]) {
-      console.group("📈 Multi-Booth Comparison");
-      boothNos.forEach(no => {
-        const b = data.booths.find(x => x.boothNo === no);
-        if(!b) return;
-        const pt = b.geometry.points[0];
-        const pix = fabricToPixel(pt[0], pt[1]);
-        const world = pxToWorld(pix.px, pix.py);
-        console.log(`${no}: fabric[${pt[0]},${pt[1]}] → pixel[${pix.px.toFixed(0)},${pix.py.toFixed(0)}] → world[${world.x.toFixed(2)},${world.z.toFixed(2)}]`);
-      });
-      console.groupEnd();
-    },
-    
-    // Show image info
-    showImageInfo: function() {
-      console.group("🖼️ Image Info");
-      console.log("Floor texture dimensions:", IMG_W, "x", IMG_H);
-      console.log("Plane size in 3D:", PLANE_W.toFixed(2), "x", PLANE_H.toFixed(2));
-      console.log("Fabric bounds (from JSON):", {
-        minX: fb.minX, maxX: fb.maxX,
-        minY: fb.minY, maxY: fb.maxY,
-        width: fb.maxX - fb.minX,
-        height: fb.maxY - fb.minY
-      });
-      console.log("Base scaling factors:", {
-        baseScaleX: baseScaleX.toFixed(4),
-        baseScaleY: baseScaleY.toFixed(4)
-      });
-      console.groupEnd();
-    },
-    
-    // Suggest calibration values
-    suggestCalibration: function() {
-      console.group("💡 Calibration Suggestions");
-      console.log("Current calibration:", {
-        offsetX: +offXEl.value,
-        offsetY: +offYEl.value,
-        scaleX: scXEl.value/1000,
-        scaleY: scYEl.value/1000
-      });
-      console.log("To adjust:");
-      console.log("- If 3D blocks are shifted RIGHT, decrease Offset X");
-      console.log("- If 3D blocks are shifted LEFT, increase Offset X");
-      console.log("- If 3D blocks are shifted DOWN, decrease Offset Y");
-      console.log("- If 3D blocks are shifted UP, increase Offset Y");
-      console.log("- If 3D blocks are too wide, decrease Scale X");
-      console.log("- If 3D blocks are too narrow, increase Scale X");
-      console.log("- If 3D blocks are too tall, decrease Scale Y");
-      console.log("- If 3D blocks are too short, increase Scale Y");
-      console.log("\nTry: DEBUG.traceTransform('P18') to see exact values");
-      console.groupEnd();
-    }
-  };
 
-  /* ------------------------------ */
-  /* CALIBRATION (fabric -> pixel -> world) */
-  const storeKey = "sems_demo_cal_v2";
-  const saved = JSON.parse(localStorage.getItem(storeKey) || "{}");
-
-  const offXEl = document.getElementById("offX");
-  const offYEl = document.getElementById("offY");
-  const scXEl  = document.getElementById("scX");
-  const scYEl  = document.getElementById("scY");
-
-  offXEl.value = saved.offsetX ?? 0;
-  offYEl.value = saved.offsetY ?? 0;
-  scXEl.value  = Math.round((saved.scaleX ?? 1) * 1000);
-  scYEl.value  = Math.round((saved.scaleY ?? 1) * 1000);
-
-  // ✅ DEFAULT CALIBRATION (AUTHORITATIVE)
-const DEFAULT_CALIBRATION = {
-  offsetX: 300,
-  offsetY: 300,
-  scaleX: 0.938, // because UI is x1000
-  scaleY: 0.912
-};
-  
-const offXVal = document.getElementById("offXVal");
-const offYVal = document.getElementById("offYVal");
-const scXVal  = document.getElementById("scXVal");
-const scYVal  = document.getElementById("scYVal");
-
-
-// ✅ Apply defaults → then override with saved values if present
-offXEl.value = saved.offsetX ?? DEFAULT_CALIBRATION.offsetX;
-offYEl.value = saved.offsetY ?? DEFAULT_CALIBRATION.offsetY;
-scXEl.value  = Math.round((saved.scaleX ?? DEFAULT_CALIBRATION.scaleX) * 1000);
-scYEl.value  = Math.round((saved.scaleY ?? DEFAULT_CALIBRATION.scaleY) * 1000);
-
-  
-function syncCalLabels(){
-  offXVal.textContent = offXEl.value;
-  offYVal.textContent = offYEl.value;
-  scXVal.textContent  = scXEl.value;
-  scYVal.textContent  = scYEl.value;
-}
-
-
-// initial sync
-syncCalLabels();
-
-// update on change
-[offXEl, offYEl, scXEl, scYEl].forEach(el=>{
-  el.addEventListener("input", syncCalLabels);
-});
-
-  const fb = data.meta.fabricBounds;
-  const baseScaleX = IMG_W / (fb.maxX - fb.minX);
-  const baseScaleY = IMG_H / (fb.maxY - fb.minY);
-
-  function fabricToPixel(x,y){
-    const sx = baseScaleX * (scXEl.value/1000);
-    const sy = baseScaleY * (scYEl.value/1000);
-    return {
-      px: (x - fb.minX) * sx + (+offXEl.value),
-      py: (y - fb.minY) * sy + (+offYEl.value)
-    };
-  }
-  function pxToWorld(px,py){
-    return {
-      x: (px / IMG_W - 0.5) * PLANE_W,
-      z: (0.5 - py / IMG_H) * PLANE_H
-    };
-  }
-  function persistCal(){
-    localStorage.setItem(storeKey, JSON.stringify({
-      offsetX:+offXEl.value, offsetY:+offYEl.value,
-      scaleX:(scXEl.value/1000), scaleY:(scYEl.value/1000)
-    }));
-  }
-
-  /* ------------------------------ */
-  /* COLORING: status vs heatmap */
-  const STATUS_COLORS = { AVAILABLE:0x2ecc71, HOLD:0xffb020, BOOKED:0xff5c6a };
-
-  function lerp(a,b,t){ return a + (b-a)*t; }
-  function heatColor(t){
-    // Blue -> Cyan -> Green -> Yellow -> Red
-    // clamp
-    t = Math.max(0, Math.min(1, t));
-    let r,g,b;
-    if(t < 0.25){
-      const k=t/0.25; r=0; g=lerp(80,220,k); b=255;
-    } else if(t < 0.5){
-      const k=(t-0.25)/0.25; r=0; g=255; b=lerp(255,60,k);
-    } else if(t < 0.75){
-      const k=(t-0.5)/0.25; r=lerp(0,255,k); g=255; b=0;
-    } else {
-      const k=(t-0.75)/0.25; r=255; g=lerp(255,60,k); b=0;
-    }
-    return (r<<16) | (g<<8) | (b<<0);
-  }
-
-  const minPrice = Math.min(...data.booths.map(b=>+b.price || 0));
-  const maxPrice = Math.max(...data.booths.map(b=>+b.price || 1));
-
-  /* ------------------------------ */
-  /* BOOTHS */
-  const boothGroup = new THREE.Group();
-  boothGroup.position.y = 0.03;
-  scene.add(boothGroup);
-
-  const outlineGroup = new THREE.Group();
-  outlineGroup.position.y = 0.08;
-  scene.add(outlineGroup);
-
-  const boothMeshes = [];
-  const boothByNo = new Map();
-
-  function polygonArea(pts){
-    let a=0;
-    for(let i=0;i<pts.length;i++){
-      const p=pts[i], q=pts[(i+1)%pts.length];
-      a += (p.x*q.y - q.x*p.y);
-    }
-    return a/2;
-  }
-
-  function clearGroup(g){
-    while(g.children.length){
-      const o = g.children.pop();
-      o.geometry?.dispose?.();
-      o.material?.dispose?.();
-    }
-  }
-
-  function boothMaterialFor(b){
-    const heat = document.getElementById("heatmap").checked;
-    let color = STATUS_COLORS[b.status] ?? STATUS_COLORS.AVAILABLE;
-
-    if(heat){
-      const t = ( (+b.price || minPrice) - minPrice ) / Math.max(1e-6, (maxPrice - minPrice));
-      color = heatColor(t);
-    }
-
-    const mat = new THREE.MeshStandardMaterial({
-      color,
-      roughness: 0.45,
-      metalness: 0.12,
-      emissive: new THREE.Color(color).multiplyScalar(0.05),
-      transparent: true,
-      opacity: 0.88
-    });
-    return mat;
-  }
-
-  function buildBooths(){
-    boothMeshes.length = 0;
-    boothByNo.clear();
-    clearGroup(boothGroup);
-    clearGroup(outlineGroup);
-
-    for(const b of data.booths){
-      const ptsPix = b.geometry.points.map(([x,y]) => fabricToPixel(x,y));
-      const pts2 = ptsPix.map(p => {
-        const w = pxToWorld(p.px, p.py);
-        return new THREE.Vector2(w.x, w.z);
-      });
-
-      if(pts2.length < 3) continue;
-      if(polygonArea(pts2) < 0) pts2.reverse();
-
-      const shape = new THREE.Shape(pts2);
-      const h = (b.status==="BOOKED") ? 2.0 : (b.status==="HOLD" ? 1.6 : 1.2);
-
-      const geo = new THREE.ExtrudeGeometry(shape, { depth: h, bevelEnabled:false, steps:1 });
-      geo.rotateX(-Math.PI/2);
-
-      // Center geometry so mesh.position is meaningful for routing & focusing
-      geo.computeBoundingBox();
-      const c = new THREE.Vector3();
-      geo.boundingBox.getCenter(c);
-      geo.translate(-c.x, -c.y, -c.z);
-
-      const mesh = new THREE.Mesh(geo, boothMaterialFor(b));
-      mesh.position.set(c.x, 0, c.z);
-
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
-      mesh.userData.booth = b;
-
-      // store center for routing/focus
-      mesh.userData.center = new THREE.Vector3(mesh.position.x, 0.1, mesh.position.z);
-
-      boothGroup.add(mesh);
-      boothMeshes.push(mesh);
-      boothByNo.set(b.boothNo, mesh);
-    }
-
-    fillDropdowns();
-    applyFilters();
-    rebuildBlockedGrid();
-  }
-
-  /* ------------------------------ */
-  /* SIDEBAR + SELECTION */
-  const statusPill = document.getElementById("statusPill");
-  const statusDot = document.getElementById("statusDot");
-  const statusText = document.getElementById("statusText");
-  const kv = document.getElementById("kv");
-  const boothNoEl = document.getElementById("boothNo");
-  const companyEl = document.getElementById("company");
-  const sizeEl = document.getElementById("size");
-  const priceEl = document.getElementById("price");
-  const focusBtn = document.getElementById("focusBtn");
-
-  let selected = null;
-  let hovered = null;
-
-  function updateSidebar(b){
-    document.getElementById("infoTitle").textContent = "Booth Selected";
-    document.getElementById("infoHint").textContent = "Focus / Route / Filters / Heatmap";
-    statusPill.style.display = "inline-flex";
-    kv.style.display = "grid";
-
-    statusText.textContent = b.status;
-    statusDot.style.background =
-      (b.status==="AVAILABLE") ? "var(--good)" :
-      (b.status==="BOOKED") ? "var(--bad)" : "var(--warn)";
-
-    boothNoEl.textContent = b.boothNo;
-    companyEl.textContent = b.company ?? "—";
-    sizeEl.textContent = b.size ?? "—";
-    priceEl.textContent = (b.price ?? "—").toString();
-
-    focusBtn.disabled = false;
-    document.getElementById("fromSelect").value = b.boothNo;
-  }
-
-  function highlight(mesh, on){
-    if(!mesh) return;
-    if(on){
-      mesh.material.emissive = new THREE.Color(0x6aa9ff).multiplyScalar(0.65);
-      mesh.scale.set(1.05, 1.02, 1.05);
-    } else {
-      // restore emissive based on current coloring mode
-      const b = mesh.userData.booth;
-      const heat = document.getElementById("heatmap").checked;
-      let color = STATUS_COLORS[b.status] ?? STATUS_COLORS.AVAILABLE;
-      if(heat){
-        const t = ( (+b.price || minPrice) - minPrice ) / Math.max(1e-6, (maxPrice - minPrice));
-        color = heatColor(t);
+      function clamp(val, min, max) {
+        return Math.max(min, Math.min(max, val));
       }
-      mesh.material.color.setHex(color);
-      mesh.material.emissive = new THREE.Color(color).multiplyScalar(0.05);
-      mesh.scale.set(1,1,1);
-    }
-  }
 
-  function flyTo(targetPos, targetLook, ms=900){
-    const startPos = camera.position.clone();
-    const startTarget = controls.target.clone();
-    const start = performance.now();
-    const ease = (t)=> t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3)/2;
+      function placeTooltipAt(worldPos) {
+        const { x, y, ndcZ, rect } = worldToScreen(worldPos);
 
-    function step(now){
-      const t = Math.min(1, (now - start)/ms);
-      const e = ease(t);
-      camera.position.lerpVectors(startPos, targetPos, e);
-      controls.target.lerpVectors(startTarget, targetLook, e);
-      controls.update();
-      if(t < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
+        // If behind camera, hide tooltip
+        if (ndcZ < -1 || ndcZ > 1) {
+          tooltip.style.display = 'none';
+          return;
+        }
 
-  function focusMesh(mesh){
-    const c = mesh.userData.center.clone();
-    flyTo(c.clone().add(new THREE.Vector3(18,18,22)), c.clone(), 850);
-  }
+        tooltip.style.display = 'block';
 
-  focusBtn.addEventListener("click", ()=>{ if(selected) focusMesh(selected); });
+        // Temporarily place, measure size, then clamp
+        tooltip.style.left = `${x}px`;
+        tooltip.style.top = `${y}px`;
 
-  document.getElementById("resetBtn").addEventListener("click", ()=>{
-    clearRoute();
-    flyTo(new THREE.Vector3(70,70,90), new THREE.Vector3(0,0,0), 900);
-  });
+        const pad = 8;
+        const w = tooltip.offsetWidth;
+        const h = tooltip.offsetHeight;
 
-  /* ------------------------------ */
-  /* RAYCAST (hover + click) */
-  const raycaster = new THREE.Raycaster();
-  const mouse = new THREE.Vector2();
+        // clamp so it never goes outside canvas area
+        const cx = clamp(x, pad + w / 2, rect.width - pad - w / 2);
+        const cy = clamp(y, pad + h, rect.height - pad);
 
-  function setMouse(ev){
-    const rect = renderer.domElement.getBoundingClientRect();
-    mouse.x = ((ev.clientX - rect.left)/rect.width)*2 - 1;
-    mouse.y = -((ev.clientY - rect.top)/rect.height)*2 + 1;
-  }
-
-  renderer.domElement.addEventListener("mousemove", (ev)=>{
-    setMouse(ev);
-    raycaster.setFromCamera(mouse, camera);
-
-    const hits = raycaster.intersectObjects(boothMeshes, false);
-    if(hits.length){
-      const m = hits[0].object;
-      if(hovered !== m){
-        if(hovered && hovered !== selected) highlight(hovered,false);
-        hovered = m;
-        if(hovered !== selected) highlight(hovered,true);
+        tooltip.style.left = `${cx}px`;
+        tooltip.style.top = `${cy}px`;
       }
-      const b = m.userData.booth;
-      tooltip.style.display = "block";
-      
-const center = hovered.userData.center || hovered.getWorldPosition(new THREE.Vector3());
-placeTooltipAt(center);
 
-      tooltip.innerHTML = `<b>${b.boothNo}</b> • ${b.status} • $${b.price}`;
-      renderer.domElement.style.cursor = "pointer";
-    } else {
-      if(hovered && hovered !== selected) highlight(hovered,false);
-      hovered = null;
-      tooltip.style.display = "none";
-      renderer.domElement.style.cursor = "";
-    }
-  });
+      /* ------------------------------ */
+      /* DEMO ENRICH (if status/company missing) */
+      function hashStr(s) {
+        let h = 2166136261;
+        for (let i = 0; i < s.length; i++) {
+          h ^= s.charCodeAt(i);
+          h = Math.imul(h, 16777619);
+        }
+        return h >>> 0;
+      }
+      function demoStatus(no) {
+        const r = hashStr(no) % 100;
+        if (r < 68) return 'AVAILABLE';
+        if (r < 84) return 'HOLD';
+        return 'BOOKED';
+      }
+      function demoCompany(no) {
+        const names = [
+          'Acme Corp',
+          'BluePeak',
+          'Cedar & Co',
+          'Nova Labs',
+          'Orbit Systems',
+          'PineWorks',
+          'Zenith AI',
+          'RiverStone'
+        ];
+        return names[hashStr(no) % names.length];
+      }
+      function demoPrice(no, base = 1000) {
+        return base + (hashStr(no) % 5) * 250;
+      }
 
-  renderer.domElement.addEventListener("click", ()=>{
-    if(!hovered) return;
+      /* ------------------------------ */
+      /* LOAD DATA */
+      const data = await fetch('booths_poly_v2.json').then((r) => r.json());
 
-    if(selected && selected !== hovered) highlight(selected,false);
-    selected = hovered;
-    highlight(selected,true);
+      for (const b of data.booths) {
+        b.status = b.status || demoStatus(b.boothNo);
+        b.company = b.company || demoCompany(b.boothNo);
+        b.price = b.price ?? demoPrice(b.boothNo);
+        b.size = b.size || '10x10';
+      }
 
-    updateSidebar(selected.userData.booth);
-    focusMesh(selected);            // ✅ click → zoom/focus
-    openMarkerFor(selected);
-  });
+      /* ------------------------------ */
+      /* SCENE */
+      const stage = document.getElementById('stage');
+      const tooltip = document.getElementById('tooltip');
 
-  /* ------------------------------ */
-  /* FILTERS + SEARCH */
-  let currentFilter = "ALL";
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.Fog(0x05070b, 80, 240);
 
-  document.getElementById("q").addEventListener("input", applyFilters);
-  [...document.querySelectorAll(".chip")].forEach(ch=>{
-    ch.addEventListener("click", ()=>{
-      [...document.querySelectorAll(".chip")].forEach(x=>x.classList.remove("active"));
-      ch.classList.add("active");
-      currentFilter = ch.dataset.filter;
-      applyFilters();
-    });
-  });
+      const camera = new THREE.PerspectiveCamera(
+        55,
+        stage.clientWidth / stage.clientHeight,
+        0.1,
+        1000
+      );
+      camera.position.set(70, 70, 90);
 
-  function applyFilters(){
-    const q = document.getElementById("q").value.trim().toLowerCase();
-    boothMeshes.forEach(m=>{
-      const b = m.userData.booth;
-      const matchStatus = (currentFilter==="ALL") || (b.status===currentFilter);
-      const matchText = !q || b.boothNo.toLowerCase().includes(q) || ((b.company||"").toLowerCase().includes(q));
-      m.visible = matchStatus && matchText;
-    });
-  }
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(stage.clientWidth, stage.clientHeight);
+      renderer.setPixelRatio(Math.min(2, devicePixelRatio || 1));
+      renderer.shadowMap.enabled = true;
+      stage.appendChild(renderer.domElement);
 
-  /* ------------------------------ */
-  /* HEATMAP TOGGLE */
-  document.getElementById("heatmap").addEventListener("change", ()=>{
-    boothMeshes.forEach(m=>highlight(m,false)); // reuse reset to recolor properly
-    if(selected) highlight(selected,true);      // keep selected highlighted
-  });
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.06;
+      controls.screenSpacePanning = true;
+      controls.maxPolarAngle = Math.PI * 0.49;
+      controls.minDistance = 25;
+      controls.maxDistance = 260;
+      controls.target.set(0, 0, 0);
 
-  /* ------------------------------ */
-  /* NIGHT MODE */
-  document.getElementById("night").addEventListener("change", (e)=>{
-    if(e.target.checked){
-      hemi.intensity = 0.55;
-      dir.intensity = 0.65;
-      scene.fog.color.set(0x02050b);
-    } else {
-      hemi.intensity = 0.95;
-      dir.intensity = 1.10;
-      scene.fog.color.set(0x05070b);
-    }
-  });
+      const hemi = new THREE.HemisphereLight(0xaecbff, 0x081018, 0.95);
+      scene.add(hemi);
+      const dir = new THREE.DirectionalLight(0xffffff, 1.1);
+      dir.position.set(80, 120, 60);
+      dir.castShadow = true;
+      dir.shadow.mapSize.set(2048, 2048);
+      scene.add(dir);
 
-  /* ------------------------------ */
-  /* DROPDOWNS */
-  const fromSelect = document.getElementById("fromSelect");
-  const toSelect = document.getElementById("toSelect");
+      /* ------------------------------ */
+      /* LOAD FLOOR TEXTURE SAFELY */
+      const floorTex = await new Promise((res, rej) =>
+        new THREE.TextureLoader().load(encodeURI(data.meta.image), res, undefined, rej)
+      );
+      floorTex.colorSpace = THREE.SRGBColorSpace;
 
-  function fillDropdowns(){
-    const boothNos = data.booths.map(b=>b.boothNo).sort((a,b)=>a.localeCompare(b));
-    fromSelect.innerHTML = boothNos.map(x=>`<option value="${x}">${x}</option>`).join("");
-    toSelect.innerHTML = boothNos.map(x=>`<option value="${x}">${x}</option>`).join("");
-    if(boothNos.length>1) toSelect.value = boothNos[1];
-  }
+      const IMG_W = floorTex.image.width;
+      const IMG_H = floorTex.image.height;
+      const PLANE_W = 140;
+      const PLANE_H = PLANE_W * (IMG_H / IMG_W);
 
-  function boothCenterWorld(no){
-    const m = boothByNo.get(no);
-    if(!m) return {x:0,z:0};
-    const c = m.userData.center;
-    return {x:c.x, z:c.z};
-  }
+      const floor = new THREE.Mesh(
+        new THREE.PlaneGeometry(PLANE_W, PLANE_H),
+        new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.95, metalness: 0 })
+      );
+      floor.rotation.x = -Math.PI / 2;
+      floor.receiveShadow = true;
+      scene.add(floor);
 
-  /* ------------------------------ */
-  /* DIRECTIONS: A* GRID (bbox obstacles) + Animated Route */
-  const CELL = 1.2;
-  const MARGIN = 0.8;
-  const halfW = PLANE_W/2, halfH = PLANE_H/2;
-  const cols = Math.ceil(PLANE_W / CELL);
-  const rows = Math.ceil(PLANE_H / CELL);
-  const idx = (r,c)=> r*cols + c;
-  let blocked = new Uint8Array(rows*cols);
+      const grid = new THREE.GridHelper(PLANE_W, 60, 0x20324a, 0x132033);
+      grid.position.y = 0.02;
+      grid.material.opacity = 0.18;
+      grid.material.transparent = true;
+      scene.add(grid);
 
-  // Demo: ignore a few misfit booths if needed:
-  const DEMO_BLOCKED_BOOTHS = new Set([
-    // "P58"
-  ]);
+      /* ------------------------------ */
+      /* DEBUGGING UTILITIES - Check alignment issues */
+      window.DEBUG = {
+        // Verify booth polygon data is valid
+        checkBoothPolygon: function (boothNo) {
+          const b = data.booths.find((x) => x.boothNo === boothNo);
+          if (!b) {
+            console.error('Booth not found:', boothNo);
+            return;
+          }
 
-  function worldToCell(x,z){
-    const c = Math.floor((x + halfW) / CELL);
-    const r = Math.floor((halfH - z) / CELL);
-    return {r,c};
-  }
-  function cellToWorld(r,c){
-    const x = (c + 0.5) * CELL - halfW;
-    const z = halfH - (r + 0.5) * CELL;
-    return {x,z};
-  }
+          const bbox = b.fabricBBox;
+          const pts = b.geometry.points;
 
-  function rebuildBlockedGrid(){
-    blocked = new Uint8Array(rows*cols);
+          console.group(`📊 Booth ${boothNo} Polygon Check`);
+          console.log('Points:', pts);
+          console.log('BBox from JSON:', bbox);
 
-    for(const m of boothMeshes){
-      const b = m.userData.booth;
-      if(DEMO_BLOCKED_BOOTHS.has(b.boothNo)) continue;
+          // Calculate bbox from points
+          let minX = Infinity,
+            maxX = -Infinity,
+            minY = Infinity,
+            maxY = -Infinity;
+          pts.forEach((p) => {
+            minX = Math.min(minX, p[0]);
+            maxX = Math.max(maxX, p[0]);
+            minY = Math.min(minY, p[1]);
+            maxY = Math.max(maxY, p[1]);
+          });
 
-      const box = new THREE.Box3().setFromObject(m);
-      const minX = box.min.x - MARGIN;
-      const maxX = box.max.x + MARGIN;
-      const minZ = box.min.z - MARGIN;
-      const maxZ = box.max.z + MARGIN;
+          const calcW = maxX - minX,
+            calcH = maxY - minY;
+          console.log('Calculated:', { minX, minY, maxX, maxY, w: calcW, h: calcH });
 
-      const a = worldToCell(minX, maxZ);
-      const b2= worldToCell(maxX, minZ);
+          if (Math.abs(calcW - bbox.w) < 0.1 && Math.abs(calcH - bbox.h) < 0.1) {
+            console.log('✅ BBox matches! Polygon is valid.');
+          } else {
+            console.warn('⚠️ BBox mismatch! Polygon data may be corrupted.');
+          }
+          console.groupEnd();
+        },
 
-      const r0 = Math.max(0, Math.min(a.r,b2.r));
-      const r1 = Math.min(rows-1, Math.max(a.r,b2.r));
-      const c0 = Math.max(0, Math.min(a.c,b2.c));
-      const c1 = Math.min(cols-1, Math.max(a.c,b2.c));
+        // Show full transformation pipeline for a booth
+        traceTransform: function (boothNo) {
+          const b = data.booths.find((x) => x.boothNo === boothNo);
+          if (!b) {
+            console.error('Booth not found:', boothNo);
+            return;
+          }
 
-      for(let r=r0;r<=r1;r++){
-        for(let c=c0;c<=c1;c++){
-          blocked[idx(r,c)] = 1;
+          const pt = b.geometry.points[0];
+          console.group(`🔍 Transform Pipeline: ${boothNo} [${pt[0]}, ${pt[1]}]`);
+
+          console.log('1️⃣ Fabric Coords (from JSON):', pt);
+
+          const pixPt = fabricToPixel(pt[0], pt[1]);
+          console.log('2️⃣ Pixel Coords:', pixPt, `(image is ${IMG_W}x${IMG_H})`);
+
+          const worldPt = pxToWorld(pixPt.px, pixPt.py);
+          console.log(
+            '3️⃣ World Coords:',
+            worldPt,
+            `(plane is ${PLANE_W.toFixed(1)}x${PLANE_H.toFixed(1)})`
+          );
+
+          console.log('Calibration values:', {
+            offsetX: +offXEl.value,
+            offsetY: +offYEl.value,
+            scaleX: scXEl.value / 1000,
+            scaleY: scYEl.value / 1000
+          });
+          console.groupEnd();
+        },
+
+        // Compare multiple booths to find patterns
+        compareBooaths: function (boothNos = ['P18', 'P19', 'P66', 'NE4']) {
+          console.group('📈 Multi-Booth Comparison');
+          boothNos.forEach((no) => {
+            const b = data.booths.find((x) => x.boothNo === no);
+            if (!b) return;
+            const pt = b.geometry.points[0];
+            const pix = fabricToPixel(pt[0], pt[1]);
+            const world = pxToWorld(pix.px, pix.py);
+            console.log(
+              `${no}: fabric[${pt[0]},${pt[1]}] → pixel[${pix.px.toFixed(0)},${pix.py.toFixed(0)}] → world[${world.x.toFixed(2)},${world.z.toFixed(2)}]`
+            );
+          });
+          console.groupEnd();
+        },
+
+        // Show image info
+        showImageInfo: function () {
+          console.group('🖼️ Image Info');
+          console.log('Floor texture dimensions:', IMG_W, 'x', IMG_H);
+          console.log('Plane size in 3D:', PLANE_W.toFixed(2), 'x', PLANE_H.toFixed(2));
+          console.log('Fabric bounds (from JSON):', {
+            minX: fb.minX,
+            maxX: fb.maxX,
+            minY: fb.minY,
+            maxY: fb.maxY,
+            width: fb.maxX - fb.minX,
+            height: fb.maxY - fb.minY
+          });
+          console.log('Base scaling factors:', {
+            baseScaleX: baseScaleX.toFixed(4),
+            baseScaleY: baseScaleY.toFixed(4)
+          });
+          console.groupEnd();
+        },
+
+        // Suggest calibration values
+        suggestCalibration: function () {
+          console.group('💡 Calibration Suggestions');
+          console.log('Current calibration:', {
+            offsetX: +offXEl.value,
+            offsetY: +offYEl.value,
+            scaleX: scXEl.value / 1000,
+            scaleY: scYEl.value / 1000
+          });
+          console.log('To adjust:');
+          console.log('- If 3D blocks are shifted RIGHT, decrease Offset X');
+          console.log('- If 3D blocks are shifted LEFT, increase Offset X');
+          console.log('- If 3D blocks are shifted DOWN, decrease Offset Y');
+          console.log('- If 3D blocks are shifted UP, increase Offset Y');
+          console.log('- If 3D blocks are too wide, decrease Scale X');
+          console.log('- If 3D blocks are too narrow, increase Scale X');
+          console.log('- If 3D blocks are too tall, decrease Scale Y');
+          console.log('- If 3D blocks are too short, increase Scale Y');
+          console.log("\nTry: DEBUG.traceTransform('P18') to see exact values");
+          console.groupEnd();
+        }
+      };
+
+      /* ------------------------------ */
+      /* CALIBRATION (fabric -> pixel -> world) */
+      const storeKey = 'sems_demo_cal_v2';
+      const saved = JSON.parse(localStorage.getItem(storeKey) || '{}');
+
+      const offXEl = document.getElementById('offX');
+      const offYEl = document.getElementById('offY');
+      const scXEl = document.getElementById('scX');
+      const scYEl = document.getElementById('scY');
+
+      offXEl.value = saved.offsetX ?? 0;
+      offYEl.value = saved.offsetY ?? 0;
+      scXEl.value = Math.round((saved.scaleX ?? 1) * 1000);
+      scYEl.value = Math.round((saved.scaleY ?? 1) * 1000);
+
+      // ✅ DEFAULT CALIBRATION (AUTHORITATIVE)
+      const DEFAULT_CALIBRATION = {
+        offsetX: 300,
+        offsetY: 300,
+        scaleX: 0.938, // because UI is x1000
+        scaleY: 0.912
+      };
+
+      const offXVal = document.getElementById('offXVal');
+      const offYVal = document.getElementById('offYVal');
+      const scXVal = document.getElementById('scXVal');
+      const scYVal = document.getElementById('scYVal');
+
+      // ✅ Apply defaults → then override with saved values if present
+      offXEl.value = saved.offsetX ?? DEFAULT_CALIBRATION.offsetX;
+      offYEl.value = saved.offsetY ?? DEFAULT_CALIBRATION.offsetY;
+      scXEl.value = Math.round((saved.scaleX ?? DEFAULT_CALIBRATION.scaleX) * 1000);
+      scYEl.value = Math.round((saved.scaleY ?? DEFAULT_CALIBRATION.scaleY) * 1000);
+
+      function syncCalLabels() {
+        offXVal.textContent = offXEl.value;
+        offYVal.textContent = offYEl.value;
+        scXVal.textContent = scXEl.value;
+        scYVal.textContent = scYEl.value;
+      }
+
+      // initial sync
+      syncCalLabels();
+
+      // update on change
+      [offXEl, offYEl, scXEl, scYEl].forEach((el) => {
+        el.addEventListener('input', syncCalLabels);
+      });
+
+      const fb = data.meta.fabricBounds;
+      const baseScaleX = IMG_W / (fb.maxX - fb.minX);
+      const baseScaleY = IMG_H / (fb.maxY - fb.minY);
+
+      function fabricToPixel(x, y) {
+        const sx = baseScaleX * (scXEl.value / 1000);
+        const sy = baseScaleY * (scYEl.value / 1000);
+        return {
+          px: (x - fb.minX) * sx + +offXEl.value,
+          py: (y - fb.minY) * sy + +offYEl.value
+        };
+      }
+      function pxToWorld(px, py) {
+        return {
+          x: (px / IMG_W - 0.5) * PLANE_W,
+          z: (0.5 - py / IMG_H) * PLANE_H
+        };
+      }
+      function persistCal() {
+        localStorage.setItem(
+          storeKey,
+          JSON.stringify({
+            offsetX: +offXEl.value,
+            offsetY: +offYEl.value,
+            scaleX: scXEl.value / 1000,
+            scaleY: scYEl.value / 1000
+          })
+        );
+      }
+
+      /* ------------------------------ */
+      /* COLORING: status vs heatmap */
+      const STATUS_COLORS = { AVAILABLE: 0x2ecc71, HOLD: 0xffb020, BOOKED: 0xff5c6a };
+
+      function lerp(a, b, t) {
+        return a + (b - a) * t;
+      }
+      function heatColor(t) {
+        // Blue -> Cyan -> Green -> Yellow -> Red
+        // clamp
+        t = Math.max(0, Math.min(1, t));
+        let r, g, b;
+        if (t < 0.25) {
+          const k = t / 0.25;
+          r = 0;
+          g = lerp(80, 220, k);
+          b = 255;
+        } else if (t < 0.5) {
+          const k = (t - 0.25) / 0.25;
+          r = 0;
+          g = 255;
+          b = lerp(255, 60, k);
+        } else if (t < 0.75) {
+          const k = (t - 0.5) / 0.25;
+          r = lerp(0, 255, k);
+          g = 255;
+          b = 0;
+        } else {
+          const k = (t - 0.75) / 0.25;
+          r = 255;
+          g = lerp(255, 60, k);
+          b = 0;
+        }
+        return (r << 16) | (g << 8) | (b << 0);
+      }
+
+      const minPrice = Math.min(...data.booths.map((b) => +b.price || 0));
+      const maxPrice = Math.max(...data.booths.map((b) => +b.price || 1));
+
+      /* ------------------------------ */
+      /* BOOTHS */
+      const boothGroup = new THREE.Group();
+      boothGroup.position.y = 0.03;
+      scene.add(boothGroup);
+
+      const outlineGroup = new THREE.Group();
+      outlineGroup.position.y = 0.08;
+      scene.add(outlineGroup);
+
+      const boothMeshes = [];
+      const boothByNo = new Map();
+
+      function polygonArea(pts) {
+        let a = 0;
+        for (let i = 0; i < pts.length; i++) {
+          const p = pts[i],
+            q = pts[(i + 1) % pts.length];
+          a += p.x * q.y - q.x * p.y;
+        }
+        return a / 2;
+      }
+
+      function clearGroup(g) {
+        while (g.children.length) {
+          const o = g.children.pop();
+          o.geometry?.dispose?.();
+          o.material?.dispose?.();
         }
       }
-    }
-  }
 
-  function heuristic(a,b){
-    return Math.abs(a.r-b.r) + Math.abs(a.c-b.c);
-  }
-  class MinHeap{
-    constructor(){ this.a=[]; }
-    push(n){ this.a.push(n); this._up(this.a.length-1); }
-    pop(){
-      const top=this.a[0];
-      const last=this.a.pop();
-      if(this.a.length){ this.a[0]=last; this._down(0); }
-      return top;
-    }
-    get size(){ return this.a.length; }
-    _up(i){
-      while(i>0){
-        const p=(i-1)>>1;
-        if(this.a[p].f <= this.a[i].f) break;
-        [this.a[p],this.a[i]]=[this.a[i],this.a[p]];
-        i=p;
-      }
-    }
-    _down(i){
-      for(;;){
-        const l=i*2+1, r=l+1;
-        let m=i;
-        if(l<this.a.length && this.a[l].f < this.a[m].f) m=l;
-        if(r<this.a.length && this.a[r].f < this.a[m].f) m=r;
-        if(m===i) break;
-        [this.a[m],this.a[i]]=[this.a[i],this.a[m]];
-        i=m;
-      }
-    }
-  }
+      function boothMaterialFor(b) {
+        const heat = document.getElementById('heatmap').checked;
+        let color = STATUS_COLORS[b.status] ?? STATUS_COLORS.AVAILABLE;
 
-  function aStar(start, goal){
-    const open = new MinHeap();
-    const came = new Int32Array(rows*cols).fill(-1);
-    const g = new Float32Array(rows*cols).fill(1e9);
-
-    const sIdx = idx(start.r,start.c);
-    const gIdx = idx(goal.r,goal.c);
-    g[sIdx]=0;
-    open.push({r:start.r,c:start.c,f:heuristic(start,goal), i:sIdx});
-
-    const dirs = [
-      {dr:1,dc:0,cost:1},{dr:-1,dc:0,cost:1},{dr:0,dc:1,cost:1},{dr:0,dc:-1,cost:1},
-      {dr:1,dc:1,cost:1.4},{dr:1,dc:-1,cost:1.4},{dr:-1,dc:1,cost:1.4},{dr:-1,dc:-1,cost:1.4}
-    ];
-    const closed = new Uint8Array(rows*cols);
-
-    while(open.size){
-      const cur = open.pop();
-      if(cur.i === gIdx){
-        const path=[];
-        let at=gIdx;
-        while(at !== -1){
-          const rr=Math.floor(at/cols), cc=at%cols;
-          path.push({r:rr,c:cc});
-          at = came[at];
+        if (heat) {
+          const t = ((+b.price || minPrice) - minPrice) / Math.max(1e-6, maxPrice - minPrice);
+          color = heatColor(t);
         }
-        path.reverse();
-        return path;
-      }
-      if(closed[cur.i]) continue;
-      closed[cur.i]=1;
 
-      for(const d of dirs){
-        const nr=cur.r+d.dr, nc=cur.c+d.dc;
-        if(nr<0||nc<0||nr>=rows||nc>=cols) continue;
-        const ni=idx(nr,nc);
-        if(blocked[ni]) continue;
-        const ng=g[cur.i]+d.cost;
-        if(ng < g[ni]){
-          g[ni]=ng;
-          came[ni]=cur.i;
-          open.push({r:nr,c:nc,f:ng+heuristic({r:nr,c:nc},goal), i:ni});
+        const mat = new THREE.MeshStandardMaterial({
+          color,
+          roughness: 0.45,
+          metalness: 0.12,
+          emissive: new THREE.Color(color).multiplyScalar(0.05),
+          transparent: true,
+          opacity: 0.88
+        });
+        return mat;
+      }
+
+      function buildBooths() {
+        boothMeshes.length = 0;
+        boothByNo.clear();
+        clearGroup(boothGroup);
+        clearGroup(outlineGroup);
+
+        for (const b of data.booths) {
+          const ptsPix = b.geometry.points.map(([x, y]) => fabricToPixel(x, y));
+          const pts2 = ptsPix.map((p) => {
+            const w = pxToWorld(p.px, p.py);
+            return new THREE.Vector2(w.x, w.z);
+          });
+
+          if (pts2.length < 3) continue;
+          if (polygonArea(pts2) < 0) pts2.reverse();
+
+          const shape = new THREE.Shape(pts2);
+          const h = b.status === 'BOOKED' ? 2.0 : b.status === 'HOLD' ? 1.6 : 1.2;
+
+          const geo = new THREE.ExtrudeGeometry(shape, { depth: h, bevelEnabled: false, steps: 1 });
+          geo.rotateX(-Math.PI / 2);
+
+          // Center geometry so mesh.position is meaningful for routing & focusing
+          geo.computeBoundingBox();
+          const c = new THREE.Vector3();
+          geo.boundingBox.getCenter(c);
+          geo.translate(-c.x, -c.y, -c.z);
+
+          const mesh = new THREE.Mesh(geo, boothMaterialFor(b));
+          mesh.position.set(c.x, 0, c.z);
+
+          mesh.castShadow = true;
+          mesh.receiveShadow = true;
+          mesh.userData.booth = b;
+
+          // store center for routing/focus
+          mesh.userData.center = new THREE.Vector3(mesh.position.x, 0.1, mesh.position.z);
+
+          boothGroup.add(mesh);
+          boothMeshes.push(mesh);
+          boothByNo.set(b.boothNo, mesh);
+        }
+
+        fillDropdowns();
+        applyFilters();
+        rebuildBlockedGrid();
+      }
+
+      /* ------------------------------ */
+      /* SIDEBAR + SELECTION */
+      const statusPill = document.getElementById('statusPill');
+      const statusDot = document.getElementById('statusDot');
+      const statusText = document.getElementById('statusText');
+      const kv = document.getElementById('kv');
+      const boothNoEl = document.getElementById('boothNo');
+      const companyEl = document.getElementById('company');
+      const sizeEl = document.getElementById('size');
+      const priceEl = document.getElementById('price');
+      const focusBtn = document.getElementById('focusBtn');
+
+      let selected = null;
+      let hovered = null;
+
+      function updateSidebar(b) {
+        document.getElementById('infoTitle').textContent = 'Booth Selected';
+        document.getElementById('infoHint').textContent = 'Focus / Route / Filters / Heatmap';
+        statusPill.style.display = 'inline-flex';
+        kv.style.display = 'grid';
+
+        statusText.textContent = b.status;
+        statusDot.style.background =
+          b.status === 'AVAILABLE'
+            ? 'var(--good)'
+            : b.status === 'BOOKED'
+              ? 'var(--bad)'
+              : 'var(--warn)';
+
+        boothNoEl.textContent = b.boothNo;
+        companyEl.textContent = b.company ?? '—';
+        sizeEl.textContent = b.size ?? '—';
+        priceEl.textContent = (b.price ?? '—').toString();
+
+        focusBtn.disabled = false;
+        document.getElementById('fromSelect').value = b.boothNo;
+      }
+
+      function highlight(mesh, on) {
+        if (!mesh) return;
+        if (on) {
+          mesh.material.emissive = new THREE.Color(0x6aa9ff).multiplyScalar(0.65);
+          mesh.scale.set(1.05, 1.02, 1.05);
+        } else {
+          // restore emissive based on current coloring mode
+          const b = mesh.userData.booth;
+          const heat = document.getElementById('heatmap').checked;
+          let color = STATUS_COLORS[b.status] ?? STATUS_COLORS.AVAILABLE;
+          if (heat) {
+            const t = ((+b.price || minPrice) - minPrice) / Math.max(1e-6, maxPrice - minPrice);
+            color = heatColor(t);
+          }
+          mesh.material.color.setHex(color);
+          mesh.material.emissive = new THREE.Color(color).multiplyScalar(0.05);
+          mesh.scale.set(1, 1, 1);
         }
       }
-    }
-    return null;
-  }
 
-  function findNearestFree(cell){
-    const inBounds=(r,c)=>r>=0&&c>=0&&r<rows&&c<cols;
-    if(inBounds(cell.r,cell.c) && !blocked[idx(cell.r,cell.c)]) return cell;
-    for(let rad=1; rad<16; rad++){
-      for(let dr=-rad; dr<=rad; dr++){
-        for(let dc=-rad; dc<=rad; dc++){
-          const rr=cell.r+dr, cc=cell.c+dc;
-          if(!inBounds(rr,cc)) continue;
-          if(!blocked[idx(rr,cc)]) return {r:rr,c:cc};
+      function flyTo(targetPos, targetLook, ms = 900) {
+        const startPos = camera.position.clone();
+        const startTarget = controls.target.clone();
+        const start = performance.now();
+        const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+        function step(now) {
+          const t = Math.min(1, (now - start) / ms);
+          const e = ease(t);
+          camera.position.lerpVectors(startPos, targetPos, e);
+          controls.target.lerpVectors(startTarget, targetLook, e);
+          controls.update();
+          if (t < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+
+      function focusMesh(mesh) {
+        const c = mesh.userData.center.clone();
+        flyTo(c.clone().add(new THREE.Vector3(18, 18, 22)), c.clone(), 850);
+      }
+
+      focusBtn.addEventListener('click', () => {
+        if (selected) focusMesh(selected);
+      });
+
+      document.getElementById('resetBtn').addEventListener('click', () => {
+        clearRoute();
+        flyTo(new THREE.Vector3(70, 70, 90), new THREE.Vector3(0, 0, 0), 900);
+      });
+
+      /* ------------------------------ */
+      /* RAYCAST (hover + click) */
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
+
+      function setMouse(ev) {
+        const rect = renderer.domElement.getBoundingClientRect();
+        mouse.x = ((ev.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((ev.clientY - rect.top) / rect.height) * 2 + 1;
+      }
+
+      renderer.domElement.addEventListener('mousemove', (ev) => {
+        setMouse(ev);
+        raycaster.setFromCamera(mouse, camera);
+
+        const hits = raycaster.intersectObjects(boothMeshes, false);
+        if (hits.length) {
+          const m = hits[0].object;
+          if (hovered !== m) {
+            if (hovered && hovered !== selected) highlight(hovered, false);
+            hovered = m;
+            if (hovered !== selected) highlight(hovered, true);
+          }
+          const b = m.userData.booth;
+          tooltip.style.display = 'block';
+
+          const center = hovered.userData.center || hovered.getWorldPosition(new THREE.Vector3());
+          placeTooltipAt(center);
+
+          tooltip.innerHTML = `<b>${b.boothNo}</b> • ${b.status} • $${b.price}`;
+          renderer.domElement.style.cursor = 'pointer';
+        } else {
+          if (hovered && hovered !== selected) highlight(hovered, false);
+          hovered = null;
+          tooltip.style.display = 'none';
+          renderer.domElement.style.cursor = '';
+        }
+      });
+
+      renderer.domElement.addEventListener('click', () => {
+        if (!hovered) return;
+
+        if (selected && selected !== hovered) highlight(selected, false);
+        selected = hovered;
+        highlight(selected, true);
+
+        updateSidebar(selected.userData.booth);
+        focusMesh(selected); // ✅ click → zoom/focus
+        openMarkerFor(selected);
+      });
+
+      /* ------------------------------ */
+      /* FILTERS + SEARCH */
+      let currentFilter = 'ALL';
+
+      document.getElementById('q').addEventListener('input', applyFilters);
+      [...document.querySelectorAll('.chip')].forEach((ch) => {
+        ch.addEventListener('click', () => {
+          [...document.querySelectorAll('.chip')].forEach((x) => x.classList.remove('active'));
+          ch.classList.add('active');
+          currentFilter = ch.dataset.filter;
+          applyFilters();
+        });
+      });
+
+      function applyFilters() {
+        const q = document.getElementById('q').value.trim().toLowerCase();
+        boothMeshes.forEach((m) => {
+          const b = m.userData.booth;
+          const matchStatus = currentFilter === 'ALL' || b.status === currentFilter;
+          const matchText =
+            !q ||
+            b.boothNo.toLowerCase().includes(q) ||
+            (b.company || '').toLowerCase().includes(q);
+          m.visible = matchStatus && matchText;
+        });
+      }
+
+      /* ------------------------------ */
+      /* HEATMAP TOGGLE */
+      document.getElementById('heatmap').addEventListener('change', () => {
+        boothMeshes.forEach((m) => highlight(m, false)); // reuse reset to recolor properly
+        if (selected) highlight(selected, true); // keep selected highlighted
+      });
+
+      /* ------------------------------ */
+      /* NIGHT MODE */
+      document.getElementById('night').addEventListener('change', (e) => {
+        if (e.target.checked) {
+          hemi.intensity = 0.55;
+          dir.intensity = 0.65;
+          scene.fog.color.set(0x02050b);
+        } else {
+          hemi.intensity = 0.95;
+          dir.intensity = 1.1;
+          scene.fog.color.set(0x05070b);
+        }
+      });
+
+      /* ------------------------------ */
+      /* DROPDOWNS */
+      const fromSelect = document.getElementById('fromSelect');
+      const toSelect = document.getElementById('toSelect');
+
+      function fillDropdowns() {
+        const boothNos = data.booths.map((b) => b.boothNo).sort((a, b) => a.localeCompare(b));
+        fromSelect.innerHTML = boothNos.map((x) => `<option value="${x}">${x}</option>`).join('');
+        toSelect.innerHTML = boothNos.map((x) => `<option value="${x}">${x}</option>`).join('');
+        if (boothNos.length > 1) toSelect.value = boothNos[1];
+      }
+
+      function boothCenterWorld(no) {
+        const m = boothByNo.get(no);
+        if (!m) return { x: 0, z: 0 };
+        const c = m.userData.center;
+        return { x: c.x, z: c.z };
+      }
+
+      /* ------------------------------ */
+      /* DIRECTIONS: A* GRID (bbox obstacles) + Animated Route */
+      const CELL = 1.2;
+      const MARGIN = 0.8;
+      const halfW = PLANE_W / 2,
+        halfH = PLANE_H / 2;
+      const cols = Math.ceil(PLANE_W / CELL);
+      const rows = Math.ceil(PLANE_H / CELL);
+      const idx = (r, c) => r * cols + c;
+      let blocked = new Uint8Array(rows * cols);
+
+      // Demo: ignore a few misfit booths if needed:
+      const DEMO_BLOCKED_BOOTHS = new Set([
+        // "P58"
+      ]);
+
+      function worldToCell(x, z) {
+        const c = Math.floor((x + halfW) / CELL);
+        const r = Math.floor((halfH - z) / CELL);
+        return { r, c };
+      }
+      function cellToWorld(r, c) {
+        const x = (c + 0.5) * CELL - halfW;
+        const z = halfH - (r + 0.5) * CELL;
+        return { x, z };
+      }
+
+      function rebuildBlockedGrid() {
+        blocked = new Uint8Array(rows * cols);
+
+        for (const m of boothMeshes) {
+          const b = m.userData.booth;
+          if (DEMO_BLOCKED_BOOTHS.has(b.boothNo)) continue;
+
+          const box = new THREE.Box3().setFromObject(m);
+          const minX = box.min.x - MARGIN;
+          const maxX = box.max.x + MARGIN;
+          const minZ = box.min.z - MARGIN;
+          const maxZ = box.max.z + MARGIN;
+
+          const a = worldToCell(minX, maxZ);
+          const b2 = worldToCell(maxX, minZ);
+
+          const r0 = Math.max(0, Math.min(a.r, b2.r));
+          const r1 = Math.min(rows - 1, Math.max(a.r, b2.r));
+          const c0 = Math.max(0, Math.min(a.c, b2.c));
+          const c1 = Math.min(cols - 1, Math.max(a.c, b2.c));
+
+          for (let r = r0; r <= r1; r++) {
+            for (let c = c0; c <= c1; c++) {
+              blocked[idx(r, c)] = 1;
+            }
+          }
         }
       }
-    }
-    return cell;
-  }
 
-  // Route visuals
-  let routeBase=null, routeGlow=null, routeDots=null;
-  let routeWorldPoints=null;
-  let followTimer=null;
-
-  function clearFollow(){ if(followTimer){ clearTimeout(followTimer); followTimer=null; } }
-
-  function clearRoute(){
-    clearFollow();
-    routeWorldPoints=null;
-    if(routeBase){ scene.remove(routeBase); routeBase.geometry.dispose(); routeBase.material.dispose(); routeBase=null; }
-    if(routeGlow){ scene.remove(routeGlow); routeGlow.geometry.dispose(); routeGlow.material.dispose(); routeGlow=null; }
-    if(routeDots){ scene.remove(routeDots); routeDots.geometry.dispose(); routeDots.material.dispose(); routeDots=null; }
-  }
-
-  function drawRoute(worldPoints){
-    clearRoute();
-    routeWorldPoints = worldPoints;
-
-    const pts = worldPoints.map(p=> new THREE.Vector3(p.x, 0.14, p.z));
-    const curve = new THREE.CatmullRomCurve3(pts);
-    curve.curveType="catmullrom";
-    curve.tension=0.25;
-
-    const baseGeom = new THREE.TubeGeometry(curve, 220, 0.50, 10, false);
-    const baseMat = new THREE.MeshStandardMaterial({ color:0x07101f, roughness:0.6, metalness:0.2, transparent:true, opacity:0.92 });
-    routeBase = new THREE.Mesh(baseGeom, baseMat);
-    routeBase.renderOrder = 10;
-    scene.add(routeBase);
-
-    const glowGeom = new THREE.TubeGeometry(curve, 220, 0.72, 10, false);
-    const glowMat = new THREE.MeshBasicMaterial({ color:0x6aa9ff, transparent:true, opacity:0.55 });
-    routeGlow = new THREE.Mesh(glowGeom, glowMat);
-    routeGlow.position.y = 0.02;
-    routeGlow.renderOrder = 11;
-    scene.add(routeGlow);
-
-    // moving dots
-    const dotCount = 80;
-    const dotPos = new Float32Array(dotCount*3);
-    for(let i=0;i<dotCount;i++){
-      const t=i/(dotCount-1);
-      const p=curve.getPoint(t);
-      dotPos[i*3+0]=p.x;
-      dotPos[i*3+1]=0.18;
-      dotPos[i*3+2]=p.z;
-    }
-    const dotsGeom = new THREE.BufferGeometry();
-    dotsGeom.setAttribute("position", new THREE.BufferAttribute(dotPos,3));
-    const dotsMat = new THREE.PointsMaterial({ color:0xffffff, size:0.55, transparent:true, opacity:0.85 });
-    routeDots = new THREE.Points(dotsGeom, dotsMat);
-    routeDots.userData.curve = curve;
-    routeDots.userData.dotCount = dotCount;
-    scene.add(routeDots);
-  }
-
-  function followRoute(points){
-    clearFollow();
-    if(!document.getElementById("followCam").checked || !points || points.length<3) return;
-
-    const step = Math.max(2, Math.floor(points.length/14));
-    const sampled=[];
-    for(let i=0;i<points.length;i+=step) sampled.push(points[i]);
-    if(sampled[sampled.length-1] !== points[points.length-1]) sampled.push(points[points.length-1]);
-
-    let i=0;
-    const moveNext=()=>{
-      if(i>=sampled.length) return;
-      const p=sampled[i];
-      const look=new THREE.Vector3(p.x,0.1,p.z);
-      const camPos=look.clone().add(new THREE.Vector3(26,26,30));
-      flyTo(camPos, look, 520);
-      i++;
-      followTimer=setTimeout(moveNext, 560);
-    };
-    moveNext();
-  }
-
-  document.getElementById("routeBtn").addEventListener("click", ()=>{
-    const from = boothCenterWorld(fromSelect.value);
-    const to   = boothCenterWorld(toSelect.value);
-
-    let s = findNearestFree(worldToCell(from.x, from.z));
-    let t = findNearestFree(worldToCell(to.x, to.z));
-
-    const path = aStar(s,t);
-    if(!path){
-      alert("No route found. Try other booths or increase CELL size.");
-      return;
-    }
-
-    const wp = [
-      {x:from.x, z:from.z},
-      ...path.map(p=>cellToWorld(p.r,p.c)),
-      {x:to.x, z:to.z}
-    ];
-
-    drawRoute(wp);
-
-    const start = new THREE.Vector3(from.x,0.1,from.z);
-    flyTo(start.clone().add(new THREE.Vector3(30,30,34)), start.clone(), 900);
-    followRoute(wp);
-  });
-
-  document.getElementById("clearRouteBtn").addEventListener("click", clearRoute);
-  document.getElementById("followCam").addEventListener("change", ()=>{
-    if(document.getElementById("followCam").checked && routeWorldPoints) followRoute(routeWorldPoints);
-    else clearFollow();
-  });
-
-  /* ------------------------------ */
-  /* CAMERA HUD */
-  document.getElementById("camIso").addEventListener("click", ()=> flyTo(new THREE.Vector3(75,70,75), new THREE.Vector3(0,0,0), 850));
-  document.getElementById("camTop").addEventListener("click", ()=> flyTo(new THREE.Vector3(0,160,0.01), new THREE.Vector3(0,0,0), 850));
-  document.getElementById("camReset").addEventListener("click", ()=> flyTo(new THREE.Vector3(70,70,90), new THREE.Vector3(0,0,0), 850));
-
-  /* ------------------------------ */
-  /* AUTO TOUR */
-  let touring=false, tourTimer=null;
-  document.getElementById("tour").addEventListener("click", ()=>{
-    touring=!touring;
-    document.getElementById("tour").textContent = touring ? "Stop Tour" : "Auto Tour";
-    if(!touring){ clearInterval(tourTimer); tourTimer=null; return; }
-    clearRoute();
-    let i=0;
-    tourTimer=setInterval(()=>{
-      const b = data.booths[i % data.booths.length];
-      const m = boothByNo.get(b.boothNo);
-      if(m && m.visible){
-        if(selected && selected !== m) highlight(selected,false);
-        selected = m;
-        highlight(selected,true);
-        updateSidebar(b);
-        focusMesh(m);
+      function heuristic(a, b) {
+        return Math.abs(a.r - b.r) + Math.abs(a.c - b.c);
       }
-      i++;
-    }, 1200);
-  });
-
-const boothMarker = document.getElementById("boothMarker");
-const markerTitle = document.getElementById("markerTitle");
-const markerClose = document.getElementById("markerClose");
-const markerVideo = document.getElementById("markerVideo");
-
-let markerMesh = null;
-
-// Extract YouTube videoId safely
-function getYouTubeEmbedUrl(inputUrl){
-  try{
-    const u = new URL(inputUrl);
-    // youtu.be/<id>
-    if (u.hostname.includes("youtu.be")){
-      const id = u.pathname.replace("/", "");
-      return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&rel=0`;
-    }
-    // youtube.com/watch?v=<id>
-    const id = u.searchParams.get("v");
-    if (id) return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&rel=0`;
-  }catch(e){}
-  // fallback: hardcode ID from your link
-  return "https://www.youtube.com/embed/TwzjLk0JIsk?autoplay=1&mute=1&playsinline=1&rel=0";
-}
-
-const YT_LINK = "https://youtu.be/TwzjLk0JIsk?si=_UFzAz9h_wvfrQ9s"; // your demo link
-const YT_EMBED = getYouTubeEmbedUrl(YT_LINK);
-
-function openMarkerFor(mesh){
-  markerMesh = mesh;
-
-  const b = mesh.userData.booth;
-  markerTitle.textContent = `Booth ${b.boothNo}`;
-
-  // IMPORTANT: autoplay often requires mute; we include mute=1 in embed URL
-  markerVideo.src = YT_EMBED;
-
-  boothMarker.style.display = "block";
-  positionMarker();
-}
-
-function closeMarker(){
-  boothMarker.style.display = "none";
-  markerMesh = null;
-  // stop playback
-  markerVideo.src = "";
-}
-
-markerClose.addEventListener("click", closeMarker);
-
-function positionMarker(){
-  if (!markerMesh) return;
-
-  const center = markerMesh.userData.center || markerMesh.getWorldPosition(new THREE.Vector3());
-  const {x, y, ndcZ, rect} = worldToScreen(center);
-
-  // hide if behind camera
-  if (ndcZ < -1 || ndcZ > 1){
-    boothMarker.style.display = "none";
-    return;
-  }
-
-  boothMarker.style.display = "block";
-
-  // place and clamp
-  boothMarker.style.left = `${x}px`;
-  boothMarker.style.top  = `${y}px`;
-
-  const pad = 10;
-  const w = boothMarker.offsetWidth;
-  const h = boothMarker.offsetHeight;
-
-  const cx = clamp(x, pad + w/2, rect.width - pad - w/2);
-  const cy = clamp(y, pad + h, rect.height - pad);
-
-  boothMarker.style.left = `${cx}px`;
-  boothMarker.style.top  = `${cy}px`;
-}
-
-  /* ------------------------------ */
-  /* CALIBRATION HOOKS */
-  function onCalChange(){ persistCal(); buildBooths(); }
-  [offXEl, offYEl, scXEl, scYEl].forEach(el=>el.addEventListener("input", onCalChange));
-
-  document.getElementById("resetCal").addEventListener("click", ()=>{
-    localStorage.removeItem(storeKey);
-    offXEl.value=0; offYEl.value=0; scXEl.value=1000; scYEl.value=1000;
-    buildBooths();
-  });
-
-  /* ------------------------------ */
-  /* INIT */
-  buildBooths();
-  
-  // Log debugging commands to console
-  console.log(
-    "%c🔍 DEBUG UTILITIES AVAILABLE\n" +
-    "Try these in the console:\n" +
-    "  DEBUG.showImageInfo()           // Show image & scaling info\n" +
-    "  DEBUG.traceTransform('P18')     // Trace coords for a booth\n" +
-    "  DEBUG.checkBoothPolygon('P18')  // Verify booth geometry\n" +
-    "  DEBUG.compareBooaths()          // Compare multiple booths\n" +
-    "  DEBUG.suggestCalibration()      // Get calibration tips",
-    "color: #6aa9ff; font-weight: bold; font-size: 12px;"
-  );
-
-  /* ------------------------------ */
-  /* RENDER LOOP (glow pulse + moving dots) */
-  function tick(){
-    controls.update();
-    positionMarker();
-    if(routeGlow){
-      const t = performance.now()*0.004;
-      routeGlow.material.opacity = 0.20 + 0.55*(0.5 + 0.5*Math.sin(t));
-    }
-    if(routeDots){
-      const curve = routeDots.userData.curve;
-      const dotCount = routeDots.userData.dotCount;
-      const posAttr = routeDots.geometry.getAttribute("position");
-      const t0 = (performance.now()*0.00015) % 1;
-      for(let i=0;i<dotCount;i++){
-        const tt = (t0 + i/(dotCount-1)) % 1;
-        const p = curve.getPoint(tt);
-        posAttr.setXYZ(i, p.x, 0.18, p.z);
+      class MinHeap {
+        constructor() {
+          this.a = [];
+        }
+        push(n) {
+          this.a.push(n);
+          this._up(this.a.length - 1);
+        }
+        pop() {
+          const top = this.a[0];
+          const last = this.a.pop();
+          if (this.a.length) {
+            this.a[0] = last;
+            this._down(0);
+          }
+          return top;
+        }
+        get size() {
+          return this.a.length;
+        }
+        _up(i) {
+          while (i > 0) {
+            const p = (i - 1) >> 1;
+            if (this.a[p].f <= this.a[i].f) break;
+            [this.a[p], this.a[i]] = [this.a[i], this.a[p]];
+            i = p;
+          }
+        }
+        _down(i) {
+          for (;;) {
+            const l = i * 2 + 1,
+              r = l + 1;
+            let m = i;
+            if (l < this.a.length && this.a[l].f < this.a[m].f) m = l;
+            if (r < this.a.length && this.a[r].f < this.a[m].f) m = r;
+            if (m === i) break;
+            [this.a[m], this.a[i]] = [this.a[i], this.a[m]];
+            i = m;
+          }
+        }
       }
-      posAttr.needsUpdate = true;
-    }
 
-    renderer.render(scene, camera);
-    requestAnimationFrame(tick);
-  }
-  tick();
+      function aStar(start, goal) {
+        const open = new MinHeap();
+        const came = new Int32Array(rows * cols).fill(-1);
+        const g = new Float32Array(rows * cols).fill(1e9);
 
-  window.addEventListener("resize", ()=>{
-    camera.aspect = stage.clientWidth / stage.clientHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(stage.clientWidth, stage.clientHeight);
-  });
-</script>
-</body>
+        const sIdx = idx(start.r, start.c);
+        const gIdx = idx(goal.r, goal.c);
+        g[sIdx] = 0;
+        open.push({ r: start.r, c: start.c, f: heuristic(start, goal), i: sIdx });
+
+        const dirs = [
+          { dr: 1, dc: 0, cost: 1 },
+          { dr: -1, dc: 0, cost: 1 },
+          { dr: 0, dc: 1, cost: 1 },
+          { dr: 0, dc: -1, cost: 1 },
+          { dr: 1, dc: 1, cost: 1.4 },
+          { dr: 1, dc: -1, cost: 1.4 },
+          { dr: -1, dc: 1, cost: 1.4 },
+          { dr: -1, dc: -1, cost: 1.4 }
+        ];
+        const closed = new Uint8Array(rows * cols);
+
+        while (open.size) {
+          const cur = open.pop();
+          if (cur.i === gIdx) {
+            const path = [];
+            let at = gIdx;
+            while (at !== -1) {
+              const rr = Math.floor(at / cols),
+                cc = at % cols;
+              path.push({ r: rr, c: cc });
+              at = came[at];
+            }
+            path.reverse();
+            return path;
+          }
+          if (closed[cur.i]) continue;
+          closed[cur.i] = 1;
+
+          for (const d of dirs) {
+            const nr = cur.r + d.dr,
+              nc = cur.c + d.dc;
+            if (nr < 0 || nc < 0 || nr >= rows || nc >= cols) continue;
+            const ni = idx(nr, nc);
+            if (blocked[ni]) continue;
+            const ng = g[cur.i] + d.cost;
+            if (ng < g[ni]) {
+              g[ni] = ng;
+              came[ni] = cur.i;
+              open.push({ r: nr, c: nc, f: ng + heuristic({ r: nr, c: nc }, goal), i: ni });
+            }
+          }
+        }
+        return null;
+      }
+
+      function findNearestFree(cell) {
+        const inBounds = (r, c) => r >= 0 && c >= 0 && r < rows && c < cols;
+        if (inBounds(cell.r, cell.c) && !blocked[idx(cell.r, cell.c)]) return cell;
+        for (let rad = 1; rad < 16; rad++) {
+          for (let dr = -rad; dr <= rad; dr++) {
+            for (let dc = -rad; dc <= rad; dc++) {
+              const rr = cell.r + dr,
+                cc = cell.c + dc;
+              if (!inBounds(rr, cc)) continue;
+              if (!blocked[idx(rr, cc)]) return { r: rr, c: cc };
+            }
+          }
+        }
+        return cell;
+      }
+
+      // Route visuals
+      let routeBase = null,
+        routeGlow = null,
+        routeDots = null;
+      let routeWorldPoints = null;
+      let followTimer = null;
+
+      function clearFollow() {
+        if (followTimer) {
+          clearTimeout(followTimer);
+          followTimer = null;
+        }
+      }
+
+      function clearRoute() {
+        clearFollow();
+        routeWorldPoints = null;
+        if (routeBase) {
+          scene.remove(routeBase);
+          routeBase.geometry.dispose();
+          routeBase.material.dispose();
+          routeBase = null;
+        }
+        if (routeGlow) {
+          scene.remove(routeGlow);
+          routeGlow.geometry.dispose();
+          routeGlow.material.dispose();
+          routeGlow = null;
+        }
+        if (routeDots) {
+          scene.remove(routeDots);
+          routeDots.geometry.dispose();
+          routeDots.material.dispose();
+          routeDots = null;
+        }
+      }
+
+      function drawRoute(worldPoints) {
+        clearRoute();
+        routeWorldPoints = worldPoints;
+
+        const pts = worldPoints.map((p) => new THREE.Vector3(p.x, 0.14, p.z));
+        const curve = new THREE.CatmullRomCurve3(pts);
+        curve.curveType = 'catmullrom';
+        curve.tension = 0.25;
+
+        const baseGeom = new THREE.TubeGeometry(curve, 220, 0.5, 10, false);
+        const baseMat = new THREE.MeshStandardMaterial({
+          color: 0x07101f,
+          roughness: 0.6,
+          metalness: 0.2,
+          transparent: true,
+          opacity: 0.92
+        });
+        routeBase = new THREE.Mesh(baseGeom, baseMat);
+        routeBase.renderOrder = 10;
+        scene.add(routeBase);
+
+        const glowGeom = new THREE.TubeGeometry(curve, 220, 0.72, 10, false);
+        const glowMat = new THREE.MeshBasicMaterial({
+          color: 0x6aa9ff,
+          transparent: true,
+          opacity: 0.55
+        });
+        routeGlow = new THREE.Mesh(glowGeom, glowMat);
+        routeGlow.position.y = 0.02;
+        routeGlow.renderOrder = 11;
+        scene.add(routeGlow);
+
+        // moving dots
+        const dotCount = 80;
+        const dotPos = new Float32Array(dotCount * 3);
+        for (let i = 0; i < dotCount; i++) {
+          const t = i / (dotCount - 1);
+          const p = curve.getPoint(t);
+          dotPos[i * 3 + 0] = p.x;
+          dotPos[i * 3 + 1] = 0.18;
+          dotPos[i * 3 + 2] = p.z;
+        }
+        const dotsGeom = new THREE.BufferGeometry();
+        dotsGeom.setAttribute('position', new THREE.BufferAttribute(dotPos, 3));
+        const dotsMat = new THREE.PointsMaterial({
+          color: 0xffffff,
+          size: 0.55,
+          transparent: true,
+          opacity: 0.85
+        });
+        routeDots = new THREE.Points(dotsGeom, dotsMat);
+        routeDots.userData.curve = curve;
+        routeDots.userData.dotCount = dotCount;
+        scene.add(routeDots);
+      }
+
+      function followRoute(points) {
+        clearFollow();
+        if (!document.getElementById('followCam').checked || !points || points.length < 3) return;
+
+        const step = Math.max(2, Math.floor(points.length / 14));
+        const sampled = [];
+        for (let i = 0; i < points.length; i += step) sampled.push(points[i]);
+        if (sampled[sampled.length - 1] !== points[points.length - 1])
+          sampled.push(points[points.length - 1]);
+
+        let i = 0;
+        const moveNext = () => {
+          if (i >= sampled.length) return;
+          const p = sampled[i];
+          const look = new THREE.Vector3(p.x, 0.1, p.z);
+          const camPos = look.clone().add(new THREE.Vector3(26, 26, 30));
+          flyTo(camPos, look, 520);
+          i++;
+          followTimer = setTimeout(moveNext, 560);
+        };
+        moveNext();
+      }
+
+      document.getElementById('routeBtn').addEventListener('click', () => {
+        const from = boothCenterWorld(fromSelect.value);
+        const to = boothCenterWorld(toSelect.value);
+
+        let s = findNearestFree(worldToCell(from.x, from.z));
+        let t = findNearestFree(worldToCell(to.x, to.z));
+
+        const path = aStar(s, t);
+        if (!path) {
+          alert('No route found. Try other booths or increase CELL size.');
+          return;
+        }
+
+        const wp = [
+          { x: from.x, z: from.z },
+          ...path.map((p) => cellToWorld(p.r, p.c)),
+          { x: to.x, z: to.z }
+        ];
+
+        drawRoute(wp);
+
+        const start = new THREE.Vector3(from.x, 0.1, from.z);
+        flyTo(start.clone().add(new THREE.Vector3(30, 30, 34)), start.clone(), 900);
+        followRoute(wp);
+      });
+
+      document.getElementById('clearRouteBtn').addEventListener('click', clearRoute);
+      document.getElementById('followCam').addEventListener('change', () => {
+        if (document.getElementById('followCam').checked && routeWorldPoints)
+          followRoute(routeWorldPoints);
+        else clearFollow();
+      });
+
+      /* ------------------------------ */
+      /* CAMERA HUD */
+      document
+        .getElementById('camIso')
+        .addEventListener('click', () =>
+          flyTo(new THREE.Vector3(75, 70, 75), new THREE.Vector3(0, 0, 0), 850)
+        );
+      document
+        .getElementById('camTop')
+        .addEventListener('click', () =>
+          flyTo(new THREE.Vector3(0, 160, 0.01), new THREE.Vector3(0, 0, 0), 850)
+        );
+      document
+        .getElementById('camReset')
+        .addEventListener('click', () =>
+          flyTo(new THREE.Vector3(70, 70, 90), new THREE.Vector3(0, 0, 0), 850)
+        );
+
+      /* ------------------------------ */
+      /* AUTO TOUR */
+      let touring = false,
+        tourTimer = null;
+      document.getElementById('tour').addEventListener('click', () => {
+        touring = !touring;
+        document.getElementById('tour').textContent = touring ? 'Stop Tour' : 'Auto Tour';
+        if (!touring) {
+          clearInterval(tourTimer);
+          tourTimer = null;
+          return;
+        }
+        clearRoute();
+        let i = 0;
+        tourTimer = setInterval(() => {
+          const b = data.booths[i % data.booths.length];
+          const m = boothByNo.get(b.boothNo);
+          if (m && m.visible) {
+            if (selected && selected !== m) highlight(selected, false);
+            selected = m;
+            highlight(selected, true);
+            updateSidebar(b);
+            focusMesh(m);
+          }
+          i++;
+        }, 1200);
+      });
+
+      const boothMarker = document.getElementById('boothMarker');
+      const markerTitle = document.getElementById('markerTitle');
+      const markerClose = document.getElementById('markerClose');
+      const markerVideo = document.getElementById('markerVideo');
+
+      let markerMesh = null;
+
+      // Extract YouTube videoId safely
+      function getYouTubeEmbedUrl(inputUrl) {
+        try {
+          const u = new URL(inputUrl);
+          // youtu.be/<id>
+          if (u.hostname.includes('youtu.be')) {
+            const id = u.pathname.replace('/', '');
+            return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&rel=0`;
+          }
+          // youtube.com/watch?v=<id>
+          const id = u.searchParams.get('v');
+          if (id)
+            return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&rel=0`;
+        } catch (e) {}
+        // fallback: hardcode ID from your link
+        return 'https://www.youtube.com/embed/TwzjLk0JIsk?autoplay=1&mute=1&playsinline=1&rel=0';
+      }
+
+      const YT_LINK = 'https://youtu.be/TwzjLk0JIsk?si=_UFzAz9h_wvfrQ9s'; // your demo link
+      const YT_EMBED = getYouTubeEmbedUrl(YT_LINK);
+
+      function openMarkerFor(mesh) {
+        markerMesh = mesh;
+
+        const b = mesh.userData.booth;
+        markerTitle.textContent = `Booth ${b.boothNo}`;
+
+        // IMPORTANT: autoplay often requires mute; we include mute=1 in embed URL
+        markerVideo.src = YT_EMBED;
+
+        boothMarker.style.display = 'block';
+        positionMarker();
+      }
+
+      function closeMarker() {
+        boothMarker.style.display = 'none';
+        markerMesh = null;
+        // stop playback
+        markerVideo.src = '';
+      }
+
+      markerClose.addEventListener('click', closeMarker);
+
+      function positionMarker() {
+        if (!markerMesh) return;
+
+        const center =
+          markerMesh.userData.center || markerMesh.getWorldPosition(new THREE.Vector3());
+        const { x, y, ndcZ, rect } = worldToScreen(center);
+
+        // hide if behind camera
+        if (ndcZ < -1 || ndcZ > 1) {
+          boothMarker.style.display = 'none';
+          return;
+        }
+
+        boothMarker.style.display = 'block';
+
+        // place and clamp
+        boothMarker.style.left = `${x}px`;
+        boothMarker.style.top = `${y}px`;
+
+        const pad = 10;
+        const w = boothMarker.offsetWidth;
+        const h = boothMarker.offsetHeight;
+
+        const cx = clamp(x, pad + w / 2, rect.width - pad - w / 2);
+        const cy = clamp(y, pad + h, rect.height - pad);
+
+        boothMarker.style.left = `${cx}px`;
+        boothMarker.style.top = `${cy}px`;
+      }
+
+      /* ------------------------------ */
+      /* CALIBRATION HOOKS */
+      function onCalChange() {
+        persistCal();
+        buildBooths();
+      }
+      [offXEl, offYEl, scXEl, scYEl].forEach((el) => el.addEventListener('input', onCalChange));
+
+      document.getElementById('resetCal').addEventListener('click', () => {
+        localStorage.removeItem(storeKey);
+        offXEl.value = 0;
+        offYEl.value = 0;
+        scXEl.value = 1000;
+        scYEl.value = 1000;
+        buildBooths();
+      });
+
+      /* ------------------------------ */
+      /* INIT */
+      buildBooths();
+
+      // Log debugging commands to console
+      console.log(
+        '%c🔍 DEBUG UTILITIES AVAILABLE\n' +
+          'Try these in the console:\n' +
+          '  DEBUG.showImageInfo()           // Show image & scaling info\n' +
+          "  DEBUG.traceTransform('P18')     // Trace coords for a booth\n" +
+          "  DEBUG.checkBoothPolygon('P18')  // Verify booth geometry\n" +
+          '  DEBUG.compareBooaths()          // Compare multiple booths\n' +
+          '  DEBUG.suggestCalibration()      // Get calibration tips',
+        'color: #6aa9ff; font-weight: bold; font-size: 12px;'
+      );
+
+      /* ------------------------------ */
+      /* RENDER LOOP (glow pulse + moving dots) */
+      function tick() {
+        controls.update();
+        positionMarker();
+        if (routeGlow) {
+          const t = performance.now() * 0.004;
+          routeGlow.material.opacity = 0.2 + 0.55 * (0.5 + 0.5 * Math.sin(t));
+        }
+        if (routeDots) {
+          const curve = routeDots.userData.curve;
+          const dotCount = routeDots.userData.dotCount;
+          const posAttr = routeDots.geometry.getAttribute('position');
+          const t0 = (performance.now() * 0.00015) % 1;
+          for (let i = 0; i < dotCount; i++) {
+            const tt = (t0 + i / (dotCount - 1)) % 1;
+            const p = curve.getPoint(tt);
+            posAttr.setXYZ(i, p.x, 0.18, p.z);
+          }
+          posAttr.needsUpdate = true;
+        }
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(tick);
+      }
+      tick();
+
+      window.addEventListener('resize', () => {
+        camera.aspect = stage.clientWidth / stage.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(stage.clientWidth, stage.clientHeight);
+      });
+    </script>
+  </body>
 </html>

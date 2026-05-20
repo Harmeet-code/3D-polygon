@@ -58,17 +58,8 @@ randomize = false
 rerunEach = 0
 retry = 0
 onlyFailures = false
-pathIgnorePatterns = [
-  "node_modules/**",
-  "dist/**",
-  "coverage/**"
-]
-coveragePathIgnorePatterns = [
-  "node_modules/**",
-  "dist/**",
-  "coverage/**",
-  "**/*.config.*"
-]
+pathIgnorePatterns = ["node_modules/**", "dist/**", "coverage/**"]
+coveragePathIgnorePatterns = ["node_modules/**", "dist/**", "coverage/**", "**/*.config.*"]
 
 [test.reporter]
 dots = false

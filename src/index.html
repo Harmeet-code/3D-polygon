@@ -1,206 +1,299 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SEMS • 3D Floor Plan (Interactive Demo)</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SEMS • 3D Floor Plan (Interactive Demo)</title>
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='44'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='44'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E"
+    />
 
-  <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./styles.css" />
 
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-    }
-  }
-  </script>
-</head>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
 
-<body>
-  <aside id="sidebar">
-    <p class="title">SEMS • 3D Interactive Floor Plan</p>
-    <p class="subtitle">
-      Click booth → highlight + focus. Filters, animated route, camera follow, heatmap included.
-    </p>
+  <body>
+    <aside id="sidebar">
+      <p class="title">SEMS • 3D Interactive Floor Plan</p>
+      <p class="subtitle">
+        Click booth → highlight + focus. Filters, animated route, camera follow, heatmap included.
+      </p>
 
-    <div class="section">
-      <h3>Search & Filters</h3>
-      <div class="search">
-        <span style="opacity:.7">🔎</span>
-        <input id="q" placeholder="Search booth/company…" />
+      <div class="section">
+        <h3>Search & Filters</h3>
+        <div class="search">
+          <span style="opacity: 0.7">🔎</span>
+          <input id="q" placeholder="Search booth/company…" />
+        </div>
+        <div class="chipRow">
+          <div class="chip active" data-filter="ALL">All</div>
+          <div class="chip" data-filter="AVAILABLE">Available</div>
+          <div class="chip" data-filter="HOLD">Hold</div>
+          <div class="chip" data-filter="BOOKED">Booked</div>
+        </div>
+
+        <div class="pill">
+          <input id="heatmap" type="checkbox" /><span>Heatmap (by price)</span>
+        </div>
+        <div class="pill">
+          <input id="followCam" type="checkbox" checked /><span>Camera follow route</span>
+        </div>
+        <div class="pill"><input id="night" type="checkbox" /><span>Night lighting</span></div>
       </div>
-      <div class="chipRow">
-        <div class="chip active" data-filter="ALL">All</div>
-        <div class="chip" data-filter="AVAILABLE">Available</div>
-        <div class="chip" data-filter="HOLD">Hold</div>
-        <div class="chip" data-filter="BOOKED">Booked</div>
+
+      <div class="section">
+        <h3>Booth Information</h3>
+        <div id="infoTitle" style="font-weight: 800; font-size: 14px">Select a booth</div>
+        <div id="infoHint" style="color: var(--muted); font-size: 12px; margin-top: 6px">
+          Click any booth.
+        </div>
+        <div class="status" id="statusPill" style="display: none">
+          <span class="dot" id="statusDot"></span>
+          <span id="statusText"></span>
+        </div>
+        <div class="kv" id="kv" style="display: none">
+          <div class="k">Booth</div>
+          <div class="v" id="boothNo"></div>
+          <div class="k">Company</div>
+          <div class="v" id="company"></div>
+          <div class="k">Size</div>
+          <div class="v" id="size"></div>
+          <div class="k">Price</div>
+          <div class="v" id="price"></div>
+        </div>
+        <div class="btnRow">
+          <button id="focusBtn" disabled>Focus</button>
+          <button class="secondary" id="resetBtn">Reset View</button>
+        </div>
       </div>
 
-      <div class="pill"><input id="heatmap" type="checkbox"><span>Heatmap (by price)</span></div>
-      <div class="pill"><input id="followCam" type="checkbox" checked><span>Camera follow route</span></div>
-      <div class="pill"><input id="night" type="checkbox"><span>Night lighting</span></div>
-    </div>
-
-    <div class="section">
-      <h3>Booth Information</h3>
-      <div id="infoTitle" style="font-weight:800; font-size:14px;">Select a booth</div>
-      <div id="infoHint" style="color:var(--muted); font-size:12px; margin-top:6px;">Click any booth.</div>
-      <div class="status" id="statusPill" style="display:none;">
-        <span class="dot" id="statusDot"></span>
-        <span id="statusText"></span>
-      </div>
-      <div class="kv" id="kv" style="display:none;">
-        <div class="k">Booth</div><div class="v" id="boothNo"></div>
-        <div class="k">Company</div><div class="v" id="company"></div>
-        <div class="k">Size</div><div class="v" id="size"></div>
-        <div class="k">Price</div><div class="v" id="price"></div>
-      </div>
-      <div class="btnRow">
-        <button id="focusBtn" disabled>Focus</button>
-        <button class="secondary" id="resetBtn">Reset View</button>
-      </div>
-    </div>
-
-    <div class="section">
-      <h3>Directions (Booth → Booth)</h3>
-      <div class="row2">
-        <div>
+      <div class="section">
+        <h3>Directions (Booth → Booth)</h3>
+        <div style="margin-bottom: 8px">
+          <label>From Floor</label>
+          <select id="fromFloorSelect" style="width: 100%; margin-top: 4px"></select>
+        </div>
+        <div style="margin-bottom: 8px">
           <label>From</label>
-          <select id="fromSelect"></select>
+          <input
+            id="fromInput"
+            list="fromBoothList"
+            placeholder="Search booth..."
+            style="width: 100%; margin-top: 4px"
+          />
+          <datalist id="fromBoothList"></datalist>
         </div>
-        <div>
+        <div style="margin-bottom: 8px">
+          <label>To Floor</label>
+          <select id="toFloorSelect" style="width: 100%; margin-top: 4px"></select>
+        </div>
+        <div style="margin-bottom: 8px">
           <label>To</label>
-          <select id="toSelect"></select>
+          <input
+            id="toInput"
+            list="toBoothList"
+            placeholder="Search booth..."
+            style="width: 100%; margin-top: 4px"
+          />
+          <datalist id="toBoothList"></datalist>
+        </div>
+        <div class="btnRow">
+          <button id="routeBtn">Show Route</button>
+          <button class="secondary" id="clearRouteBtn">Clear</button>
+        </div>
+        <div class="tiny" style="margin-top: 8px">
+          Route uses hybrid walkable zones. Animated glow + walking dots included.
         </div>
       </div>
-      <div class="btnRow">
-        <button id="routeBtn">Show Route</button>
-        <button class="secondary" id="clearRouteBtn">Clear</button>
-      </div>
-      <div class="tiny" style="margin-top:8px;">Route is demo-grade: A* on grid + avoids booth bounding boxes. Animated glow + walking dots included.</div>
-    </div>
 
-    <div class="section">
-      <h3>Calibration (optional)</h3>
-      <div class="tiny">Enter exact values. Saved in browser.</div>
-      <div style="height:8px"></div>
-      <div class="row2">
-        <div>
-<label>Offset X (px): <b><span id="offXVal">300</span></b></label>
-<input id="offX" type="number" min="-2000" max="2000" step="1" value="300" />
-</div>
-        <div>
-<label>Offset Y (px): <b><span id="offYVal">300</span></b></label>
-<input id="offY" type="number" min="-2000" max="2000" step="1" value="300" />
-</div>
-      </div>
-      <div style="height:8px"></div>
-      <div class="row2">
-        <div>
-<label>Scale X: <b><span id="scXVal">0.938</span></b></label>
-<input id="scX" type="number" min="0.5" max="2" step="0.001" value="0.938" aria-label="Scale X multiplier" />
-</div>
-        <div>
-<label>Scale Y: <b><span id="scYVal">0.912</span></b></label>
-<input id="scY" type="number" min="0.5" max="2" step="0.001" value="0.912" aria-label="Scale Y multiplier" />
-</div>
-      </div>
-      <div style="height:10px"></div>
-      <button id="resetCal" class="secondary">Reset calibration</button>
-    </div>
-
-    <div class="section">
-      <h3>POI Editor <span class="tiny" style="font-weight:400">Add / Remove</span></h3>
-      <div class="chipRow">
-        <div class="chip" data-poi-mode="add-stair">+ Stair</div>
-        <div class="chip" data-poi-mode="add-entrance">+ Entrance</div>
-        <div class="chip" data-poi-mode="remove" style="color:var(--bad);border-color:rgba(255,92,106,.35)">Remove</div>
-      </div>
-      <div id="poiEditorStatus" class="tiny" style="min-height:18px;margin-bottom:6px"></div>
-      <div class="row2" style="align-items:center">
-        <div>
-          <label>Rotation <b><span id="poiRotVal">0&deg;</span></b></label>
-          <input id="poiRotSlider" type="range" min="0" max="360" step="1" value="0" />
+      <div class="section">
+        <h3>Calibration (optional)</h3>
+        <div class="tiny">Enter exact values. Saved in browser.</div>
+        <div style="height: 8px"></div>
+        <div class="row2">
+          <div>
+            <label
+              >Offset X (px): <b><span id="offXVal">300</span></b></label
+            >
+            <input id="offX" type="number" min="-2000" max="2000" step="1" value="300" />
+          </div>
+          <div>
+            <label
+              >Offset Y (px): <b><span id="offYVal">300</span></b></label
+            >
+            <input id="offY" type="number" min="-2000" max="2000" step="1" value="300" />
+          </div>
         </div>
-        <div class="btnRow" style="margin-top:0">
-          <button id="poiApplyBtn" disabled>Apply</button>
-          <button class="secondary" id="poiCancelBtn" disabled>Cancel</button>
+        <div style="height: 8px"></div>
+        <div class="row2">
+          <div>
+            <label
+              >Scale X: <b><span id="scXVal">0.938</span></b></label
+            >
+            <input
+              id="scX"
+              type="number"
+              min="0.5"
+              max="2"
+              step="0.001"
+              value="0.938"
+              aria-label="Scale X multiplier"
+            />
+          </div>
+          <div>
+            <label
+              >Scale Y: <b><span id="scYVal">0.912</span></b></label
+            >
+            <input
+              id="scY"
+              type="number"
+              min="0.5"
+              max="2"
+              step="0.001"
+              value="0.912"
+              aria-label="Scale Y multiplier"
+            />
+          </div>
+        </div>
+        <div style="height: 10px"></div>
+        <button id="resetCal" class="secondary">Reset calibration</button>
+      </div>
+
+      <div class="section">
+        <h3>POI Editor <span class="tiny" style="font-weight: 400">Add / Remove</span></h3>
+        <div class="chipRow">
+          <div class="chip" data-poi-mode="add-stair">+ Stair</div>
+          <div class="chip" data-poi-mode="add-entrance">+ Entrance</div>
+          <div
+            class="chip"
+            data-poi-mode="remove"
+            style="color: var(--bad); border-color: rgba(255, 92, 106, 0.35)"
+          >
+            Remove
+          </div>
+        </div>
+        <div id="poiEditorStatus" class="tiny" style="min-height: 18px; margin-bottom: 6px"></div>
+        <div class="row2" style="align-items: center">
+          <div>
+            <label
+              >Rotation <b><span id="poiRotVal">0&deg;</span></b></label
+            >
+            <input id="poiRotSlider" type="range" min="0" max="360" step="1" value="0" />
+          </div>
+          <div class="btnRow" style="margin-top: 0">
+            <button id="poiApplyBtn" disabled>Apply</button>
+            <button class="secondary" id="poiCancelBtn" disabled>Cancel</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="section">
-      <h3>Road Editor <span class="tiny" style="font-weight:400">Draw walkable paths</span></h3>
-      <div class="chipRow">
-        <div class="chip" data-road-mode="add-road">+ Road</div>
+      <div class="section">
+        <h3>Zone Editor <span class="tiny" style="font-weight: 400">Draw walkable areas</span></h3>
+        <div class="chipRow">
+          <div class="chip" data-zone-mode="add-rect">+ Rect</div>
+          <div class="chip" data-zone-mode="add-polygon">+ Polygon</div>
+          <div
+            class="chip"
+            data-zone-mode="remove"
+            style="color: var(--bad); border-color: rgba(255, 92, 106, 0.35)"
+          >
+            Remove
+          </div>
+        </div>
+        <div id="zoneEditorStatus" class="tiny" style="min-height: 18px; margin-bottom: 6px"></div>
+        <div class="btnRow" style="margin-top: 6px">
+          <button id="zoneApplyBtn" disabled>Apply</button>
+          <button class="secondary" id="zoneUndoBtn" disabled>Undo Pt</button>
+          <button class="secondary" id="zoneCancelBtn" disabled>Cancel</button>
+        </div>
       </div>
-      <div id="roadEditorStatus" class="tiny" style="min-height:18px;margin-bottom:6px"></div>
-      <div>
-        <label>Width: <b><span id="roadWidthVal">2.0</span></b></label>
-        <input id="roadWidthSlider" type="range" min="0.3" max="6.0" step="0.1" value="2.0" />
-      </div>
-      <div class="btnRow" style="margin-top:6px">
-        <button id="roadApplyBtn" disabled>Apply</button>
-        <button class="secondary" id="roadUndoBtn" disabled>Undo Pt</button>
-        <button class="secondary" id="roadCancelBtn" disabled>Cancel</button>
-      </div>
-    </div>
 
-    <div class="section">
-      <h3>Coordinate Debug</h3>
-      <div class="row2">
-        <input id="debugSelect" list="debugBoothList" placeholder="Search booth no…" style="min-width:0;border:1px solid var(--border);border-radius:12px;padding:10px 12px;background:rgba(0,0,0,.18);color:var(--text);font-size:13px;outline:none" />
-        <datalist id="debugBoothList"></datalist>
-        <label class="pill" style="margin-top:0;justify-content:center">
-          <input type="checkbox" id="debugOverlayToggle" checked /> Show Overlay
-        </label>
+      <div class="section">
+        <h3>Coordinate Debug</h3>
+        <div class="row2">
+          <input
+            id="debugSelect"
+            list="debugBoothList"
+            placeholder="Search booth no…"
+            style="
+              min-width: 0;
+              border: 1px solid var(--border);
+              border-radius: 12px;
+              padding: 10px 12px;
+              background: rgba(0, 0, 0, 0.18);
+              color: var(--text);
+              font-size: 13px;
+              outline: none;
+            "
+          />
+          <datalist id="debugBoothList"></datalist>
+          <label class="pill" style="margin-top: 0; justify-content: center">
+            <input type="checkbox" id="debugOverlayToggle" checked /> Show Overlay
+          </label>
+        </div>
+        <div id="debugStatus" class="debugStatus" style="margin-top: 8px">Select a booth</div>
+        <div id="debugAspect" class="tiny" style="margin-top: 4px"></div>
+        <div
+          id="debugRef"
+          class="tiny"
+          style="margin-top: 4px; cursor: pointer"
+          title="Click to set/clear reference booth"
+        ></div>
+        <div id="debugTable" style="margin-top: 6px"></div>
+        <div class="pill" style="margin-top: 6px; justify-content: center">
+          <input type="checkbox" id="debugShowOrigin" checked /> Show Origin
+        </div>
+        <div class="btnRow" style="margin-top: 8px">
+          <button id="debugApply">Apply</button>
+          <button class="secondary" id="debugCopyJson">Copy JSON</button>
+        </div>
       </div>
-      <div id="debugStatus" class="debugStatus" style="margin-top:8px">Select a booth</div>
-      <div id="debugAspect" class="tiny" style="margin-top:4px"></div>
-      <div id="debugRef" class="tiny" style="margin-top:4px;cursor:pointer" title="Click to set/clear reference booth"></div>
-      <div id="debugTable" style="margin-top:6px"></div>
-      <div class="pill" style="margin-top:6px;justify-content:center">
-        <input type="checkbox" id="debugShowOrigin" checked /> Show Origin
-      </div>
-      <div class="btnRow" style="margin-top:8px">
-        <button id="debugApply">Apply</button>
-        <button class="secondary" id="debugCopyJson">Copy JSON</button>
-      </div>
-    </div>
-  </aside>
+    </aside>
 
-  <div id="resizeHandle"></div>
+    <div id="resizeHandle"></div>
 
-  <main id="stage">
-    <div id="hud">
-      <div id="hudLeft">
-        <div class="hudBtn" id="camIso">Isometric</div>
-        <div class="hudBtn" id="camTop">Top</div>
-        <div class="hudBtn" id="camReset">Reset</div>
-        <div class="hudBtn" id="tour">Auto Tour</div>
+    <main id="stage">
+      <div id="hud">
+        <div id="hudLeft">
+          <div class="hudBtn" id="camIso">Isometric</div>
+          <div class="hudBtn" id="camTop">Top</div>
+          <div class="hudBtn" id="camReset">Reset</div>
+          <div class="hudBtn" id="tour">Auto Tour</div>
+        </div>
+        <div id="floorTabs"></div>
       </div>
-      <div id="floorTabs"></div>
-    </div>
-    <div id="loader"><div class="spinner"></div><span>Loading floor…</span></div>
-    <div id="tooltip"></div>
-    <div id="boothMarker" style="display:none;">
-  <div class="markerHeader">
-    <div id="markerTitle">Booth</div>
-    <button id="markerClose" title="Close">✕</button>
-  </div>
-  <iframe id="markerVideo"
+      <div id="loader">
+        <div class="spinner"></div>
+        <span>Loading floor…</span>
+      </div>
+      <div id="tooltip"></div>
+      <div id="boothMarker" style="display: none">
+        <div class="markerHeader">
+          <div id="markerTitle">Booth</div>
+          <button id="markerClose" title="Close">✕</button>
+        </div>
+        <iframe
+          id="markerVideo"
           src=""
           allow="autoplay; encrypted-media; picture-in-picture"
           allowfullscreen
-          loading="lazy"></iframe>
-</div>
+          loading="lazy"
+        ></iframe>
+      </div>
 
-    <div class="hint">🖱️ Drag rotate • Wheel zoom • Shift+Drag pan • Click booth to focus</div>
-  </main>
+      <div class="hint">🖱️ Drag rotate • Wheel zoom • Shift+Drag pan • Click booth to focus</div>
+    </main>
 
-  <script type="module" src="./main.js"></script>
-</body>
+    <script type="module" src="./main.js"></script>
+  </body>
 </html>

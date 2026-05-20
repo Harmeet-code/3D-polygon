@@ -20,14 +20,14 @@
 
 ## Developer Tooling
 
-| Tool | Purpose | Command |
-|---|---|---|
-| **Oxlint** | Linting | `bun lint` |
-| **Oxfmt** | Formatting (single quotes, no trailing commas, 100 char width) | `bun format` |
-| **tsc** | Type checking | `bun typecheck` |
-| **Husky** | Git hooks | Automatic on prepare |
-| **commitlint** | Conventional commit enforcement | Automatic on commit-msg |
-| **lint-staged** | Pre-commit formatting + linting | Automatic on pre-commit |
+| Tool            | Purpose                                                        | Command                 |
+| --------------- | -------------------------------------------------------------- | ----------------------- |
+| **Oxlint**      | Linting                                                        | `bun lint`              |
+| **Oxfmt**       | Formatting (single quotes, no trailing commas, 100 char width) | `bun format`            |
+| **tsc**         | Type checking                                                  | `bun typecheck`         |
+| **Husky**       | Git hooks                                                      | Automatic on prepare    |
+| **commitlint**  | Conventional commit enforcement                                | Automatic on commit-msg |
+| **lint-staged** | Pre-commit formatting + linting                                | Automatic on pre-commit |
 
 ## Package Manager
 

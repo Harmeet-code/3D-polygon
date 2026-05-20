@@ -1,7 +1,7 @@
 import { fabricToPixel, pxToWorld } from './CoordTransform.js';
 import { worldToCell, cellToWorld } from './AStarRoute.js';
-import { distSqToPolyline } from './PolylineCorridor.js';
 import { findConnectingStairs, stairToWorldPos } from './StairMap.js';
+import { PLANE_W, PLANE_H } from './SceneSetup.js';
 
 const INF = Infinity;
 const CELL = 1.2;
@@ -10,85 +10,166 @@ const MARGIN = 0.8;
 /** @type {Record<string, { costGrid: Float32Array, cols: number, rows: number }>} */
 const gridCache = {};
 
-/** Build + cache cost grid for a floor from enriched data alone (no Three.js meshes). */
+/** Mark all cells inside a rect zone as walkable (1.0). */
+function rasterizeRectZone(zone, costGrid, cols, rows, halfW, halfH) {
+  const { x: fx, y: fy, w: fw, h: fh } = zone;
+  const p1 = fabricToPixel(fx, fy);
+  const p2 = fabricToPixel(fx + fw, fy + fh);
+  const w1 = pxToWorld(p1.px, p1.py);
+  const w2 = pxToWorld(p2.px, p2.py);
+
+  const minX = Math.min(w1.x, w2.x);
+  const maxX = Math.max(w1.x, w2.x);
+  const minZ = Math.min(w1.z, w2.z);
+  const maxZ = Math.max(w1.z, w2.z);
+
+  const toCell = (x, z) => ({
+    c: Math.floor((x + halfW) / CELL),
+    r: Math.floor((halfH - z) / CELL),
+  });
+
+  const a = toCell(minX, maxZ);
+  const b = toCell(maxX, minZ);
+
+  const r0 = Math.max(0, Math.min(a.r, b.r));
+  const r1 = Math.min(rows - 1, Math.max(a.r, b.r));
+  const c0 = Math.max(0, Math.min(a.c, b.c));
+  const c1 = Math.min(cols - 1, Math.max(a.c, b.c));
+
+  for (let r = r0; r <= r1; r++) {
+    for (let c = c0; c <= c1; c++) {
+      costGrid[r * cols + c] = 1.0;
+    }
+  }
+}
+
+/** Mark all cells inside a polygon zone as walkable using scanline fill. */
+function rasterizePolygonZone(zone, costGrid, cols, rows, halfW, halfH) {
+  const pts = zone.points.map((/** @type {number[]} */ fp) => {
+    const { px, py } = fabricToPixel(fp[0], fp[1]);
+    return pxToWorld(px, py);
+  });
+  if (pts.length < 3) {
+    return;
+  }
+
+  const toCell = (x, z) => ({
+    c: Math.floor((x + halfW) / CELL),
+    r: Math.floor((halfH - z) / CELL),
+  });
+  const cellCenter = (r, c) => ({
+    x: (c + 0.5) * CELL - halfW,
+    z: halfH - (r + 0.5) * CELL,
+  });
+
+  let minR = rows - 1,
+    maxR = 0,
+    minC = cols - 1,
+    maxC = 0;
+  for (const p of pts) {
+    const cell = toCell(p.x, p.z);
+    if (cell.r < minR) {
+      minR = cell.r;
+    }
+    if (cell.r > maxR) {
+      maxR = cell.r;
+    }
+    if (cell.c < minC) {
+      minC = cell.c;
+    }
+    if (cell.c > maxC) {
+      maxC = cell.c;
+    }
+  }
+  minR = Math.max(0, minR);
+  maxR = Math.min(rows - 1, maxR);
+  minC = Math.max(0, minC);
+  maxC = Math.min(cols - 1, maxC);
+
+  const n = pts.length;
+  for (let r = minR; r <= maxR; r++) {
+    const y = cellCenter(r, 0).z;
+    const intersections = [];
+    for (let i = 0; i < n; i++) {
+      const p1 = pts[i];
+      const p2 = pts[(i + 1) % n];
+      if (p1.z > y !== p2.z > y) {
+        const t = (y - p1.z) / (p2.z - p1.z);
+        intersections.push(p1.x + t * (p2.x - p1.x));
+      }
+    }
+    intersections.sort((a, b) => a - b);
+    for (let i = 0; i < intersections.length - 1; i += 2) {
+      const left = intersections[i];
+      const right = intersections[i + 1];
+      const cLeft = toCell(left, y).c;
+      const cRight = toCell(right, y).c;
+      const c0 = Math.max(minC, Math.min(cLeft, cRight));
+      const c1 = Math.min(maxC, Math.max(cLeft, cRight));
+      for (let c = c0; c <= c1; c++) {
+        costGrid[r * cols + c] = 1.0;
+      }
+    }
+  }
+}
+
+/** Build + cache cost grid for a floor using zone rasterization + fabricBBox blocking. */
 function cacheFloorGrid(floorName, data) {
-  const { minX, minY, maxX, maxY } = data.meta.fabricBounds;
-  const c = Math.ceil(80 / CELL);
-  const r = Math.ceil(80 / CELL);
-  const halfW = 40,
-    halfH = 40;
+  const halfW = PLANE_W / 2;
+  const halfH = PLANE_H / 2;
+  const c = Math.ceil(PLANE_W / CELL);
+  const r = Math.ceil(PLANE_H / CELL);
 
   const costGrid = new Float32Array(r * c).fill(INF);
 
-  // Booth AABBs from geometry data
-  for (const b of data.booths) {
-    const pts = b.geometry.points.map((/** @type {number[]} */ fp) => {
-      const { px, py } = fabricToPixel(fp[0], fp[1]);
-      return pxToWorld(px, py);
-    });
-    let bbMinX = INF,
-      bbMaxX = -INF,
-      bbMinZ = INF,
-      bbMaxZ = -INF;
-    for (const p of pts) {
-      if (p.x < bbMinX) bbMinX = p.x;
-      if (p.x > bbMaxX) bbMaxX = p.x;
-      if (p.z < bbMinZ) bbMinZ = p.z;
-      if (p.z > bbMaxZ) bbMaxZ = p.z;
+  // Pass 1: Mark walkable zones as free
+  const zones = data.meta.walkableZones || [];
+  for (const zone of zones) {
+    if (zone.type === 'rect') {
+      rasterizeRectZone(zone, costGrid, c, r, halfW, halfH);
+    } else if (zone.type === 'polygon') {
+      rasterizePolygonZone(zone, costGrid, c, r, halfW, halfH);
     }
-    const r0 = Math.max(0, Math.floor((bbMinX - MARGIN + halfW) / CELL));
-    const r1 = Math.min(r - 1, Math.floor((bbMaxX + MARGIN + halfW) / CELL));
-    const c0 = Math.max(0, Math.floor((halfH - (bbMaxZ + MARGIN)) / CELL));
-    const c1 = Math.min(c - 1, Math.floor((halfH - (bbMinZ - MARGIN)) / CELL));
+  }
+
+  // Pass 2: Re-block booth cells using fabricBBox
+  for (const b of data.booths) {
+    const bb = b.fabricBBox;
+    if (!bb) {
+      continue;
+    }
+
+    const xMin = bb.x - MARGIN;
+    const xMax = bb.x + bb.w + MARGIN;
+    const yMin = bb.y - MARGIN;
+    const yMax = bb.y + bb.h + MARGIN;
+
+    const p1 = fabricToPixel(xMin, yMin);
+    const p2 = fabricToPixel(xMax, yMax);
+    const w1 = pxToWorld(p1.px, p1.py);
+    const w2 = pxToWorld(p2.px, p2.py);
+
+    const minX = Math.min(w1.x, w2.x);
+    const maxX = Math.max(w1.x, w2.x);
+    const minZ = Math.min(w1.z, w2.z);
+    const maxZ = Math.max(w1.z, w2.z);
+
+    const toCell = (x, z) => ({
+      c: Math.floor((x + halfW) / CELL),
+      r: Math.floor((halfH - z) / CELL),
+    });
+
+    const a = toCell(minX, maxZ);
+    const b2 = toCell(maxX, minZ);
+
+    const r0 = Math.max(0, Math.min(a.r, b2.r));
+    const r1 = Math.min(r - 1, Math.max(a.r, b2.r));
+    const c0 = Math.max(0, Math.min(a.c, b2.c));
+    const c1 = Math.min(c - 1, Math.max(a.c, b2.c));
 
     for (let rr = r0; rr <= r1; rr++) {
       for (let cc = c0; cc <= c1; cc++) {
         costGrid[rr * c + cc] = INF;
-      }
-    }
-  }
-
-  // Road corridor cells → 1.0
-  const roads = data.meta.roads || [];
-  for (const road of roads) {
-    const radius = road.width || 200;
-    const worldPts = road.points.map((/** @type {number[]} */ pt) => {
-      const { px, py } = fabricToPixel(pt[0], pt[1]);
-      return pxToWorld(px, py);
-    });
-    const polylineWp = worldPts.map((/** @type {{x:number,z:number}} */ wp) => [wp.x, wp.z]);
-    const fabricRangeX = maxX - minX;
-    const fabricRangeY = maxY - minY;
-    const wRadius = radius * ((80 / fabricRangeX + 80 / fabricRangeY) / 2);
-
-    for (let rr = 0; rr < r; rr++) {
-      for (let cc = 0; cc < c; cc++) {
-        const ni = rr * c + cc;
-        if (costGrid[ni] !== INF) continue;
-        const x = (cc + 0.5) * CELL - halfW;
-        const z = halfH - (rr + 0.5) * CELL;
-        if (distSqToPolyline([x, z], polylineWp) <= wRadius * wRadius) {
-          costGrid[ni] = 1.0;
-        }
-      }
-    }
-  }
-
-  // Stair cells → 1.0 (3x3 area)
-  const stairs = data.meta.stairs || [];
-  for (const s of stairs) {
-    if (s.position) {
-      const { px, py } = fabricToPixel(s.position.x, s.position.y);
-      const { x, z } = pxToWorld(px, py);
-      const cell = worldToCell(x, z);
-      for (let dr = -1; dr <= 1; dr++) {
-        for (let dc = -1; dc <= 1; dc++) {
-          const rr = cell.r + dr,
-            cc = cell.c + dc;
-          if (rr >= 0 && rr < r && cc >= 0 && cc < c) {
-            costGrid[rr * c + cc] = 1.0;
-          }
-        }
       }
     }
   }
@@ -107,7 +188,9 @@ function aStarOnGrid(costGrid, cols, rows, start, goal) {
     let i = heap.length - 1;
     while (i > 0) {
       const p = (i - 1) >> 1;
-      if (heap[p].f <= heap[i].f) break;
+      if (heap[p].f <= heap[i].f) {
+        break;
+      }
       [heap[p], heap[i]] = [heap[i], heap[p]];
       i = p;
     }
@@ -122,9 +205,15 @@ function aStarOnGrid(costGrid, cols, rows, start, goal) {
         const l = i * 2 + 1,
           r = l + 1;
         let m = i;
-        if (l < heap.length && heap[l].f < heap[m].f) m = l;
-        if (r < heap.length && heap[r].f < heap[m].f) m = r;
-        if (m === i) break;
+        if (l < heap.length && heap[l].f < heap[m].f) {
+          m = l;
+        }
+        if (r < heap.length && heap[r].f < heap[m].f) {
+          m = r;
+        }
+        if (m === i) {
+          break;
+        }
         [heap[m], heap[i]] = [heap[i], heap[m]];
         i = m;
       }
@@ -142,7 +231,7 @@ function aStarOnGrid(costGrid, cols, rows, start, goal) {
     r: start.r,
     c: start.c,
     f: Math.abs(start.r - goal.r) + Math.abs(start.c - goal.c),
-    i: sIdx
+    i: sIdx,
   });
 
   const dirs = [
@@ -153,7 +242,7 @@ function aStarOnGrid(costGrid, cols, rows, start, goal) {
     { dr: 1, dc: 1, cost: 1.4 },
     { dr: 1, dc: -1, cost: 1.4 },
     { dr: -1, dc: 1, cost: 1.4 },
-    { dr: -1, dc: -1, cost: 1.4 }
+    { dr: -1, dc: -1, cost: 1.4 },
   ];
   const closed = new Uint8Array(rows * cols);
 
@@ -171,15 +260,21 @@ function aStarOnGrid(costGrid, cols, rows, start, goal) {
       path.reverse();
       return path;
     }
-    if (closed[cur.i]) continue;
+    if (closed[cur.i]) {
+      continue;
+    }
     closed[cur.i] = 1;
 
     for (const d of dirs) {
       const nr = cur.r + d.dr,
         nc = cur.c + d.dc;
-      if (nr < 0 || nc < 0 || nr >= rows || nc >= cols) continue;
+      if (nr < 0 || nc < 0 || nr >= rows || nc >= cols) {
+        continue;
+      }
       const ni = idx(nr, nc);
-      if (costGrid[ni] === INF) continue;
+      if (costGrid[ni] === INF) {
+        continue;
+      }
       const ng = /** @type {number} */ (g[cur.i]) + d.cost;
       if (ng < /** @type {number} */ (g[ni])) {
         g[ni] = ng;
@@ -193,14 +288,20 @@ function aStarOnGrid(costGrid, cols, rows, start, goal) {
 
 function findNearestFreeOnGrid(costGrid, cols, rows, cell) {
   const inBounds = (r, c) => r >= 0 && c >= 0 && r < rows && c < cols;
-  if (inBounds(cell.r, cell.c) && costGrid[cell.r * cols + cell.c] !== INF) return cell;
+  if (inBounds(cell.r, cell.c) && costGrid[cell.r * cols + cell.c] !== INF) {
+    return cell;
+  }
   for (let rad = 1; rad < 16; rad++) {
     for (let dr = -rad; dr <= rad; dr++) {
       for (let dc = -rad; dc <= rad; dc++) {
         const rr = cell.r + dr,
           cc = cell.c + dc;
-        if (!inBounds(rr, cc)) continue;
-        if (costGrid[rr * cols + cc] !== INF) return { r: rr, c: cc };
+        if (!inBounds(rr, cc)) {
+          continue;
+        }
+        if (costGrid[rr * cols + cc] !== INF) {
+          return { r: rr, c: cc };
+        }
       }
     }
   }
@@ -226,15 +327,19 @@ export function multiFloorAStar(startFloor, startBoothNo, endFloor, endBoothNo, 
 
   const startData = floorDataMap[startFloor];
   const endData = floorDataMap[endFloor];
-  if (!startData || !endData) return null;
+  if (!startData || !endData) {
+    return null;
+  }
 
   const startBooth = startData.booths.find(
-    (/** @type {{boothNo:string}} */ b) => b.boothNo === startBoothNo
+    (/** @type {{boothNo:string}} */ b) => b.boothNo === startBoothNo,
   );
   const endBooth = endData.booths.find(
-    (/** @type {{boothNo:string}} */ b) => b.boothNo === endBoothNo
+    (/** @type {{boothNo:string}} */ b) => b.boothNo === endBoothNo,
   );
-  if (!startBooth || !endBooth) return null;
+  if (!startBooth || !endBooth) {
+    return null;
+  }
 
   const toCell = (fx, fy) => {
     const { px, py } = fabricToPixel(fx, fy);
@@ -247,11 +352,15 @@ export function multiFloorAStar(startFloor, startBoothNo, endFloor, endBoothNo, 
 
   if (startFloor === endFloor) {
     const cached = gridCache[startFloor];
-    if (!cached) return null;
+    if (!cached) {
+      return null;
+    }
     const s = findNearestFreeOnGrid(cached.costGrid, cached.cols, cached.rows, startCell);
     const t = findNearestFreeOnGrid(cached.costGrid, cached.cols, cached.rows, endCell);
     const path = aStarOnGrid(cached.costGrid, cached.cols, cached.rows, s, t);
-    if (!path) return null;
+    if (!path) {
+      return null;
+    }
     const wp = path.map((p) => {
       const w = cellToWorld(p.r, p.c);
       return { x: w.x, z: w.z };
@@ -261,7 +370,9 @@ export function multiFloorAStar(startFloor, startBoothNo, endFloor, endBoothNo, 
 
   // Cross-floor: find connecting stairs
   const stairIds = findConnectingStairs(startFloor, endFloor);
-  if (stairIds.length === 0) return null;
+  if (stairIds.length === 0) {
+    return null;
+  }
 
   let best = null;
   let bestCost = INF;
@@ -269,22 +380,30 @@ export function multiFloorAStar(startFloor, startBoothNo, endFloor, endBoothNo, 
 
   for (const stairId of stairIds) {
     const stairPos = stairToWorldPos(stairId, startFloor);
-    if (!stairPos) continue;
+    if (!stairPos) {
+      continue;
+    }
     const stairCell = worldToCell(stairPos.x, stairPos.z);
 
     const sg = gridCache[startFloor];
     const eg = gridCache[endFloor];
-    if (!sg || !eg) continue;
+    if (!sg || !eg) {
+      continue;
+    }
 
     const s = findNearestFreeOnGrid(sg.costGrid, sg.cols, sg.rows, startCell);
     const sp = findNearestFreeOnGrid(sg.costGrid, sg.cols, sg.rows, stairCell);
     const seg1 = aStarOnGrid(sg.costGrid, sg.cols, sg.rows, s, sp);
-    if (!seg1) continue;
+    if (!seg1) {
+      continue;
+    }
 
     const ep = findNearestFreeOnGrid(eg.costGrid, eg.cols, eg.rows, endCell);
     const es = findNearestFreeOnGrid(eg.costGrid, eg.cols, eg.rows, stairCell);
     const seg2 = aStarOnGrid(eg.costGrid, eg.cols, eg.rows, es, ep);
-    if (!seg2) continue;
+    if (!seg2) {
+      continue;
+    }
 
     const cost = seg1.length + seg2.length + 5;
     if (cost < bestCost) {
@@ -294,7 +413,9 @@ export function multiFloorAStar(startFloor, startBoothNo, endFloor, endBoothNo, 
     }
   }
 
-  if (!best || !bestStair) return null;
+  if (!best || !bestStair) {
+    return null;
+  }
 
   const seg1Wp = best.seg1.map((p) => {
     const w = cellToWorld(p.r, p.c);
@@ -308,8 +429,8 @@ export function multiFloorAStar(startFloor, startBoothNo, endFloor, endBoothNo, 
   return {
     segments: [
       { floorName: startFloor, worldPoints: seg1Wp },
-      { floorName: endFloor, worldPoints: seg2Wp }
+      { floorName: endFloor, worldPoints: seg2Wp },
     ],
-    stairUsed: bestStair
+    stairUsed: bestStair,
   };
 }

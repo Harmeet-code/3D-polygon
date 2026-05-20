@@ -1,6 +1,7 @@
 {
   "name": "3d-polygon-booking-app",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "keywords": [],
   "homepage": "https://github.com/Harmeet-code/3D-polygon#readme",
@@ -15,7 +16,6 @@
   },
   "type": "module",
   "main": "index.js",
-  "packageManager": "bun@1.3.13",
   "scripts": {
     "dev": "bunx http-server src -p 3000 -c-1 -o",
     "prepare": "husky",
@@ -38,7 +38,12 @@
     "@types/node": "^25.7.0",
     "@types/three": "^0.184.1",
     "husky": "^9.1.7",
-    "lint-staged": "^16.4.0"
+    "lint-staged": "^16.4.0",
+    "oxfmt": "^0.51.0",
+    "oxlint": "^1.65.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.9.3"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -50,11 +55,8 @@
     "unsafe-perm": true
   },
   "engines": {
-    "node": ">=24.11.0",
-    "bun": ">=1.3.13"
+    "bun": ">=1.3.13",
+    "node": ">=24.11.0"
   },
-  "private": true,
-  "peerDependencies": {
-    "typescript": "^5.9.3"
-  }
+  "packageManager": "bun@1.3.13"
 }

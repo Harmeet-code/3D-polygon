@@ -8,14 +8,15 @@ import {
   getMode,
   handleMouseMove as poiHandleMouseMove,
   handleClick as poiHandleClick,
-  selectPoiForRemoval
+  selectPoiForRemoval,
 } from '../scene/PoiEditor.js';
 import {
-  getMode as getRoadMode,
-  handleClick as roadHandleClick,
-  handleRightClick as roadHandleRightClick,
-  handleMouseMove as roadHandleMouseMove
-} from '../scene/RoadEditor.js';
+  getMode as getZoneMode,
+  handleClick as zoneHandleClick,
+  handleRightClick as zoneHandleRightClick,
+  handleMouseMove as zoneHandleMouseMove,
+  handleDoubleClick as zoneHandleDoubleClick,
+} from '../scene/ZoneEditor.js';
 import { sel } from '../state.js';
 
 const tooltip = /** @type {HTMLElement} */ (document.getElementById('tooltip'));
@@ -32,16 +33,18 @@ export function initInteraction() {
   renderer.domElement.addEventListener('mousemove', (ev) => {
     // Let editors handle mouse move
     poiHandleMouseMove(ev);
-    roadHandleMouseMove(ev);
+    zoneHandleMouseMove(ev);
 
     setMouse(ev);
     raycaster.setFromCamera(mouse, camera);
 
     // Skip booth hover if in any editor mode
     const poiMode = getMode();
-    const roadMode = getRoadMode();
-    if (poiMode || roadMode) {
-      if (sel.hovered && sel.hovered !== sel.selected) highlight(sel.hovered, false);
+    const zoneMode = getZoneMode();
+    if (poiMode || zoneMode) {
+      if (sel.hovered && sel.hovered !== sel.selected) {
+        highlight(sel.hovered, false);
+      }
       sel.hovered = null;
       tooltip.style.display = 'none';
       renderer.domElement.style.cursor = 'crosshair';
@@ -52,9 +55,13 @@ export function initInteraction() {
     if (hits.length) {
       const m = /** @type {THREE.Intersection} */ (hits[0]).object;
       if (sel.hovered !== m) {
-        if (sel.hovered && sel.hovered !== sel.selected) highlight(sel.hovered, false);
+        if (sel.hovered && sel.hovered !== sel.selected) {
+          highlight(sel.hovered, false);
+        }
         sel.hovered = m;
-        if (sel.hovered !== sel.selected) highlight(sel.hovered, true);
+        if (sel.hovered !== sel.selected) {
+          highlight(sel.hovered, true);
+        }
       }
       const b = m.userData.booth;
       tooltip.style.display = 'block';
@@ -66,7 +73,9 @@ export function initInteraction() {
       tooltip.innerHTML = `<b>${b.boothNo}</b> \u2022 ${b.status} \u2022 $${b.price}`;
       renderer.domElement.style.cursor = 'pointer';
     } else {
-      if (sel.hovered && sel.hovered !== sel.selected) highlight(sel.hovered, false);
+      if (sel.hovered && sel.hovered !== sel.selected) {
+        highlight(sel.hovered, false);
+      }
       sel.hovered = null;
       tooltip.style.display = 'none';
       renderer.domElement.style.cursor = poiMode ? 'crosshair' : '';
@@ -74,10 +83,14 @@ export function initInteraction() {
   });
 
   renderer.domElement.addEventListener('click', (ev) => {
-    // Road editor takes highest priority
-    const roadMode = getRoadMode();
-    if (roadMode === 'add-road') {
-      roadHandleClick(ev);
+    // Zone editor takes highest priority
+    const zoneMode = getZoneMode();
+    if (zoneMode === 'add-rect' || zoneMode === 'add-polygon') {
+      zoneHandleClick(ev);
+      return;
+    }
+    if (zoneMode === 'remove') {
+      zoneHandleClick(ev);
       return;
     }
 
@@ -103,11 +116,17 @@ export function initInteraction() {
     // Check POI click first
     raycaster.setFromCamera(mouse, camera);
     const poiHits = raycaster.intersectObjects(poiMeshes, false);
-    if (handlePoiClick(poiHits)) return;
+    if (handlePoiClick(poiHits)) {
+      return;
+    }
 
     // Then check booth click
-    if (!sel.hovered) return;
-    if (sel.selected && sel.selected !== sel.hovered) highlight(sel.selected, false);
+    if (!sel.hovered) {
+      return;
+    }
+    if (sel.selected && sel.selected !== sel.hovered) {
+      highlight(sel.selected, false);
+    }
     sel.selected = sel.hovered;
     highlight(sel.selected, true);
     updateSidebar(sel.selected.userData.booth);
@@ -115,11 +134,20 @@ export function initInteraction() {
     openMarkerFor(sel.selected);
   });
 
-  // Right-click for road editor finish segment
+  // Right-click for zone editor finish segment
   renderer.domElement.addEventListener('contextmenu', (ev) => {
-    const roadMode = getRoadMode();
-    if (roadMode === 'add-road') {
-      roadHandleRightClick(ev);
+    const zoneMode = getZoneMode();
+    if (zoneMode === 'add-polygon' || zoneMode === 'add-rect') {
+      zoneHandleRightClick(ev);
+      return;
+    }
+  });
+
+  // Double-click for zone editor finish polygon
+  renderer.domElement.addEventListener('dblclick', (ev) => {
+    const zoneMode = getZoneMode();
+    if (zoneMode === 'add-polygon') {
+      zoneHandleDoubleClick(ev);
       return;
     }
   });

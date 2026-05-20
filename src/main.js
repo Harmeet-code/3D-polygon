@@ -7,7 +7,7 @@ import {
   controls,
   renderer,
   PLANE_W,
-  PLANE_H
+  PLANE_H,
 } from './scene/SceneSetup.js';
 import {
   initCalibration,
@@ -17,15 +17,16 @@ import {
   scXEl,
   scYEl,
   DEFAULT_CALIBRATION,
-  storeKey
+  storeKey,
 } from './scene/CoordTransform.js';
 import { buildBooths, boothByNo } from './scene/BoothBuilder.js';
 import {
   fillDropdowns,
   boothCenterWorld,
-  fromSelect,
-  toSelect,
-  applyFilters
+  fromInput,
+  toInput,
+  applyFilters,
+  initComboboxFloors,
 } from './ui/Filters.js';
 import { flyTo, focusMesh, highlight, updateSidebar } from './ui/Sidebar.js';
 import { sel } from './state.js';
@@ -34,13 +35,13 @@ import { initConsoleTools } from './debug/ConsoleTools.js';
 import { reloadCoordDebug, clearOverlay } from './ui/CoordDebug.js';
 import { buildStairMap, stairToWorldPos } from './scene/StairMap.js';
 import { multiFloorAStar } from './scene/MultiFloorRoute.js';
-import { buildRoadOverlay, clearRoadOverlay } from './scene/RoadOverlay.js';
+import { buildZoneOverlay, clearZoneOverlay } from './scene/ZoneOverlay.js';
 import {
   buildPoiMarkers,
   clearPoiMarkers,
   highlightRouteStair,
   clearRouteStairHighlight,
-  updateRouteStairPulse
+  updateRouteStairPulse,
 } from './scene/PoiMarkers.js';
 import { positionMarker } from './ui/BoothMarker.js';
 import { initInteraction } from './ui/Interaction.js';
@@ -49,16 +50,15 @@ import {
   setMode as poiSetMode,
   setRotation as poiSetRotation,
   applyPlacement as poiApply,
-  cancelPlacement as poiCancel
+  cancelPlacement as poiCancel,
 } from './scene/PoiEditor.js';
 import {
-  initRoadEditor,
-  setMode as roadSetMode,
-  setWidth as roadSetWidth,
-  applyRoads as roadApply,
-  cancelRoads as roadCancel,
-  undoLastPoint as roadUndoPoint
-} from './scene/RoadEditor.js';
+  initZoneEditor,
+  setMode as zoneSetMode,
+  applyZones as zoneApply,
+  cancelZones as zoneCancel,
+  undoLastPoint as zoneUndo,
+} from './scene/ZoneEditor.js';
 import {
   aStar,
   findNearestFree,
@@ -71,7 +71,7 @@ import {
   routeWorldPoints,
   rebuildCostGrid,
   updateRouteAnimation,
-  initGrid
+  initGrid,
 } from './scene/AStarRoute.js';
 
 // Boot
@@ -94,12 +94,15 @@ initGrid(PLANE_W, PLANE_H);
 initInteraction();
 initPoiEditor(
   () => currentData,
-  () => currentFloor
+  () => currentFloor,
 );
-initRoadEditor(
+initZoneEditor(
   () => currentData,
-  () => currentFloor
+  () => currentFloor,
 );
+
+// Init combobox floors from floors.json
+await initComboboxFloors();
 
 // Create floor tabs
 const floorTabs = /** @type {HTMLElement} */ (document.getElementById('floorTabs'));
@@ -147,18 +150,24 @@ loadFloor(floors[0]);
 // ── Core floor loader ──────────────────────────────────────────
 
 async function loadFloor(name, transitionStair) {
-  if (name === currentFloor) return;
+  if (name === currentFloor) {
+    return;
+  }
   loader.classList.add('visible');
 
   const tabs = floorTabs.querySelectorAll('.hudBtn');
   tabs.forEach((t) => t.classList.remove('active'));
   const activeTab = floorTabs.querySelector(`[data-floor="${name}"]`);
-  if (activeTab) activeTab.classList.add('active');
+  if (activeTab) {
+    activeTab.classList.add('active');
+  }
 
   try {
     // Fetch JSON
     const res = await fetch(`./data/json/${name}.json`);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`);
+    }
     const data = await res.json();
 
     enrichData(data);
@@ -175,7 +184,7 @@ async function loadFloor(name, transitionStair) {
 
     // Clear overlays
     clearOverlay();
-    clearRoadOverlay();
+    clearZoneOverlay();
     clearPoiMarkers();
     clearRouteStairHighlight();
 
@@ -185,15 +194,15 @@ async function loadFloor(name, transitionStair) {
     ).checked;
     buildBooths(data, heatEnabled);
     rebuildCostGrid(data);
-    buildRoadOverlay(data);
+    buildZoneOverlay(data);
     buildPoiMarkers(data);
     fillDropdowns(data);
 
     // Reset selection + cancel editors
     poiCancel();
-    roadCancel();
+    zoneCancel();
     document.querySelectorAll('[data-poi-mode]').forEach((c) => c.classList.remove('active'));
-    document.querySelectorAll('[data-road-mode]').forEach((c) => c.classList.remove('active'));
+    document.querySelectorAll('[data-zone-mode]').forEach((c) => c.classList.remove('active'));
     if (sel.selected) {
       highlight(sel.selected, false);
       sel.selected = null;
@@ -233,7 +242,9 @@ async function loadFloor(name, transitionStair) {
     console.log(`Switched to ${name} (${data.booths.length} booths)`);
   } catch (err) {
     console.error(`Failed to load floor "${name}":`, err);
-    if (activeTab) activeTab.classList.remove('active');
+    if (activeTab) {
+      activeTab.classList.remove('active');
+    }
   } finally {
     loader.classList.remove('visible');
   }
@@ -243,12 +254,16 @@ async function loadFloor(name, transitionStair) {
 
 function onCalChange() {
   persistCal();
-  if (!currentData) return;
+  if (!currentData) {
+    return;
+  }
   buildBooths(
     currentData,
-    /** @type {HTMLInputElement} */ (document.getElementById('heatmap')).checked
+    /** @type {HTMLInputElement} */ (document.getElementById('heatmap')).checked,
   );
-  if (currentData) rebuildCostGrid(currentData);
+  if (currentData) {
+    rebuildCostGrid(currentData);
+  }
   applyFilters();
 }
 [offXEl, offYEl, scXEl, scYEl].forEach((el) => el.addEventListener('input', onCalChange));
@@ -267,14 +282,16 @@ function onCalChange() {
 /** @type {HTMLInputElement} */ (document.getElementById('heatmap')).addEventListener(
   'change',
   () => {
-    if (!currentData) return;
+    if (!currentData) {
+      return;
+    }
     buildBooths(
       currentData,
-      /** @type {HTMLInputElement} */ (document.getElementById('heatmap')).checked
+      /** @type {HTMLInputElement} */ (document.getElementById('heatmap')).checked,
     );
     rebuildCostGrid(currentData);
     applyFilters();
-  }
+  },
 );
 
 // Reset button
@@ -290,9 +307,11 @@ function onCalChange() {
   clearRoute();
   clearRouteStairHighlight();
   multiFloorRouteSeg = null;
-  const fromNo = fromSelect.value;
-  const toNo = toSelect.value;
-  if (!fromNo || !toNo) return;
+  const fromNo = fromInput.value;
+  const toNo = toInput.value;
+  if (!fromNo || !toNo) {
+    return;
+  }
 
   const fromFloor = boothToFloor[fromNo];
   const toFloor = boothToFloor[toNo];
@@ -305,8 +324,8 @@ function onCalChange() {
     // Single-floor route (existing behavior)
     const from = boothCenterWorld(fromNo);
     const to = boothCenterWorld(toNo);
-    let s = findNearestFree(worldToCell(from.x, from.z));
-    let t = findNearestFree(worldToCell(to.x, to.z));
+    const s = findNearestFree(worldToCell(from.x, from.z));
+    const t = findNearestFree(worldToCell(to.x, to.z));
     const path = aStar(s, t);
     if (!path) {
       alert('No route found. Try other booths or increase CELL size.');
@@ -315,7 +334,7 @@ function onCalChange() {
     const wp = [
       { x: from.x, z: from.z },
       ...path.map((p) => cellToWorld(p.r, p.c)),
-      { x: to.x, z: to.z }
+      { x: to.x, z: to.z },
     ];
     drawRoute(wp);
     multiFloorRouteSeg = null;
@@ -345,7 +364,7 @@ function onCalChange() {
       flyTo(
         new THREE.Vector3(start.x + 30, 30, start.z + 34),
         new THREE.Vector3(start.x, 0.1, start.z),
-        900
+        900,
       );
     }
   } else {
@@ -360,7 +379,7 @@ function onCalChange() {
     clearRoute();
     clearRouteStairHighlight();
     multiFloorRouteSeg = null;
-  }
+  },
 );
 /** @type {HTMLInputElement} */ (document.getElementById('followCam')).addEventListener(
   'change',
@@ -368,21 +387,23 @@ function onCalChange() {
     if (
       /** @type {HTMLInputElement} */ (document.getElementById('followCam')).checked &&
       routeWorldPoints
-    )
+    ) {
       followRoute(routeWorldPoints);
-    else clearFollow();
-  }
+    } else {
+      clearFollow();
+    }
+  },
 );
 
 // Camera HUD
 /** @type {HTMLElement} */ (document.getElementById('camIso')).addEventListener('click', () =>
-  flyTo(new THREE.Vector3(75, 70, 75), new THREE.Vector3(0, 0, 0), 850)
+  flyTo(new THREE.Vector3(75, 70, 75), new THREE.Vector3(0, 0, 0), 850),
 );
 /** @type {HTMLElement} */ (document.getElementById('camTop')).addEventListener('click', () =>
-  flyTo(new THREE.Vector3(0, 160, 0.01), new THREE.Vector3(0, 0, 0), 850)
+  flyTo(new THREE.Vector3(0, 160, 0.01), new THREE.Vector3(0, 0, 0), 850),
 );
 /** @type {HTMLElement} */ (document.getElementById('camReset')).addEventListener('click', () =>
-  flyTo(new THREE.Vector3(70, 70, 90), new THREE.Vector3(0, 0, 0), 850)
+  flyTo(new THREE.Vector3(70, 70, 90), new THREE.Vector3(0, 0, 0), 850),
 );
 
 // Auto Tour
@@ -398,14 +419,18 @@ let touring = false,
     tourTimer = null;
     return;
   }
-  if (!currentData) return;
+  if (!currentData) {
+    return;
+  }
   clearRoute();
   let i = 0;
   tourTimer = setInterval(() => {
     const b = currentData.booths[i % currentData.booths.length];
     const m = boothByNo.get(b.boothNo);
     if (m && m.visible) {
-      if (sel.selected && sel.selected !== m) highlight(sel.selected, false);
+      if (sel.selected && sel.selected !== m) {
+        highlight(sel.selected, false);
+      }
       sel.selected = m;
       highlight(sel.selected, true);
       updateSidebar(b);
@@ -441,7 +466,9 @@ document.querySelectorAll('[data-poi-mode]').forEach((el) => {
     const mode = /** @type {string} */ (chip.dataset.poiMode);
     document.querySelectorAll('[data-poi-mode]').forEach((c) => c.classList.remove('active'));
     const entered = poiSetMode(mode);
-    if (!entered) return;
+    if (!entered) {
+      return;
+    }
     chip.classList.add('active');
   });
 });
@@ -450,10 +477,10 @@ document.querySelectorAll('[data-poi-mode]').forEach((el) => {
   'input',
   () => {
     const val = Number(
-      /** @type {HTMLInputElement} */ (document.getElementById('poiRotSlider')).value
+      /** @type {HTMLInputElement} */ (document.getElementById('poiRotSlider')).value,
     );
     poiSetRotation(val);
-  }
+  },
 );
 
 /** @type {HTMLElement} */ (document.getElementById('poiApplyBtn')).addEventListener(
@@ -461,7 +488,7 @@ document.querySelectorAll('[data-poi-mode]').forEach((el) => {
   () => {
     poiApply();
     document.querySelectorAll('[data-poi-mode]').forEach((c) => c.classList.remove('active'));
-  }
+  },
 );
 
 /** @type {HTMLElement} */ (document.getElementById('poiCancelBtn')).addEventListener(
@@ -469,54 +496,46 @@ document.querySelectorAll('[data-poi-mode]').forEach((el) => {
   () => {
     poiCancel();
     document.querySelectorAll('[data-poi-mode]').forEach((c) => c.classList.remove('active'));
-  }
+  },
 );
 
-// ── Road Editor ──────────────────────────────────────────────
+// ── Zone Editor ──────────────────────────────────────────────
 
-document.querySelectorAll('[data-road-mode]').forEach((el) => {
+document.querySelectorAll('[data-zone-mode]').forEach((el) => {
   const chip = /** @type {HTMLElement} */ (el);
   chip.addEventListener('click', () => {
-    const mode = /** @type {string} */ (chip.dataset.roadMode);
-    document.querySelectorAll('[data-road-mode]').forEach((c) => c.classList.remove('active'));
-    const entered = roadSetMode(mode);
-    if (!entered) return;
+    const mode = /** @type {string} */ (chip.dataset.zoneMode);
+    document.querySelectorAll('[data-zone-mode]').forEach((c) => c.classList.remove('active'));
+    const entered = zoneSetMode(mode);
+    if (!entered) {
+      return;
+    }
     chip.classList.add('active');
   });
 });
 
-/** @type {HTMLInputElement} */ (document.getElementById('roadWidthSlider')).addEventListener(
-  'input',
-  () => {
-    const val = Number(
-      /** @type {HTMLInputElement} */ (document.getElementById('roadWidthSlider')).value
-    );
-    roadSetWidth(val);
-  }
-);
-
-/** @type {HTMLElement} */ (document.getElementById('roadApplyBtn')).addEventListener(
+/** @type {HTMLElement} */ (document.getElementById('zoneApplyBtn')).addEventListener(
   'click',
   () => {
-    roadApply();
-    roadCancel();
-    document.querySelectorAll('[data-road-mode]').forEach((c) => c.classList.remove('active'));
-  }
+    zoneApply();
+    zoneCancel();
+    document.querySelectorAll('[data-zone-mode]').forEach((c) => c.classList.remove('active'));
+  },
 );
 
-/** @type {HTMLElement} */ (document.getElementById('roadUndoBtn')).addEventListener(
+/** @type {HTMLElement} */ (document.getElementById('zoneUndoBtn')).addEventListener(
   'click',
   () => {
-    roadUndoPoint();
-  }
+    zoneUndo();
+  },
 );
 
-/** @type {HTMLElement} */ (document.getElementById('roadCancelBtn')).addEventListener(
+/** @type {HTMLElement} */ (document.getElementById('zoneCancelBtn')).addEventListener(
   'click',
   () => {
-    roadCancel();
-    document.querySelectorAll('[data-road-mode]').forEach((c) => c.classList.remove('active'));
-  }
+    zoneCancel();
+    document.querySelectorAll('[data-zone-mode]').forEach((c) => c.classList.remove('active'));
+  },
 );
 
 // Sidebar resize
@@ -533,13 +552,17 @@ handle.addEventListener('mousedown', (e) => {
 });
 
 document.addEventListener('mousemove', (e) => {
-  if (!dragging) return;
+  if (!dragging) {
+    return;
+  }
   const w = Math.max(240, Math.min(800, e.clientX));
   sidebar.style.width = `${w}px`;
 });
 
 document.addEventListener('mouseup', () => {
-  if (!dragging) return;
+  if (!dragging) {
+    return;
+  }
   dragging = false;
   handle.classList.remove('active');
   document.body.style.cursor = '';

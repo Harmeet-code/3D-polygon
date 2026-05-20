@@ -1,8 +1,6 @@
 import * as THREE from 'three';
-import { scene, PLANE_W, PLANE_H } from './SceneSetup.js';
-import { boothMeshes } from './BoothBuilder.js';
+import { scene } from './SceneSetup.js';
 import { fabricToPixel, pxToWorld } from './CoordTransform.js';
-import { distSqToPolyline } from './PolylineCorridor.js';
 import { flyTo } from '../ui/Sidebar.js';
 
 const CELL = 1.2;
@@ -36,34 +34,139 @@ export function cellToWorld(r, c) {
   return { x, z };
 }
 
-let fbMinX = 0,
-  fbMaxX = 0,
-  fbMinY = 0,
-  fbMaxY = 0;
-
 const INF = Infinity;
 
-export function rebuildCostGrid(data) {
-  costGrid = new Float32Array(rows * cols).fill(INF);
+/** Mark all cells inside a rect zone as walkable (1.0). */
+function rasterizeRectZone(zone) {
+  const { x: fx, y: fy, w: fw, h: fh } = zone;
+  const p1 = fabricToPixel(fx, fy);
+  const p2 = fabricToPixel(fx + fw, fy + fh);
+  const w1 = pxToWorld(p1.px, p1.py);
+  const w2 = pxToWorld(p2.px, p2.py);
 
-  // Store fabric bounds for scale computation
-  if (data?.meta?.fabricBounds) {
-    fbMinX = data.meta.fabricBounds.minX;
-    fbMaxX = data.meta.fabricBounds.maxX;
-    fbMinY = data.meta.fabricBounds.minY;
-    fbMaxY = data.meta.fabricBounds.maxY;
+  const minX = Math.min(w1.x, w2.x);
+  const maxX = Math.max(w1.x, w2.x);
+  const minZ = Math.min(w1.z, w2.z);
+  const maxZ = Math.max(w1.z, w2.z);
+
+  const a = worldToCell(minX, maxZ);
+  const b = worldToCell(maxX, minZ);
+
+  const r0 = Math.max(0, Math.min(a.r, b.r));
+  const r1 = Math.min(rows - 1, Math.max(a.r, b.r));
+  const c0 = Math.max(0, Math.min(a.c, b.c));
+  const c1 = Math.min(cols - 1, Math.max(a.c, b.c));
+
+  for (let r = r0; r <= r1; r++) {
+    for (let c = c0; c <= c1; c++) {
+      costGrid[idx(r, c)] = 1.0;
+    }
+  }
+}
+
+/** Mark all cells inside a polygon zone as walkable using scanline fill. */
+function rasterizePolygonZone(zone) {
+  const pts = zone.points.map((/** @type {number[]} */ fp) => {
+    const { px, py } = fabricToPixel(fp[0], fp[1]);
+    return pxToWorld(px, py);
+  });
+  if (pts.length < 3) {
+    return;
   }
 
-  // Booth AABB cells → Infinity
-  for (const m of boothMeshes) {
-    const b = m.userData.booth;
-    if (DEMO_BLOCKED_BOOTHS.has(/** @type {string} */ (b.boothNo))) continue;
+  // Find bounding box of polygon in cell coords
+  let minR = rows - 1,
+    maxR = 0,
+    minC = cols - 1,
+    maxC = 0;
+  for (const p of pts) {
+    const cell = worldToCell(p.x, p.z);
+    if (cell.r < minR) {
+      minR = cell.r;
+    }
+    if (cell.r > maxR) {
+      maxR = cell.r;
+    }
+    if (cell.c < minC) {
+      minC = cell.c;
+    }
+    if (cell.c > maxC) {
+      maxC = cell.c;
+    }
+  }
+  minR = Math.max(0, minR);
+  maxR = Math.min(rows - 1, maxR);
+  minC = Math.max(0, minC);
+  maxC = Math.min(cols - 1, maxC);
 
-    const box = new THREE.Box3().setFromObject(m);
-    const minX = box.min.x - MARGIN;
-    const maxX = box.max.x + MARGIN;
-    const minZ = box.min.z - MARGIN;
-    const maxZ = box.max.z + MARGIN;
+  // Scanline fill: for each row, find edge intersections and fill between pairs
+  const n = pts.length;
+  for (let r = minR; r <= maxR; r++) {
+    const y = cellToWorld(r, 0).z;
+    const intersections = [];
+    for (let i = 0; i < n; i++) {
+      const p1 = pts[i];
+      const p2 = pts[(i + 1) % n];
+      if (p1.z > y !== p2.z > y) {
+        const t = (y - p1.z) / (p2.z - p1.z);
+        intersections.push(p1.x + t * (p2.x - p1.x));
+      }
+    }
+    intersections.sort((a, b) => a - b);
+    for (let i = 0; i < intersections.length - 1; i += 2) {
+      const left = intersections[i];
+      const right = intersections[i + 1];
+      const cLeft = worldToCell(left, y).c;
+      const cRight = worldToCell(right, y).c;
+      const c0 = Math.max(minC, Math.min(cLeft, cRight));
+      const c1 = Math.min(maxC, Math.max(cLeft, cRight));
+      for (let c = c0; c <= c1; c++) {
+        costGrid[idx(r, c)] = 1.0;
+      }
+    }
+  }
+}
+
+/** Rasterize all walkable zones onto the cost grid. */
+function rasterizeWalkableZones(zones) {
+  if (!zones || zones.length === 0) {
+    return;
+  }
+  for (const zone of zones) {
+    if (zone.type === 'rect') {
+      rasterizeRectZone(zone);
+    } else if (zone.type === 'polygon') {
+      rasterizePolygonZone(zone);
+    }
+  }
+}
+
+/** Mark booth cells as blocked (INF) using fabricBBox. */
+function blockBoothCells(booths) {
+  for (const b of booths) {
+    if (DEMO_BLOCKED_BOOTHS.has(/** @type {string} */ (b.boothNo))) {
+      continue;
+    }
+    const bb = b.fabricBBox;
+    if (!bb) {
+      continue;
+    }
+
+    // Expand by margin in fabric space
+    const xMin = bb.x - MARGIN;
+    const xMax = bb.x + bb.w + MARGIN;
+    const yMin = bb.y - MARGIN;
+    const yMax = bb.y + bb.h + MARGIN;
+
+    const p1 = fabricToPixel(xMin, yMin);
+    const p2 = fabricToPixel(xMax, yMax);
+    const w1 = pxToWorld(p1.px, p1.py);
+    const w2 = pxToWorld(p2.px, p2.py);
+
+    const minX = Math.min(w1.x, w2.x);
+    const maxX = Math.max(w1.x, w2.x);
+    const minZ = Math.min(w1.z, w2.z);
+    const maxZ = Math.max(w1.z, w2.z);
 
     const a = worldToCell(minX, maxZ);
     const b2 = worldToCell(maxX, minZ);
@@ -79,62 +182,16 @@ export function rebuildCostGrid(data) {
       }
     }
   }
+}
 
-  // Road corridor cells → 1.0
-  const roads = data?.meta?.roads || [];
-  for (const road of roads) {
-    const radius = road.width || 200;
-    // Convert road polyline to world coords for distance checks
-    const worldPts = road.points.map((/** @type {number[]} */ pt) => {
-      const { px, py } = fabricToPixel(pt[0], pt[1]);
-      return pxToWorld(px, py);
-    });
-    // Compute approximate world-space half-width
-    const fabricRangeX = fbMaxX - fbMinX;
-    const fabricRangeY = fbMaxY - fbMinY;
-    const scaleX = PLANE_W / fabricRangeX;
-    const scaleY = PLANE_H / fabricRangeY;
-    const worldRadius = radius * ((scaleX + scaleY) / 2);
+export function rebuildCostGrid(data) {
+  costGrid = new Float32Array(rows * cols).fill(INF);
 
-    const polylineWp = worldPts.map((/** @type {{x:number,z:number}} */ wp) => [wp.x, wp.z]);
+  // Pass 1: Mark walkable zones as free
+  rasterizeWalkableZones(data?.meta?.walkableZones || []);
 
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        const ni = idx(r, c);
-        if (costGrid[ni] === INF) {
-          const { x, z } = cellToWorld(r, c);
-          const dSq = distSqToPolyline([x, z], polylineWp);
-          if (dSq <= worldRadius * worldRadius) {
-            costGrid[ni] = 1.0;
-          }
-        }
-      }
-    }
-  }
-
-  // Stair cells → 1.0 (accessible even if overlapping booth)
-  const stairs = data?.meta?.stairs || [];
-  for (const s of stairs) {
-    if (s.position) {
-      const { px, py } = fabricToPixel(s.position.x, s.position.y);
-      const { x, z } = pxToWorld(px, py);
-      const cell = worldToCell(x, z);
-      if (cell.r >= 0 && cell.r < rows && cell.c >= 0 && cell.c < cols) {
-        const ni = idx(cell.r, cell.c);
-        costGrid[ni] = 1.0;
-        // Also mark 3x3 area around stair
-        for (let dr = -1; dr <= 1; dr++) {
-          for (let dc = -1; dc <= 1; dc++) {
-            const rr = cell.r + dr,
-              cc = cell.c + dc;
-            if (rr >= 0 && rr < rows && cc >= 0 && cc < cols) {
-              costGrid[idx(rr, cc)] = 1.0;
-            }
-          }
-        }
-      }
-    }
-  }
+  // Pass 2: Re-block booth cells
+  blockBoothCells(data?.booths || []);
 }
 
 function heuristic(a, b) {
@@ -164,7 +221,9 @@ class MinHeap {
   _up(i) {
     while (i > 0) {
       const p = (i - 1) >> 1;
-      if (this.a[p].f <= this.a[i].f) break;
+      if (this.a[p].f <= this.a[i].f) {
+        break;
+      }
       [this.a[p], this.a[i]] = [this.a[i], this.a[p]];
       i = p;
     }
@@ -174,9 +233,15 @@ class MinHeap {
       const l = i * 2 + 1,
         r = l + 1;
       let m = i;
-      if (l < this.a.length && this.a[l].f < this.a[m].f) m = l;
-      if (r < this.a.length && this.a[r].f < this.a[m].f) m = r;
-      if (m === i) break;
+      if (l < this.a.length && this.a[l].f < this.a[m].f) {
+        m = l;
+      }
+      if (r < this.a.length && this.a[r].f < this.a[m].f) {
+        m = r;
+      }
+      if (m === i) {
+        break;
+      }
       [this.a[m], this.a[i]] = [this.a[i], this.a[m]];
       i = m;
     }
@@ -201,7 +266,7 @@ export function aStar(start, goal) {
     { dr: 1, dc: 1, cost: 1.4 },
     { dr: 1, dc: -1, cost: 1.4 },
     { dr: -1, dc: 1, cost: 1.4 },
-    { dr: -1, dc: -1, cost: 1.4 }
+    { dr: -1, dc: -1, cost: 1.4 },
   ];
   const closed = new Uint8Array(rows * cols);
 
@@ -219,15 +284,21 @@ export function aStar(start, goal) {
       path.reverse();
       return path;
     }
-    if (closed[cur.i]) continue;
+    if (closed[cur.i]) {
+      continue;
+    }
     closed[cur.i] = 1;
 
     for (const d of dirs) {
       const nr = cur.r + d.dr,
         nc = cur.c + d.dc;
-      if (nr < 0 || nc < 0 || nr >= rows || nc >= cols) continue;
+      if (nr < 0 || nc < 0 || nr >= rows || nc >= cols) {
+        continue;
+      }
       const ni = idx(nr, nc);
-      if (costGrid[ni] === INF) continue;
+      if (costGrid[ni] === INF) {
+        continue;
+      }
       const ng = /** @type {number} */ (g[cur.i]) + d.cost;
       if (ng < /** @type {number} */ (g[ni])) {
         g[ni] = ng;
@@ -241,14 +312,20 @@ export function aStar(start, goal) {
 
 export function findNearestFree(cell) {
   const inBounds = (r, c) => r >= 0 && c >= 0 && r < rows && c < cols;
-  if (inBounds(cell.r, cell.c) && costGrid[idx(cell.r, cell.c)] !== INF) return cell;
+  if (inBounds(cell.r, cell.c) && costGrid[idx(cell.r, cell.c)] !== INF) {
+    return cell;
+  }
   for (let rad = 1; rad < 16; rad++) {
     for (let dr = -rad; dr <= rad; dr++) {
       for (let dc = -rad; dc <= rad; dc++) {
         const rr = cell.r + dr,
           cc = cell.c + dc;
-        if (!inBounds(rr, cc)) continue;
-        if (costGrid[idx(rr, cc)] !== INF) return { r: rr, c: cc };
+        if (!inBounds(rr, cc)) {
+          continue;
+        }
+        if (costGrid[idx(rr, cc)] !== INF) {
+          return { r: rr, c: cc };
+        }
       }
     }
   }
@@ -306,7 +383,7 @@ export function drawRoute(worldPoints) {
     roughness: 0.6,
     metalness: 0.2,
     transparent: true,
-    opacity: 0.92
+    opacity: 0.92,
   });
   routeBase = new THREE.Mesh(baseGeom, baseMat);
   routeBase.renderOrder = 10;
@@ -316,7 +393,7 @@ export function drawRoute(worldPoints) {
   const glowMat = new THREE.MeshBasicMaterial({
     color: 0x6aa9ff,
     transparent: true,
-    opacity: 0.55
+    opacity: 0.55,
   });
   routeGlow = new THREE.Mesh(glowGeom, glowMat);
   routeGlow.position.y = 0.02;
@@ -338,7 +415,7 @@ export function drawRoute(worldPoints) {
     color: 0xffffff,
     size: 0.55,
     transparent: true,
-    opacity: 0.85
+    opacity: 0.85,
   });
   routeDots = new THREE.Points(dotsGeom, dotsMat);
   routeDots.userData.curve = curve;
@@ -352,18 +429,24 @@ export function followRoute(points) {
     !(/** @type {HTMLInputElement} */ (document.getElementById('followCam')).checked) ||
     !points ||
     points.length < 3
-  )
+  ) {
     return;
+  }
 
   const step = Math.max(2, Math.floor(points.length / 14));
   const sampled = [];
-  for (let i = 0; i < points.length; i += step) sampled.push(points[i]);
-  if (sampled[sampled.length - 1] !== points[points.length - 1])
+  for (let i = 0; i < points.length; i += step) {
+    sampled.push(points[i]);
+  }
+  if (sampled[sampled.length - 1] !== points[points.length - 1]) {
     sampled.push(points[points.length - 1]);
+  }
 
   let i = 0;
   const moveNext = () => {
-    if (i >= sampled.length) return;
+    if (i >= sampled.length) {
+      return;
+    }
     const p = sampled[i];
     const look = new THREE.Vector3(p.x, 0.1, p.z);
     const camPos = look.clone().add(new THREE.Vector3(26, 26, 30));

@@ -27,14 +27,14 @@ A calibration panel allows adjusting offset and scale multipliers for precise al
 
 ## Tech Stack
 
-| Tool | Purpose |
-|------|---------|
-| [Three.js](https://threejs.org/) | 3D rendering |
-| [Bun](https://bun.sh/) | JavaScript runtime & package manager (≥1.3.13) |
-| [Oxlint](https://oxc.rs/) | Linting |
-| [Oxfmt](https://oxc.rs/) | Formatting |
-| [Husky](https://typicode.github.io/husky/) | Git hooks |
-| [commitlint](https://commitlint.js.org/) | Conventional commit enforcement |
+| Tool                                       | Purpose                                        |
+| ------------------------------------------ | ---------------------------------------------- |
+| [Three.js](https://threejs.org/)           | 3D rendering                                   |
+| [Bun](https://bun.sh/)                     | JavaScript runtime & package manager (≥1.3.13) |
+| [Oxlint](https://oxc.rs/)                  | Linting                                        |
+| [Oxfmt](https://oxc.rs/)                   | Formatting                                     |
+| [Husky](https://typicode.github.io/husky/) | Git hooks                                      |
+| [commitlint](https://commitlint.js.org/)   | Conventional commit enforcement                |
 
 ## Getting Started
 
@@ -86,23 +86,23 @@ bun run check      # lint + format check
 
 Booths are defined in `src/booths_poly_v2.json` with polygon geometry in fabric coordinates:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `boothNo` | `string` | Booth identifier (e.g. `L1-15`) |
-| `price` | `string` | Rental price |
-| `size` | `string` | Dimensions (e.g. `10x10`) |
-| `boothType` | `string` | Color category |
-| `boothColor` | `string` | Hex color |
-| `gatePosition` | `string` | Entrance position |
-| `status` | `string` | `AVAILABLE`, `HOLD`, or `BOOKED` |
-| `geometry` | `object` | Polygon with `points[][]` in fabric units |
-| `fabricBBox` | `object` | Bounding box (`x, y, w, h`) |
+| Field          | Type     | Description                               |
+| -------------- | -------- | ----------------------------------------- |
+| `boothNo`      | `string` | Booth identifier (e.g. `L1-15`)           |
+| `price`        | `string` | Rental price                              |
+| `size`         | `string` | Dimensions (e.g. `10x10`)                 |
+| `boothType`    | `string` | Color category                            |
+| `boothColor`   | `string` | Hex color                                 |
+| `gatePosition` | `string` | Entrance position                         |
+| `status`       | `string` | `AVAILABLE`, `HOLD`, or `BOOKED`          |
+| `geometry`     | `object` | Polygon with `points[][]` in fabric units |
+| `fabricBBox`   | `object` | Bounding box (`x, y, w, h`)               |
 
 ### Calibration
 
 Use the calibration panel in the sidebar to adjust:
+
 - **Offset X / Y** — translate the geometry overlay
 - **Scale X / Y** — stretch/shrink the geometry overlay
 
 Values are saved to `localStorage` and persist across sessions.
-

@@ -1,9 +1,7 @@
 // oxlintrc.jsonc
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": [
-    "typescript"
-  ],
+  "plugins": ["typescript"],
   "categories": {
     "correctness": "warn"
   },
@@ -39,5 +37,5 @@
     // TypeScript-specific rules (tsgolint backend type-aware execution)
     "typescript/no-floating-promises": "error",
     "typescript/no-misused-promises": "error"
-  },
+  }
 }

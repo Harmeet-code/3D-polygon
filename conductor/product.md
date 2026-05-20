@@ -21,7 +21,7 @@ A web-based interactive 3D floor plan viewer that enables event organizers, exhi
 3. **Search & Filter:** Filter booths by availability status (Available / Hold / Booked) or search by booth number or company name.
 4. **Interactive Selection:** Click any booth to see its number, company, size, price, and status in the sidebar.
 5. **Camera Controls:** Orbit (drag rotate), zoom (wheel), pan (Shift+drag), plus isometric / top / reset presets and auto tour.
-6. **Route Finder:** A* pathfinding between two booths with animated glow and marching walking dots visualization.
+6. **Route Finder:** A\* pathfinding between two booths with animated glow and marching walking dots visualization.
 7. **Heatmap:** Color-coded price overlay on booths to identify cost patterns across the floor.
 8. **Night Lighting:** Toggle ambient/night lighting mode for presentation variety.
 9. **YouTube Integration:** Embedded video player per booth for virtual booth previews.
