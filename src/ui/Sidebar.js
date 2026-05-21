@@ -43,7 +43,9 @@ export function updateSidebar(b) {
 }
 
 export function highlight(mesh, on) {
-  if (!mesh) {return;}
+  if (!mesh) {
+    return;
+  }
   if (on) {
     mesh.material.emissive = new THREE.Color(0x6aa9ff).multiplyScalar(0.65);
     mesh.scale.set(1.05, 1.02, 1.05);
@@ -73,7 +75,9 @@ export function flyTo(targetPos, targetLook, ms = 900) {
     camera.position.lerpVectors(startPos, targetPos, e);
     controls.target.lerpVectors(startTarget, targetLook, e);
     controls.update();
-    if (t < 1) {requestAnimationFrame(step);}
+    if (t < 1) {
+      requestAnimationFrame(step);
+    }
   }
   requestAnimationFrame(step);
 }
@@ -84,5 +88,7 @@ export function focusMesh(mesh) {
 }
 
 focusBtn.addEventListener('click', () => {
-  if (sel.selected) {focusMesh(sel.selected);}
+  if (sel.selected) {
+    focusMesh(sel.selected);
+  }
 });

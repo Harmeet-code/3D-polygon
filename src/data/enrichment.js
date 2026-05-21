@@ -11,8 +11,12 @@ function hashStr(s) {
 
 function demoStatus(no) {
   const r = hashStr(no) % 100;
-  if (r < 68) {return 'AVAILABLE';}
-  if (r < 84) {return 'HOLD';}
+  if (r < 68) {
+    return 'AVAILABLE';
+  }
+  if (r < 84) {
+    return 'HOLD';
+  }
   return 'BOOKED';
 }
 
@@ -41,10 +45,7 @@ export function enrichData(data) {
     b.price = b.price ?? demoPrice(b.boothNo);
     b.size = b.size || '10x10';
   }
-  data.meta.roads = data.meta.roads || [];
-  for (const r of data.meta.roads) {
-    r.width = r.width ?? 200;
-  }
+  data.meta.walkableZones = data.meta.walkableZones || [];
   data.meta.stairs = data.meta.stairs || [];
   for (const s of data.meta.stairs) {
     s.label = s.label || s.id;

@@ -72,7 +72,9 @@ export async function sendMacOSAlerterNotification(
     const process = spawnProcess([alerterPath, ...alerterArguments.slice(1)]);
     const exitCode = await process.exited;
 
-    if (exitCode === 0) {return true;}
+    if (exitCode === 0) {
+      return true;
+    }
 
     warn(`notify: macOS desktop notification skipped; alerter exited with code ${exitCode}.`);
     return false;
@@ -105,7 +107,9 @@ export async function sendNotificationWithFallback(options: NotifyBackendOptions
 
   try {
     const sentViaCmux = await options.tryCmuxNotify();
-    if (sentViaCmux) {return;}
+    if (sentViaCmux) {
+      return;
+    }
   } catch {
     // Fall through to desktop notification fallback
   }

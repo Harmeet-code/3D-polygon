@@ -332,7 +332,9 @@ export function buildPoiMarkers(data) {
   // Stair markers
   const stairs = data.meta.stairs || [];
   for (const s of stairs) {
-    if (!s.position) {continue;}
+    if (!s.position) {
+      continue;
+    }
     const { px, py } = fabricToPixel(s.position.x, s.position.y);
     const { x, z } = pxToWorld(px, py);
 
@@ -348,7 +350,9 @@ export function buildPoiMarkers(data) {
   // Entrance markers
   const entrances = data.meta.entrances || [];
   for (const e of entrances) {
-    if (!e.position) {continue;}
+    if (!e.position) {
+      continue;
+    }
     const { px, py } = fabricToPixel(e.position.x, e.position.y);
     const { x, z } = pxToWorld(px, py);
 
@@ -356,7 +360,7 @@ export function buildPoiMarkers(data) {
     hitBox.userData.poiType = 'entrance';
     hitBox.userData.poiId = e.id;
     hitBox.userData.poiLabel = e.label || e.id;
-    hitBox.userData.poiInfo = `Entrance: ${e.label || e.id}${e.description ? ` | ${  e.description}` : ''}`;
+    hitBox.userData.poiInfo = `Entrance: ${e.label || e.id}${e.description ? ` | ${e.description}` : ''}`;
     poiMeshes.push(hitBox);
     poiGroup.add(group);
   }
@@ -369,8 +373,12 @@ export function clearPoiMarkers() {
   if (poiGroup) {
     scene.remove(poiGroup);
     poiGroup.traverse((/** @type {any} */ c) => {
-      if (c.geometry) {c.geometry.dispose();}
-      if (c.material) {c.material.dispose();}
+      if (c.geometry) {
+        c.geometry.dispose();
+      }
+      if (c.material) {
+        c.material.dispose();
+      }
     });
     poiGroup = null;
   }
@@ -385,7 +393,9 @@ let routeStairRing = null;
 export function highlightRouteStair(stairId, data) {
   clearRouteStairHighlight();
   const stair = (data.meta.stairs || []).find((/** @type {{id:string}} */ s) => s.id === stairId);
-  if (!stair || !stair.position) {return;}
+  if (!stair || !stair.position) {
+    return;
+  }
   const { px, py } = fabricToPixel(stair.position.x, stair.position.y);
   const { x, z } = pxToWorld(px, py);
 
@@ -416,7 +426,9 @@ export function clearRouteStairHighlight() {
 
 /** Animate pulsing ring (call from render loop). */
 export function updateRouteStairPulse() {
-  if (!routeStairRing) {return;}
+  if (!routeStairRing) {
+    return;
+  }
   const t = performance.now() * 0.003;
   const scale = 1 + 0.2 * Math.sin(t);
   routeStairRing.scale.set(scale, scale, 1);
@@ -430,7 +442,9 @@ export function handlePoiClick(intersects) {
     const obj = hit.object;
     if (obj.userData.poiType) {
       const info = obj.userData.poiInfo;
-      if (info) {alert(info);}
+      if (info) {
+        alert(info);
+      }
       const pos = obj.position;
       flyTo(new THREE.Vector3(pos.x + 15, 15, pos.z + 15), pos.clone(), 600);
       return true;

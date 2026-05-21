@@ -5,8 +5,8 @@ import { fabricToPixel, pxToWorld, worldToPx, pixelToFabric } from './CoordTrans
 /** @type {THREE.Group | null} */
 let zoneGroup = null;
 
-const COLOR_FINAL = 0x888888;
-const OPACITY_FINAL = 0.15;
+const COLOR_FINAL = 0x444444;
+const OPACITY_FINAL = 0.5;
 const COLOR_PROPOSED = 0x44aaff;
 const OPACITY_PROPOSED = 0.25;
 
@@ -176,11 +176,10 @@ export function buildZoneOverlay(data) {
 
   clearZoneOverlay();
   zoneGroup = new THREE.Group();
-  zoneGroup.renderOrder = 4;
+  zoneGroup.renderOrder = 20;
 
   for (const z of zones) {
     if (z.type === 'rect') {
-      // Convert fabric coords to world coords for rendering
       const p1 = fabricToPixel(z.x, z.y);
       const p2 = fabricToPixel(z.x + z.w, z.y + z.h);
       const w1 = pxToWorld(p1.px, p1.py);

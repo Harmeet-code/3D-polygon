@@ -5,7 +5,9 @@ import { fabricToPixel, pxToWorld } from './CoordTransform.js';
 export const STATUS_COLORS = { AVAILABLE: 0x2ecc71, HOLD: 0xffb020, BOOKED: 0xff5c6a };
 
 function boothColorFromData(b) {
-  if (b.boothColor) {return parseInt(b.boothColor.slice(1), 16);}
+  if (b.boothColor) {
+    return parseInt(b.boothColor.slice(1), 16);
+  }
   return STATUS_COLORS[b.status] ?? STATUS_COLORS.AVAILABLE;
 }
 
@@ -84,10 +86,14 @@ function createSurfaceLabel(boothNo, size, _color) {
 export function clearGroup(g) {
   while (g.children.length) {
     const o = g.children.pop();
-    if (o.children && o.children.length) {clearGroup(o);}
+    if (o.children && o.children.length) {
+      clearGroup(o);
+    }
     o.geometry?.dispose?.();
     if (o.material) {
-      if (o.material.map) {o.material.map.dispose();}
+      if (o.material.map) {
+        o.material.map.dispose();
+      }
       o.material.dispose();
     }
   }
@@ -129,8 +135,12 @@ export function buildBooths(data, heatEnabled) {
       return new THREE.Vector2(w.x, w.z);
     });
 
-    if (pts2.length < 3) {continue;}
-    if (polygonArea(pts2) < 0) {pts2.reverse();}
+    if (pts2.length < 3) {
+      continue;
+    }
+    if (polygonArea(pts2) < 0) {
+      pts2.reverse();
+    }
 
     const shape = new THREE.Shape(pts2);
     const h = b.status === 'BOOKED' ? 2.0 : b.status === 'HOLD' ? 1.6 : 1.2;

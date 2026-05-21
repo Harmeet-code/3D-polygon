@@ -34,7 +34,7 @@ import { enrichData } from './data/enrichment.js';
 import { initConsoleTools } from './debug/ConsoleTools.js';
 import { initCoordDebug, clearOverlay } from './ui/CoordDebug.js';
 import { buildStairMap, stairToWorldPos } from './scene/StairMap.js';
-import { multiFloorAStar } from './scene/MultiFloorRoute.js';
+import { multiFloorAStar, clearGridCache } from './scene/MultiFloorRoute.js';
 import { buildZoneOverlay, clearZoneOverlay } from './scene/ZoneOverlay.js';
 import {
   buildPoiMarkers,
@@ -72,6 +72,7 @@ import {
   rebuildCostGrid,
   updateRouteAnimation,
   initGrid,
+  isCellBlocked,
 } from './scene/AStarRoute.js';
 
 // Boot
@@ -83,7 +84,7 @@ let currentFloor = null;
 let currentData = null;
 /** @type {Record<string, any>} */
 const floorDataMap = {};
-/** @type {Record<string, string>} */
+/** @type {Record<string, string[]>} */
 const boothToFloor = {};
 /** @type {{ segments: Array<{floorName:string,worldPoints:Array<{x:number,z:number}>}>, stairUsed: string|null } | null} */
 let multiFloorRouteSeg = null;
@@ -136,13 +137,43 @@ buildStairMap(floors);
       enrichData(data);
       floorDataMap[name] = data;
       for (const b of data.booths) {
-        boothToFloor[b.boothNo] = name;
+        let floors = boothToFloor[b.boothNo];
+        if (!floors) {
+          floors = [];
+          boothToFloor[b.boothNo] = floors;
+        }
+        if (!floors.includes(name)) {
+          floors.push(name);
+        }
       }
     } catch (e) {
       console.warn(`Failed to pre-fetch floor "${name}"`, e);
     }
   }
+  console.log(
+    `[BoothMap] Pre-fetch complete: ${Object.keys(boothToFloor).length} booths mapped across ${floors.length} floors`,
+  );
 })();
+
+/** @type {{ fromNo: string; toNo: string } | null} */
+let pendingRoute = null;
+
+/**
+ * Resolve the best floor for a booth number.
+ * Prefers currentFloor if the booth exists there, otherwise first mapped floor.
+ * @param {string} boothNo
+ * @returns {string | null}
+ */
+function resolveBoothFloor(boothNo) {
+  const floors = boothToFloor[boothNo];
+  if (!floors || floors.length === 0) {
+    return null;
+  }
+  if (currentFloor && floors.includes(currentFloor)) {
+    return currentFloor;
+  }
+  return floors[0] ?? null;
+}
 
 // Load first floor
 loadFloor(floors[0]);
@@ -193,6 +224,7 @@ async function loadFloor(name, transitionStair) {
       document.getElementById('heatmap')
     ).checked;
     buildBooths(data, heatEnabled);
+    clearGridCache();
     rebuildCostGrid(data);
     buildZoneOverlay(data);
     buildPoiMarkers(data);
@@ -200,7 +232,6 @@ async function loadFloor(name, transitionStair) {
 
     // Reset selection + cancel editors
     poiCancel();
-    zoneCancel();
     document.querySelectorAll('[data-poi-mode]').forEach((c) => c.classList.remove('active'));
     document.querySelectorAll('[data-zone-mode]').forEach((c) => c.classList.remove('active'));
     if (sel.selected) {
@@ -240,6 +271,14 @@ async function loadFloor(name, transitionStair) {
     initConsoleTools(data);
 
     console.log(`Switched to ${name} (${data.booths.length} booths)`);
+
+    // Execute pending route request
+    if (pendingRoute) {
+      const { fromNo, toNo } = pendingRoute;
+      pendingRoute = null;
+      console.log(`[Routing] executing pending route: ${fromNo} → ${toNo} on ${name}`);
+      computeRoute(fromNo, toNo);
+    }
   } catch (err) {
     console.error(`Failed to load floor "${name}":`, err);
     if (activeTab) {
@@ -303,40 +342,83 @@ function onCalChange() {
 });
 
 // Routing
-/** @type {HTMLElement} */ (document.getElementById('routeBtn')).addEventListener('click', () => {
+function computeRoute(fromNo, toNo) {
   clearRoute();
   clearRouteStairHighlight();
   multiFloorRouteSeg = null;
-  const fromNo = fromInput.value;
-  const toNo = toInput.value;
-  if (!fromNo || !toNo) {
-    return;
-  }
-
-  const fromFloor = boothToFloor[fromNo];
-  const toFloor = boothToFloor[toNo];
+  const fromFloor = resolveBoothFloor(fromNo);
+  const toFloor = resolveBoothFloor(toNo);
+  console.log(`[computeRoute] fromNo=${fromNo} → floor="${fromFloor}"`);
+  console.log(`[computeRoute] toNo=${toNo} → floor="${toFloor}"`);
+  console.log(`[computeRoute] currentFloor="${currentFloor}"`);
   if (!fromFloor || !toFloor) {
     alert('Booth not found on any floor.');
     return;
   }
 
-  if (fromFloor === currentFloor && toFloor === currentFloor) {
-    // Single-floor route (existing behavior)
-    const from = boothCenterWorld(fromNo);
-    const to = boothCenterWorld(toNo);
-    const s = findNearestFree(worldToCell(from.x, from.z));
-    const t = findNearestFree(worldToCell(to.x, to.z));
-    const path = aStar(s, t);
-    if (!path) {
-      alert('No route found. Try other booths or increase CELL size.');
+  if (fromFloor === toFloor) {
+    // Single-floor route — ensure we're on the right floor
+    if (fromFloor !== currentFloor) {
+      console.log('[computeRoute] switching to floor', fromFloor, 'for single-floor route');
+      pendingRoute = { fromNo, toNo };
+      loadFloor(fromFloor);
       return;
     }
-    const wp = [
-      { x: from.x, z: from.z },
-      ...path.map((p) => cellToWorld(p.r, p.c)),
-      { x: to.x, z: to.z },
-    ];
-    drawRoute(wp);
+    console.log('[computeRoute] single-floor route on', fromFloor);
+    const from = boothCenterWorld(fromNo);
+    const to = boothCenterWorld(toNo);
+    console.log(`[computeRoute] from world=(${from.x.toFixed(1)}, ${from.z.toFixed(1)})`);
+    console.log(`[computeRoute] to world=(${to.x.toFixed(1)}, ${to.z.toFixed(1)})`);
+    const fromCell = worldToCell(from.x, from.z);
+    const toCell = worldToCell(to.x, to.z);
+    console.log(
+      `[computeRoute] from cell (${fromCell.r},${fromCell.c}), to cell (${toCell.r},${toCell.c})`,
+    );
+    console.log(
+      `[computeRoute] from cell blocked=${isCellBlocked(from.x, from.z)}, to cell blocked=${isCellBlocked(to.x, to.z)}`,
+    );
+    const s = findNearestFree(fromCell);
+    const t = findNearestFree(toCell);
+    console.log(`[computeRoute] start cell (${s.r},${s.c}), goal cell (${t.r},${t.c})`);
+    console.log(
+      `[computeRoute] start cell blocked=${isCellBlocked(cellToWorld(s.r, s.c).x, cellToWorld(s.r, s.c).z)}, goal cell blocked=${isCellBlocked(cellToWorld(t.r, t.c).x, cellToWorld(t.r, t.c).z)}`,
+    );
+    const path = aStar(s, t);
+    if (!path) {
+      console.log('[computeRoute] no path found — grid may have no walkable connection');
+      alert('No route found. Check that walkable zones connect these booths.');
+      return;
+    }
+    console.log(`[computeRoute] path found: ${path.length} cells`);
+
+    // Validate path doesn't go through blocked cells
+    let blockedCount = 0;
+    const blockedCells = [];
+    for (const p of path) {
+      const w = cellToWorld(p.r, p.c);
+      if (isCellBlocked(w.x, w.z)) {
+        blockedCount++;
+        blockedCells.push(`(${p.r},${p.c})`);
+      }
+    }
+    if (blockedCount > 0) {
+      console.warn(
+        `[computeRoute] WARNING: ${blockedCount}/${path.length} path cells are blocked!`,
+      );
+      console.warn(
+        `[computeRoute] Blocked cells: ${blockedCells.slice(0, 20).join(', ')}${blockedCells.length > 20 ? '...' : ''}`,
+      );
+    } else {
+      console.log(`[computeRoute] Path validation: all ${path.length} cells are walkable`);
+    }
+
+    const wp = path.map((p) => cellToWorld(p.r, p.c));
+    drawRoute(wp, {
+      start: from,
+      end: to,
+      startLabel: fromNo,
+      endLabel: toNo,
+    });
     multiFloorRouteSeg = null;
     const start = new THREE.Vector3(from.x, 0.1, from.z);
     flyTo(start.clone().add(new THREE.Vector3(30, 30, 34)), start.clone(), 900);
@@ -345,6 +427,7 @@ function onCalChange() {
   }
 
   // Cross-floor route
+  console.log('[computeRoute] cross-floor route:', fromFloor, '→', toFloor);
   clearRoute();
   const result = multiFloorAStar(fromFloor, fromNo, toFloor, toNo, floorDataMap);
   if (!result) {
@@ -371,6 +454,15 @@ function onCalChange() {
     // Switch to start floor
     loadFloor(fromFloor);
   }
+}
+
+/** @type {HTMLElement} */ (document.getElementById('routeBtn')).addEventListener('click', () => {
+  const fromNo = fromInput.value;
+  const toNo = toInput.value;
+  if (!fromNo || !toNo) {
+    return;
+  }
+  computeRoute(fromNo, toNo);
 });
 
 /** @type {HTMLElement} */ (document.getElementById('clearRouteBtn')).addEventListener(

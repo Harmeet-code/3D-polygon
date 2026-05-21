@@ -74,8 +74,11 @@ function updateAspectInfo() {
     `Img ${IMG_W}×${IMG_H} (${imgAspect.toFixed(3)}) · ` +
     `Fab ${fw.toFixed(0)}×${fh.toFixed(0)} (${fabAspect.toFixed(3)}) · ` +
     `Scale ratio ${ratio.toFixed(4)}${diffPct >= 1 ? ` · ⚠ ${diffPct.toFixed(1)}% mismatch` : ''}`;
-  if (cls === 'err') {debugAspect.style.color = '#ffb020';}
-  else {debugAspect.style.color = '';}
+  if (cls === 'err') {
+    debugAspect.style.color = '#ffb020';
+  } else {
+    debugAspect.style.color = '';
+  }
 }
 
 // ── table ────────────────────────────────────────────────────
@@ -157,7 +160,9 @@ export function clearOverlay() {
 
 function buildOverlay(b, corners) {
   clearOverlay();
-  if (!debugOverlayToggle.checked) {return;}
+  if (!debugOverlayToggle.checked) {
+    return;
+  }
 
   const pts2 = corners.map((c) => new THREE.Vector2(c.world.x, c.world.z));
   const h = getHeight(b);
@@ -180,7 +185,9 @@ function buildOverlay(b, corners) {
   });
 
   // origin crosshair
-  if (debugShowOrigin.checked) {buildOriginCrosshair();}
+  if (debugShowOrigin.checked) {
+    buildOriginCrosshair();
+  }
 }
 
 function buildOriginCrosshair() {
@@ -235,7 +242,9 @@ function onWorldEdit() {
   for (const row of rows) {
     const wx = parseFloat(/** @type {HTMLInputElement} */ (row.querySelector('.wxInput')).value);
     const wz = parseFloat(/** @type {HTMLInputElement} */ (row.querySelector('.wzInput')).value);
-    if (!isFinite(wx) || !isFinite(wz)) {return;}
+    if (!isFinite(wx) || !isFinite(wz)) {
+      return;
+    }
 
     const pixel = worldToPx(wx, wz);
     const fabric = pixelToFabric(pixel.px, pixel.py);
@@ -260,7 +269,9 @@ function onWorldEdit() {
 
   if (debugOverlayToggle.checked) {
     const b = _data.booths.find((x) => x.boothNo === debugSelect.value);
-    if (b) {buildOverlay(b, corners);}
+    if (b) {
+      buildOverlay(b, corners);
+    }
   }
 }
 
@@ -270,7 +281,9 @@ function currentFabricPoints() {
   for (const row of rows) {
     const wx = parseFloat(/** @type {HTMLInputElement} */ (row.querySelector('.wxInput')).value);
     const wz = parseFloat(/** @type {HTMLInputElement} */ (row.querySelector('.wzInput')).value);
-    if (!isFinite(wx) || !isFinite(wz)) {return null;}
+    if (!isFinite(wx) || !isFinite(wz)) {
+      return null;
+    }
     const pixel = worldToPx(wx, wz);
     const fabric = pixelToFabric(pixel.px, pixel.py);
     pts.push([fabric.x, fabric.y]);
@@ -280,11 +293,17 @@ function currentFabricPoints() {
 
 function onApply() {
   const boothNo = debugSelect.value;
-  if (!boothNo) {return;}
+  if (!boothNo) {
+    return;
+  }
   const b = _data.booths.find((x) => x.boothNo === boothNo);
-  if (!b) {return;}
+  if (!b) {
+    return;
+  }
   const pts = currentFabricPoints();
-  if (!pts || pts.length < 3) {return;}
+  if (!pts || pts.length < 3) {
+    return;
+  }
   b.geometry.points = pts;
   const heat = /** @type {HTMLInputElement} */ (document.getElementById('heatmap')).checked;
   buildBooths(_data, heat);
@@ -293,7 +312,9 @@ function onApply() {
 
 function onCopyJson() {
   const pts = currentFabricPoints();
-  if (!pts) {return;}
+  if (!pts) {
+    return;
+  }
   navigator.clipboard.writeText(JSON.stringify(pts, null, 2));
 }
 
@@ -329,17 +350,25 @@ function onBoothSelect() {
   const corners = computeCornerData(b);
   renderTable(corners);
 
-  if (debugOverlayToggle.checked) {buildOverlay(b, corners);}
-  else {clearOverlay();}
+  if (debugOverlayToggle.checked) {
+    buildOverlay(b, corners);
+  } else {
+    clearOverlay();
+  }
 }
 
 function onOverlayToggle() {
-  if (debugSelect.value) {onBoothSelect();}
-  else {clearOverlay();}
+  if (debugSelect.value) {
+    onBoothSelect();
+  } else {
+    clearOverlay();
+  }
 }
 
 function onShowOriginToggle() {
-  if (debugSelect.value) {onBoothSelect();}
+  if (debugSelect.value) {
+    onBoothSelect();
+  }
 }
 
 // ── init ──────────────────────────────────────────────────────
@@ -350,7 +379,9 @@ export function initCoordDebug(data) {
   scene.add(debugOverlayGroup);
   reloadCoordDebug(data);
 
-  if (_initDone) {return;}
+  if (_initDone) {
+    return;
+  }
   _initDone = true;
 
   debugSelect.addEventListener('change', onBoothSelect);
@@ -360,14 +391,19 @@ export function initCoordDebug(data) {
   debugCopyJson.addEventListener('click', onCopyJson);
   debugRef.addEventListener('click', () => {
     if (debugSelect.value) {
-      if (_refBooth === debugSelect.value) {_refBooth = null;}
-      else {_refBooth = debugSelect.value;}
+      if (_refBooth === debugSelect.value) {
+        _refBooth = null;
+      } else {
+        _refBooth = debugSelect.value;
+      }
       onBoothSelect();
     }
   });
 
   const onCalInput = () => {
-    if (debugSelect.value) {onBoothSelect();}
+    if (debugSelect.value) {
+      onBoothSelect();
+    }
   };
   [offXEl, offYEl, scXEl, scYEl].forEach((el) => el.addEventListener('input', onCalInput));
 }

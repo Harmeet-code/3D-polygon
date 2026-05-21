@@ -1,17 +1,173 @@
 import { fabricToPixel, pxToWorld } from './CoordTransform.js';
 import { worldToCell, cellToWorld } from './AStarRoute.js';
 import { findConnectingStairs, stairToWorldPos } from './StairMap.js';
-import { PLANE_W, PLANE_H } from './SceneSetup.js';
+import { IMG_W, PLANE_W, PLANE_H } from './SceneSetup.js';
 
 const INF = Infinity;
-const CELL = 1.2;
-const MARGIN = 0.8;
+const CELL = 0.2;
+const MIN_ROUTE_WIDTH_OFFSET_PX = 33;
 
 /** @type {Record<string, { costGrid: Float32Array, cols: number, rows: number }>} */
 const gridCache = {};
 
-/** Mark all cells inside a rect zone as walkable (1.0). */
-function rasterizeRectZone(zone, costGrid, cols, rows, halfW, halfH) {
+function fabricPointToBoothWorld(x, y) {
+  const { px, py } = fabricToPixel(x, y);
+  const w = pxToWorld(px, py);
+  return { x: w.x, z: -w.z };
+}
+
+function routeClearanceWorld() {
+  return (MIN_ROUTE_WIDTH_OFFSET_PX / 2) * (PLANE_W / IMG_W);
+}
+
+/** Clear the grid cache (call when floor data changes). */
+export function clearGridCache() {
+  for (const key of Object.keys(gridCache)) {
+    delete gridCache[key];
+  }
+}
+
+/** Build + cache cost grid for a floor using booth blocking + optional zone restriction. */
+function cacheFloorGrid(floorName, data) {
+  const halfW = PLANE_W / 2;
+  const halfH = PLANE_H / 2;
+  const c = Math.ceil(PLANE_W / CELL);
+  const r = Math.ceil(PLANE_H / CELL);
+
+  // Start with all cells walkable
+  const costGrid = new Float32Array(r * c).fill(1.0);
+
+  // Pass 1: Block booth cells using actual polygon geometry
+  const blockedSet = new Set();
+  for (const b of data.booths) {
+    const geo = b.geometry;
+    if (!geo || !geo.points || geo.points.length < 3) {
+      continue;
+    }
+
+    const pts = geo.points.map((/** @type {number[]} */ fp) =>
+      fabricPointToBoothWorld(fp[0], fp[1]),
+    );
+
+    const toCell = (x, z) => ({
+      c: Math.floor((x + halfW) / CELL),
+      r: Math.floor((halfH - z) / CELL),
+    });
+    const cellCenter = (rr, cc) => ({
+      x: (cc + 0.5) * CELL - halfW,
+      z: halfH - (rr + 0.5) * CELL,
+    });
+
+    let minR = r - 1,
+      maxR = 0,
+      minC = c - 1,
+      maxC = 0;
+    for (const p of pts) {
+      const cell = toCell(p.x, p.z);
+      if (cell.r < minR) {
+        minR = cell.r;
+      }
+      if (cell.r > maxR) {
+        maxR = cell.r;
+      }
+      if (cell.c < minC) {
+        minC = cell.c;
+      }
+      if (cell.c > maxC) {
+        maxC = cell.c;
+      }
+    }
+    minR = Math.max(0, minR);
+    maxR = Math.min(r - 1, maxR);
+    minC = Math.max(0, minC);
+    maxC = Math.min(c - 1, maxC);
+
+    const n = pts.length;
+    for (let rr = minR; rr <= maxR; rr++) {
+      const y = cellCenter(rr, 0).z;
+      const intersections = [];
+      for (let i = 0; i < n; i++) {
+        const p1 = pts[i];
+        const p2 = pts[(i + 1) % n];
+        if (p1.z > y !== p2.z > y) {
+          const t = (y - p1.z) / (p2.z - p1.z);
+          intersections.push(p1.x + t * (p2.x - p1.x));
+        }
+      }
+      intersections.sort((a, b) => a - b);
+      for (let i = 0; i < intersections.length - 1; i += 2) {
+        const left = intersections[i];
+        const right = intersections[i + 1];
+        const cLeft = toCell(left, y).c;
+        const cRight = toCell(right, y).c;
+        const c0 = Math.max(minC, Math.min(cLeft, cRight));
+        const c1 = Math.min(maxC, Math.max(cLeft, cRight));
+        for (let cc = c0; cc <= c1; cc++) {
+          const key = `${rr},${cc}`;
+          if (!blockedSet.has(key)) {
+            blockedSet.add(key);
+            costGrid[rr * c + cc] = INF;
+          }
+        }
+      }
+    }
+  }
+
+  // Inflate obstacles by half the minimum corridor width.
+  const marginCells = Math.ceil(routeClearanceWorld() / CELL);
+  const blockedCells = Array.from(blockedSet).map((k) => {
+    const parts = k.split(',');
+    return { r: Number(parts[0]), c: Number(parts[1]) };
+  });
+  for (const { r: rr, c: cc } of blockedCells) {
+    for (let dr = -marginCells; dr <= marginCells; dr++) {
+      for (let dc = -marginCells; dc <= marginCells; dc++) {
+        const nr = rr + dr;
+        const nc = cc + dc;
+        if (nr >= 0 && nc >= 0 && nr < r && nc < c) {
+          costGrid[nr * c + nc] = INF;
+        }
+      }
+    }
+  }
+
+  // Pass 2: If walkable zones defined, restrict to zones only
+  const zones = data.meta.walkableZones || [];
+  if (zones.length > 0) {
+    const zoneMask = new Uint8Array(r * c);
+    for (const zone of zones) {
+      if (zone.type === 'rect') {
+        rasterizeRectZoneMask(zone, zoneMask, c, r, halfW, halfH);
+      } else if (zone.type === 'polygon') {
+        rasterizePolygonZoneMask(zone, zoneMask, c, r, halfW, halfH);
+      }
+    }
+    for (let i = 0; i < costGrid.length; i++) {
+      if (zoneMask[i] === 0) {
+        costGrid[i] = INF;
+      }
+    }
+  }
+
+  // Debug count
+  let walkable = 0;
+  let blocked = 0;
+  for (let i = 0; i < costGrid.length; i++) {
+    if (costGrid[i] === INF) {
+      blocked++;
+    } else {
+      walkable++;
+    }
+  }
+  console.log(
+    `[MultiFloorRoute] Grid for ${floorName}: ${r}x${c}, walkable=${walkable}, blocked=${blocked}`,
+  );
+
+  gridCache[floorName] = { costGrid, cols: c, rows: r };
+}
+
+/** Mark all cells inside a rect zone as covered in mask. */
+function rasterizeRectZoneMask(zone, mask, cols, rows, halfW, halfH) {
   const { x: fx, y: fy, w: fw, h: fh } = zone;
   const p1 = fabricToPixel(fx, fy);
   const p2 = fabricToPixel(fx + fw, fy + fh);
@@ -38,13 +194,13 @@ function rasterizeRectZone(zone, costGrid, cols, rows, halfW, halfH) {
 
   for (let r = r0; r <= r1; r++) {
     for (let c = c0; c <= c1; c++) {
-      costGrid[r * cols + c] = 1.0;
+      mask[r * cols + c] = 1;
     }
   }
 }
 
-/** Mark all cells inside a polygon zone as walkable using scanline fill. */
-function rasterizePolygonZone(zone, costGrid, cols, rows, halfW, halfH) {
+/** Mark all cells inside a polygon zone as covered in mask using scanline fill. */
+function rasterizePolygonZoneMask(zone, mask, cols, rows, halfW, halfH) {
   const pts = zone.points.map((/** @type {number[]} */ fp) => {
     const { px, py } = fabricToPixel(fp[0], fp[1]);
     return pxToWorld(px, py);
@@ -57,9 +213,9 @@ function rasterizePolygonZone(zone, costGrid, cols, rows, halfW, halfH) {
     c: Math.floor((x + halfW) / CELL),
     r: Math.floor((halfH - z) / CELL),
   });
-  const cellCenter = (r, c) => ({
-    x: (c + 0.5) * CELL - halfW,
-    z: halfH - (r + 0.5) * CELL,
+  const cellCenter = (rr, cc) => ({
+    x: (cc + 0.5) * CELL - halfW,
+    z: halfH - (rr + 0.5) * CELL,
   });
 
   let minR = rows - 1,
@@ -107,79 +263,17 @@ function rasterizePolygonZone(zone, costGrid, cols, rows, halfW, halfH) {
       const c0 = Math.max(minC, Math.min(cLeft, cRight));
       const c1 = Math.min(maxC, Math.max(cLeft, cRight));
       for (let c = c0; c <= c1; c++) {
-        costGrid[r * cols + c] = 1.0;
+        mask[r * cols + c] = 1;
       }
     }
   }
-}
-
-/** Build + cache cost grid for a floor using zone rasterization + fabricBBox blocking. */
-function cacheFloorGrid(floorName, data) {
-  const halfW = PLANE_W / 2;
-  const halfH = PLANE_H / 2;
-  const c = Math.ceil(PLANE_W / CELL);
-  const r = Math.ceil(PLANE_H / CELL);
-
-  const costGrid = new Float32Array(r * c).fill(INF);
-
-  // Pass 1: Mark walkable zones as free
-  const zones = data.meta.walkableZones || [];
-  for (const zone of zones) {
-    if (zone.type === 'rect') {
-      rasterizeRectZone(zone, costGrid, c, r, halfW, halfH);
-    } else if (zone.type === 'polygon') {
-      rasterizePolygonZone(zone, costGrid, c, r, halfW, halfH);
-    }
-  }
-
-  // Pass 2: Re-block booth cells using fabricBBox
-  for (const b of data.booths) {
-    const bb = b.fabricBBox;
-    if (!bb) {
-      continue;
-    }
-
-    const xMin = bb.x - MARGIN;
-    const xMax = bb.x + bb.w + MARGIN;
-    const yMin = bb.y - MARGIN;
-    const yMax = bb.y + bb.h + MARGIN;
-
-    const p1 = fabricToPixel(xMin, yMin);
-    const p2 = fabricToPixel(xMax, yMax);
-    const w1 = pxToWorld(p1.px, p1.py);
-    const w2 = pxToWorld(p2.px, p2.py);
-
-    const minX = Math.min(w1.x, w2.x);
-    const maxX = Math.max(w1.x, w2.x);
-    const minZ = Math.min(w1.z, w2.z);
-    const maxZ = Math.max(w1.z, w2.z);
-
-    const toCell = (x, z) => ({
-      c: Math.floor((x + halfW) / CELL),
-      r: Math.floor((halfH - z) / CELL),
-    });
-
-    const a = toCell(minX, maxZ);
-    const b2 = toCell(maxX, minZ);
-
-    const r0 = Math.max(0, Math.min(a.r, b2.r));
-    const r1 = Math.min(r - 1, Math.max(a.r, b2.r));
-    const c0 = Math.max(0, Math.min(a.c, b2.c));
-    const c1 = Math.min(c - 1, Math.max(a.c, b2.c));
-
-    for (let rr = r0; rr <= r1; rr++) {
-      for (let cc = c0; cc <= c1; cc++) {
-        costGrid[rr * c + cc] = INF;
-      }
-    }
-  }
-
-  gridCache[floorName] = { costGrid, cols: c, rows: r };
 }
 
 /** Inline A* that works on any cost grid. */
 function aStarOnGrid(costGrid, cols, rows, start, goal) {
   const idx = (rr, cc) => rr * cols + cc;
+  const isFreeCell = (rr, cc) =>
+    rr >= 0 && cc >= 0 && rr < rows && cc < cols && costGrid[idx(rr, cc)] !== INF;
 
   // Binary min-heap
   const heap = [];
@@ -275,6 +369,9 @@ function aStarOnGrid(costGrid, cols, rows, start, goal) {
       if (costGrid[ni] === INF) {
         continue;
       }
+      if (d.dr !== 0 && d.dc !== 0 && (!isFreeCell(cur.r, nc) || !isFreeCell(nr, cur.c))) {
+        continue;
+      }
       const ng = /** @type {number} */ (g[cur.i]) + d.cost;
       if (ng < /** @type {number} */ (g[ni])) {
         g[ni] = ng;
@@ -342,8 +439,7 @@ export function multiFloorAStar(startFloor, startBoothNo, endFloor, endBoothNo, 
   }
 
   const toCell = (fx, fy) => {
-    const { px, py } = fabricToPixel(fx, fy);
-    const { x, z } = pxToWorld(px, py);
+    const { x, z } = fabricPointToBoothWorld(fx, fy);
     return worldToCell(x, z);
   };
 

@@ -217,10 +217,14 @@ function getFloorPosition(event) {
   raycaster.setFromCamera(mouseVec, camera);
   const pt = new THREE.Vector3();
   const hit = raycaster.ray.intersectPlane(floorPlane, pt);
-  if (!hit) {return null;}
+  if (!hit) {
+    return null;
+  }
   const halfW = PLANE_W / 2;
   const halfH = PLANE_H / 2;
-  if (pt.x < -halfW || pt.x > halfW || pt.z < -halfH || pt.z > halfH) {return null;}
+  if (pt.x < -halfW || pt.x > halfW || pt.z < -halfH || pt.z > halfH) {
+    return null;
+  }
   return pt;
 }
 
@@ -228,12 +232,18 @@ function rebuildGhost() {
   if (ghostGroup) {
     scene.remove(ghostGroup);
     ghostGroup.traverse((/** @type {any} */ c) => {
-      if (c.geometry) {c.geometry.dispose();}
-      if (c.material) {c.material.dispose();}
+      if (c.geometry) {
+        c.geometry.dispose();
+      }
+      if (c.material) {
+        c.material.dispose();
+      }
     });
     ghostGroup = null;
   }
-  if (!mode || !ghostWorldPos) {return;}
+  if (!mode || !ghostWorldPos) {
+    return;
+  }
   const buildFn = mode === 'add-stair' ? buildGhostStair : buildGhostEntrance;
   ghostGroup = buildFn(ghostRotationDeg);
   ghostGroup.position.set(ghostWorldPos.x, 0, ghostWorldPos.z);
@@ -280,7 +290,9 @@ export function setRotation(deg) {
 export function applyPlacement() {
   const data = currentDataFn ? currentDataFn() : null;
   const floorName = currentFloorFn ? currentFloorFn() : null;
-  if (!data || !floorName) {return;}
+  if (!data || !floorName) {
+    return;
+  }
 
   if (mode === 'remove' && selectedPoi) {
     const actionStr = `// In ${floorName}.json, remove the entry with id "${selectedPoi.id}" from meta.${selectedPoi.type === 'stair' ? 'stairs' : 'entrances'}
@@ -306,7 +318,9 @@ export function applyPlacement() {
     showToast('Click on the floor to place first');
     return;
   }
-  if (!mode || mode === 'remove') {return;}
+  if (!mode || mode === 'remove') {
+    return;
+  }
 
   const wp = placedPos || ghostWorldPos;
   if (!wp) {
@@ -357,8 +371,12 @@ export function cancelPlacement() {
   if (ghostGroup) {
     scene.remove(ghostGroup);
     ghostGroup.traverse((/** @type {any} */ c) => {
-      if (c.geometry) {c.geometry.dispose();}
-      if (c.material) {c.material.dispose();}
+      if (c.geometry) {
+        c.geometry.dispose();
+      }
+      if (c.material) {
+        c.material.dispose();
+      }
     });
     ghostGroup = null;
   }
@@ -371,7 +389,9 @@ export function cancelPlacement() {
 }
 
 export function handleMouseMove(event) {
-  if (!mode || mode === 'remove') {return;}
+  if (!mode || mode === 'remove') {
+    return;
+  }
   const pt = getFloorPosition(event);
   if (pt) {
     ghostWorldPos = { x: pt.x, z: pt.z };
@@ -384,10 +404,14 @@ export function handleMouseMove(event) {
 }
 
 export function handleClick(event) {
-  if (!mode) {return false;}
+  if (!mode) {
+    return false;
+  }
   if (mode !== 'remove') {
     const pt = getFloorPosition(event);
-    if (!pt) {return false;}
+    if (!pt) {
+      return false;
+    }
     if (!placedPos) {
       // First click: lock position
       placedPos = { x: pt.x, z: pt.z };
@@ -413,7 +437,9 @@ export function getSelectedPoi() {
 
 function updateUI() {
   const statusEl = document.getElementById('poiEditorStatus');
-  if (!statusEl) {return;}
+  if (!statusEl) {
+    return;
+  }
   if (mode === 'add-stair') {
     statusEl.textContent = placedPos
       ? 'Position locked. Rotate with slider, then Apply.'
@@ -440,10 +466,18 @@ function updateUI() {
   const cancelBtn = /** @type {HTMLButtonElement|null} */ (document.getElementById('poiCancelBtn'));
   const rotSlider = /** @type {HTMLInputElement|null} */ (document.getElementById('poiRotSlider'));
   const rotVal = document.getElementById('poiRotVal');
-  if (applyBtn) {applyBtn.disabled = !mode;}
-  if (cancelBtn) {cancelBtn.disabled = !mode;}
-  if (rotSlider) {rotSlider.disabled = !mode || mode === 'remove';}
-  if (rotVal) {rotVal.textContent = mode === 'remove' ? '' : `${ghostRotationDeg.toFixed(0)}\u00b0`;}
+  if (applyBtn) {
+    applyBtn.disabled = !mode;
+  }
+  if (cancelBtn) {
+    cancelBtn.disabled = !mode;
+  }
+  if (rotSlider) {
+    rotSlider.disabled = !mode || mode === 'remove';
+  }
+  if (rotVal) {
+    rotVal.textContent = mode === 'remove' ? '' : `${ghostRotationDeg.toFixed(0)}\u00b0`;
+  }
 }
 
 function showToast(msg) {
@@ -457,7 +491,9 @@ function showToast(msg) {
   }
   toast.textContent = msg;
   toast.style.opacity = '1';
-  if (toastTimer) {clearTimeout(toastTimer);}
+  if (toastTimer) {
+    clearTimeout(toastTimer);
+  }
   toastTimer = setTimeout(() => {
     toast.style.opacity = '0';
   }, 3000);

@@ -15,7 +15,9 @@ export async function buildStairMap(floorNames) {
     const stairs = data.meta.stairs || [];
     for (const s of stairs) {
       const sid = s.id;
-      if (!sid) {continue;}
+      if (!sid) {
+        continue;
+      }
       if (!map[sid]) {
         map[sid] = {
           label: s.label || sid,
@@ -38,9 +40,13 @@ export async function buildStairMap(floorNames) {
 /** Get grid cell for a stair on a specific floor. Requires `initCalibration(data)` to have been called for that floor. */
 export function stairToGridCell(stairId, floorName) {
   const stair = stairMap[stairId];
-  if (!stair) {return null;}
+  if (!stair) {
+    return null;
+  }
   const pos = stair.floors[floorName];
-  if (!pos) {return null;}
+  if (!pos) {
+    return null;
+  }
   const { px, py } = fabricToPixel(pos.x, pos.y);
   const { x, z } = pxToWorld(px, py);
   return worldToCell(x, z);
@@ -49,9 +55,13 @@ export function stairToGridCell(stairId, floorName) {
 /** Get the world position (in scene coords) for a stair on a specific floor. */
 export function stairToWorldPos(stairId, floorName) {
   const stair = stairMap[stairId];
-  if (!stair) {return null;}
+  if (!stair) {
+    return null;
+  }
   const pos = stair.floors[floorName];
-  if (!pos) {return null;}
+  if (!pos) {
+    return null;
+  }
   const { px, py } = fabricToPixel(pos.x, pos.y);
   return pxToWorld(px, py);
 }

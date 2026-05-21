@@ -21,7 +21,9 @@ const scYVal = /** @type {HTMLElement} */ (document.getElementById('scYVal'));
 
 function normalizeScaleValue(value, fallback) {
   const n = Number(value);
-  if (!Number.isFinite(n) || n <= 0) {return fallback;}
+  if (!Number.isFinite(n) || n <= 0) {
+    return fallback;
+  }
   return n > 10 ? n / 1000 : n;
 }
 
